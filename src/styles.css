@@ -412,7 +412,6 @@
 
 /* ============ Immersion section ============ */
 .immersion {
-  background: linear-gradient(180deg, var(--cream) 0%, #F1EAD E 100%);
   background: linear-gradient(180deg, var(--cream) 0%, #F1EADE 100%);
   position: relative;
 }

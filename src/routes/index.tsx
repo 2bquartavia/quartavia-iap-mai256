@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import Ticker from "@/components/Ticker";
+import ImmersionSection from "@/components/ImmersionSection";
 import heroTrader from "@/assets/hero-trader.jpg";
 
 export const Route = createFileRoute("/")({
@@ -83,26 +84,8 @@ function Index() {
         <Ticker />
       </section>
 
-      {/* AUTHORITY STATS */}
-      <section className="section">
-        <div className="wrap">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {[
-              { n: "R$ 2,4Bi", l: "Sob orientação" },
-              { n: "+12.000", l: "Investidores ativos" },
-              { n: "18 anos", l: "De mercado" },
-              { n: "94%", l: "Retenção de clientes" },
-            ].map((s) => (
-              <div key={s.l} className="text-center md:text-left">
-                <div className="stat-num">{s.n}</div>
-                <div className="text-sm text-ink-3 mt-2 tracking-wide uppercase font-medium">
-                  {s.l}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* IMMERSION — segunda dobra */}
+      <ImmersionSection />
 
       <div className="wrap">
         <div className="rule" />

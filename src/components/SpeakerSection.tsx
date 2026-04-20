@@ -45,20 +45,20 @@ export default function SpeakerSection() {
               </blockquote>
               <figcaption>— Dr. Felipe Hurtado</figcaption>
             </figure>
-
-            <div className="speaker-v3__cta">
-              <PillButton
-                label="Quero garantir minha vaga no LOTE ZERO"
-                variant="gold"
-                icon={<ArrowRight size={18} strokeWidth={2.2} />}
-              />
-            </div>
           </div>
 
           {/* RIGHT — Portrait */}
           <div className="speaker-v3__media">
             <img src={portrait} alt="Adrian Carvalho" />
           </div>
+        </div>
+
+        <div className="speaker-v3__cta">
+          <PillButton
+            label="Quero garantir minha vaga no LOTE ZERO"
+            variant="gold"
+            icon={<ArrowRight size={18} strokeWidth={2.2} />}
+          />
         </div>
       </div>
     </section>

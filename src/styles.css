@@ -953,7 +953,12 @@
   letter-spacing: 0.04em;
 }
 
-.speaker-v3__cta { margin-top: 0.5rem; }
+.speaker-v3__cta {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  grid-column: 1 / -1;
+}
 
 .speaker-v3__media {
   position: relative;

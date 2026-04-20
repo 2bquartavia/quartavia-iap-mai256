@@ -484,9 +484,12 @@
 
 /* Footer */
 .footer {
+  position: sticky;
+  top: 0;
+  z-index: 40;
   background: var(--ink);
   color: rgba(255,255,255,0.7);
-  padding: 4rem 0 2rem;
+  padding: 5rem 0 2rem;
   font-size: .9rem;
 }
 .footer a { transition: color .2s; }
@@ -867,8 +870,11 @@
 
 /* ============ TESTIMONIALS ============ */
 .testimonials {
-  padding: 5rem 0 6rem;
-  background: var(--bg);
+  padding: clamp(5rem, 8vw, 7rem) 0;
+  background: var(--cream);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 .testimonials__head {
   max-width: 880px;
@@ -948,8 +954,11 @@
 
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
-  padding: 6rem 0 7rem;
+  padding: clamp(5rem, 8vw, 7rem) 0;
   background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 .speaker-v3__grid {
   display: grid;
@@ -1055,8 +1064,11 @@
    CTA FINAL — Rule of Thirds (background photo + grid)
    ========================================================= */
 .cta-thirds {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 30;
   min-height: 100vh;
+  padding: clamp(5rem, 8vw, 7rem) 0;
   display: flex;
   align-items: center;
   justify-content: center;

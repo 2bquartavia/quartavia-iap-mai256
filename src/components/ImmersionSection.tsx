@@ -41,10 +41,9 @@ export default function ImmersionSection() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const updateClip = () => {
+    const updateClip = (expand: number) => {
       const sticky = stickyRef.current;
       if (!sticky) return;
-      // Clipa pela JANELA do trilho (fixa na tela), não pelo card individual
       const railWrap = sticky.querySelector<HTMLElement>(".immersion__rail-wrap");
       if (!railWrap) return;
       const r = railWrap.getBoundingClientRect();
@@ -52,10 +51,18 @@ export default function ImmersionSection() {
       const left = Math.max(0, r.left);
       const right = Math.max(0, window.innerWidth - r.right);
       const bottom = Math.max(0, window.innerHeight - r.bottom);
+      // Interpola da janela do card até o viewport inteiro (expand = 0..1)
+      const t = Math.max(0, Math.min(1, expand));
+      const itop = top * (1 - t);
+      const ileft = left * (1 - t);
+      const iright = right * (1 - t);
+      const ibottom = bottom * (1 - t);
+      const radius = 28 * (1 - t);
       sticky.style.setProperty(
         "--card-clip",
-        `inset(${top}px ${right}px ${bottom}px ${left}px round 28px)`,
+        `inset(${itop}px ${iright}px ${ibottom}px ${ileft}px round ${radius}px)`,
       );
+      sticky.style.setProperty("--expand", String(t));
     };
     const onScroll = () => {
       const el = trackRef.current;
@@ -66,7 +73,10 @@ export default function ImmersionSection() {
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
       setProgress(p);
-      updateClip();
+      // Expansão acontece no último trecho (após o último card aparecer)
+      const expandStart = (lessons.length - 1) / lessons.length;
+      const expand = (p - expandStart) / (1 - expandStart);
+      updateClip(expand);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

@@ -761,13 +761,11 @@
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.08);
 }
-/* Overlay escuro do card para legibilidade */
+/* Overlay sutil só para legibilidade — sem gradiente pesado */
 .lesson-card::before {
   content: "";
   position: absolute; inset: 0;
-  background:
-    linear-gradient(160deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.62) 55%, rgba(10,10,10,0.4) 100%),
-    radial-gradient(circle at 90% 0%, rgba(232,197,71,0.15), transparent 55%);
+  background: rgba(10,10,10,0.35);
   pointer-events: none;
   z-index: 1;
   border-radius: inherit;

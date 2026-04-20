@@ -84,21 +84,6 @@ export default function ImmersionSection() {
             trabalho para crescer.
           </p>
 
-          <ul className="immersion__bullets">
-            <li>
-              <span className="immersion__bullet-n">01</span>
-              <span>Plano patrimonial sob medida para o seu momento atual.</span>
-            </li>
-            <li>
-              <span className="immersion__bullet-n">02</span>
-              <span>Estratégias para alavancar o que você já construiu.</span>
-            </li>
-            <li>
-              <span className="immersion__bullet-n">03</span>
-              <span>Renda recorrente sem depender de mais horas de trabalho.</span>
-            </li>
-          </ul>
-
           <p className="immersion__kicker">5 encontros ao vivo · 25 a 29 de maio</p>
         </div>
       </div>

@@ -497,7 +497,7 @@
 
 /* ============ Immersion section ============ */
 .immersion {
-  background: linear-gradient(180deg, var(--cream) 0%, #F1EADE 100%);
+  background: var(--cream);
   position: relative;
 }
 
@@ -664,7 +664,7 @@
   display: flex; align-items: center;
   padding-block: clamp(1rem, 2vw, 2rem);
   overflow: hidden;
-  background: #F7F2EB;
+  background: var(--cream);
   isolation: isolate;
 }
 /* Imagem da hero PRESA ao viewport — vive aqui (sem transform ancestral)

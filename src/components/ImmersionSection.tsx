@@ -73,10 +73,8 @@ export default function ImmersionSection() {
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
       setProgress(p);
-      // Expansão acontece no último trecho (após o último card aparecer)
-      const expandStart = (lessons.length - 1) / lessons.length;
-      const expand = (p - expandStart) / (1 - expandStart);
-      updateClip(expand);
+      // Expansão linear ao longo de todo o scroll (do card 01 até o 05)
+      updateClip(p);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

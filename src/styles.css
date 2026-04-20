@@ -742,7 +742,7 @@
   pointer-events: none;
 }
 .immersion__stack .lesson-card.is-active {
-  opacity: 1;
+  opacity: calc(1 - var(--expand, 0));
   transform: translateY(0);
   pointer-events: auto;
 }

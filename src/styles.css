@@ -877,7 +877,7 @@
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
   padding: 6rem 0 7rem;
-  background: #e8e4d8;
+  background: #ffffff;
 }
 .speaker-v3__grid {
   display: grid;
@@ -910,12 +910,19 @@
   font-weight: 700;
 }
 .speaker-v3__role {
-  font-size: 0.95rem;
-  color: rgba(40,28,16,0.6);
+  font-size: 1rem;
+  color: #18140F;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.speaker-v3__credentials {
+  font-size: 0.9rem;
+  color: rgba(40,28,16,0.65);
   font-weight: 500;
   margin-bottom: 2rem;
   padding-bottom: 1.75rem;
   border-bottom: 1px solid rgba(40,28,16,0.12);
+  line-height: 1.5;
 }
 .speaker-v3__bio p {
   font-size: 1rem;
@@ -924,26 +931,26 @@
   margin-bottom: 1.1rem;
   max-width: 38rem;
 }
-.speaker-v3__bio strong { color: #18140F; font-weight: 600; }
+.speaker-v3__bio strong { color: #18140F; font-weight: 700; }
 
-.speaker-v3__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
+.speaker-v3__quote {
   margin: 2rem 0 2.25rem;
+  padding-left: 1.25rem;
+  border-left: 3px solid #cc7514;
 }
-.speaker-v3__badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 0.85rem;
-  font-size: 0.72rem;
+.speaker-v3__quote blockquote {
+  font-family: var(--font-display, serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: #18140F;
+  margin: 0 0 0.5rem;
+}
+.speaker-v3__quote figcaption {
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #3a2a14;
-  background: rgba(204,117,20,0.08);
-  border: 1px solid rgba(204,117,20,0.3);
-  border-radius: 999px;
+  color: #cc7514;
+  letter-spacing: 0.04em;
 }
 
 .speaker-v3__cta { margin-top: 0.5rem; }

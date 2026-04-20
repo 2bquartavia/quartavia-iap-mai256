@@ -120,7 +120,11 @@ export default function ImmersionSection() {
         className="immersion__scroll"
         style={{ height: `${lessons.length * 100}vh` }}
       >
-        <div ref={stickyRef} className="immersion__sticky">
+        <div
+          ref={stickyRef}
+          className="immersion__sticky"
+          style={{ ["--hero-bg" as string]: `url(${heroBg})` }}
+        >
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">
               <div className="immersion__progress">

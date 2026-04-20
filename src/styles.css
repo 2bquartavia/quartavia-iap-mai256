@@ -666,7 +666,7 @@
 .lesson-card {
   flex: 0 0 100%;
   min-height: clamp(380px, 52vh, 520px);
-  background: linear-gradient(160deg, var(--ink) 0%, #25201A 100%);
+  background: linear-gradient(160deg, #191919 0%, #3a3a3a 100%);
   color: #fff;
   border-radius: 1.75rem;
   padding: clamp(1.75rem, 3.5vw, 3rem);

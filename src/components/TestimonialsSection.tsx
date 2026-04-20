@@ -26,7 +26,6 @@ export default function TestimonialsSection() {
     <section id="depoimentos" className="testimonials">
       <div className="wrap">
         <div className="testimonials__head">
-          <span className="immersion__eyebrow">Depoimentos</span>
           <h2 className="display testimonials__title">
             O que as pessoas falam desse conteúdo <em>Imersão?</em>
           </h2>

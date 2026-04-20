@@ -662,22 +662,7 @@
   padding-top: clamp(1rem, 2vw, 2rem);
   padding-bottom: 0;
   overflow: hidden;
-  isolation: isolate;
-  /* clip-path recorta TAMBÉM filhos position:fixed — confina a imagem só na seção */
-  clip-path: inset(0);
-}
-/* Imagem da hero PRESA ao viewport real (segue o tamanho da janela ao redimensionar).
-   Visível apenas dentro do clip-path do sticky acima. */
-.immersion__sticky::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("/src/assets/hero-bg.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  z-index: -1;
-  pointer-events: none;
+  background: #F7F2EB;
 }
 .immersion__stage {
   width: 100%;

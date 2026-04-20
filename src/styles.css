@@ -707,7 +707,6 @@
 .lesson-card__top {
   display: flex; align-items: center; justify-content: space-between;
   position: relative;
-  margin-bottom: auto;
 }
 .lesson-card__n {
   font-family: var(--font-display);
@@ -734,10 +733,10 @@
   position: relative;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
   line-height: 1.15;
   letter-spacing: -0.02em;
-  margin-top: 1.5rem;
+  margin-top: .5rem;
   color: rgba(255,255,255,0.97);
   max-width: 24ch;
 }

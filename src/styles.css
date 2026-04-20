@@ -136,10 +136,10 @@
 .pill-btn:hover .pill-btn__circle { transform: scale(1.05); }
 
 .pill-btn--gold {
-  background: linear-gradient(135deg, #B8860B 0%, #D4A017 50%, #C6930A 100%);
-  box-shadow: 0 6px 28px rgba(184,134,11,0.4);
+  background: linear-gradient(135deg, #191919 0%, #2a2a2a 50%, #0f0f0f 100%);
+  box-shadow: 0 6px 28px rgba(25,25,25,0.4);
 }
-.pill-btn--gold .pill-btn__circle { color: #8B6914; }
+.pill-btn--gold .pill-btn__circle { color: #191919; }
 
 .pill-btn--ghost {
   background: transparent;

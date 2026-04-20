@@ -1097,20 +1097,25 @@
 .cta-thirds__line--h2 { top: 66.666%; }
 
 .cta-thirds__inner {
-  position: relative; z-index: 3;
-  width: 100%; padding: 6rem 1.5rem;
-  display: flex; align-items: center; justify-content: center;
+  position: absolute; inset: 0; z-index: 3;
+  pointer-events: none;
 }
 .cta-thirds__center {
-  width: 100%;
-  max-width: 720px;
+  position: absolute;
+  left: 33.333%;
+  top: 33.333%;
+  width: 33.334%;
+  height: 33.334%;
+  pointer-events: auto;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   text-align: center;
-  padding: 2.5rem 2rem;
-  background: rgba(10, 10, 11, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
+  padding: 1.25rem;
+  background: rgba(10, 10, 11, 0.32);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
   animation: ctaThirdsFade 1s ease-out both;
 }
 @keyframes ctaThirdsFade {

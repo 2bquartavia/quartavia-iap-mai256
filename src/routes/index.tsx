@@ -13,6 +13,7 @@ import {
 import PillButton from "@/components/PillButton";
 import Ticker from "@/components/Ticker";
 import ImmersionSection from "@/components/ImmersionSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import adrianPortrait from "@/assets/adrian.png";
 
 export const Route = createFileRoute("/")({
@@ -121,6 +122,9 @@ function Index() {
 
       {/* IMMERSION — segunda dobra */}
       <ImmersionSection />
+
+      {/* DEPOIMENTOS */}
+      <TestimonialsSection />
 
       <div className="wrap">
         <div className="rule" />

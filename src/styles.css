@@ -792,3 +792,56 @@
   .lesson-card { min-height: auto; }
   .immersion__progress { display: none; }
 }
+
+/* ============ TESTIMONIALS ============ */
+.testimonials {
+  padding: 5rem 0 6rem;
+  background: var(--bg);
+}
+.testimonials__head {
+  max-width: 880px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+.testimonials__title {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  margin-top: 0.75rem;
+  color: var(--ink);
+}
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.testimonial-card {
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ink);
+  aspect-ratio: 4 / 5;
+  position: relative;
+}
+.testimonial-card__img {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a, #111);
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.testimonials__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+@media (max-width: 900px) {
+  .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .testimonials__grid { grid-template-columns: 1fr; }
+}

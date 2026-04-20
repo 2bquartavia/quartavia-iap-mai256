@@ -1,85 +1,73 @@
-import { ArrowRight, Check } from "lucide-react";
-
-const messages = [
-  { from: "them", text: "Bom dia! 👋 Bem-vindo ao grupo VIP", delay: "0.2s" },
-  { from: "them", text: "Aqui você terá acesso ao Lote ZERO em primeira mão", delay: "1.2s" },
-  { from: "me", text: "Quero garantir minha vaga 🔥", delay: "2.4s" },
-  { from: "them", text: "Liberado! Lote ZERO abre 26/04 às 9h ⏰", delay: "3.6s" },
-];
+import { ArrowRight, Calendar, Lock, Users } from "lucide-react";
 
 export default function CTAFinalSection() {
   return (
-    <section id="cadastro" className="cta-wa">
-      <div className="cta-wa__noise" />
-      <div className="wrap">
-        <div className="cta-wa__grid">
-          {/* LEFT — phone mockup */}
-          <div className="cta-wa__phone-wrap">
-            <div className="cta-wa__phone">
-              <div className="cta-wa__phone-notch" />
-              <div className="cta-wa__chat-header">
-                <div className="cta-wa__avatar">AV</div>
-                <div>
-                  <div className="cta-wa__chat-name">Aurum · Lote ZERO</div>
-                  <div className="cta-wa__chat-status">
-                    <span className="cta-wa__online-dot" /> online agora
-                  </div>
-                </div>
-              </div>
-              <div className="cta-wa__chat-body">
-                {messages.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`cta-wa__bubble cta-wa__bubble--${m.from}`}
-                    style={{ animationDelay: m.delay }}
-                  >
-                    {m.text}
-                    {m.from === "me" && <Check size={12} className="cta-wa__bubble-check" />}
-                  </div>
-                ))}
-                <div
-                  className="cta-wa__typing"
-                  style={{ animationDelay: "4.6s" }}
-                >
-                  <span /><span /><span />
-                </div>
-              </div>
-            </div>
-            <div className="cta-wa__phone-glow" />
+    <section id="cadastro" className="cta-zero">
+      {/* animated background layers */}
+      <div className="cta-zero__rings" aria-hidden>
+        <span /><span /><span /><span />
+      </div>
+      <div className="cta-zero__spotlight" aria-hidden />
+
+      <div className="wrap cta-zero__inner">
+        <div className="cta-zero__date">
+          <Calendar size={14} strokeWidth={2.4} />
+          <span>26 · ABRIL</span>
+          <span className="cta-zero__date-sep" />
+          <span className="cta-zero__date-pulse" />
+          Lote ZERO
+        </div>
+
+        <h2 className="cta-zero__title">
+          Cadastre-se agora <br />e entre no <em>grupo de WhatsApp</em>
+        </h2>
+
+        <p className="cta-zero__lead">
+          Somente quem se cadastrar aqui terá acesso ao Lote ZERO da Imersão Alavanca Patrimonial em
+          primeira mão no dia <strong>26 de abril</strong>, com a melhor condição da história.
+        </p>
+
+        <a href="#" className="cta-zero__cta">
+          <span className="cta-zero__cta-bg" />
+          <span className="cta-zero__cta-label">Quero garantir minha vaga no Lote ZERO</span>
+          <span className="cta-zero__cta-arrow">
+            <ArrowRight size={20} strokeWidth={2.6} />
+          </span>
+        </a>
+
+        <div className="cta-zero__meta">
+          <div className="cta-zero__meta-item">
+            <Users size={14} strokeWidth={2.4} />
+            Acesso gratuito ao grupo
           </div>
-
-          {/* RIGHT — content */}
-          <div className="cta-wa__content">
-            <div className="cta-wa__tag">
-              <span className="cta-wa__tag-pulse" />
-              26 de abril · Lote ZERO
-            </div>
-            <h2 className="cta-wa__title">
-              Cadastre-se agora <br />
-              e entre no <span>grupo de WhatsApp</span>
-            </h2>
-            <p className="cta-wa__desc">
-              Somente quem se cadastrar aqui terá acesso ao Lote ZERO da Imersão Alavanca
-              Patrimonial em primeira mão no dia <strong>26 de abril</strong>, com a melhor
-              condição da história.
-            </p>
-
-            <a href="#" className="cta-wa__cta">
-              <span>Quero garantir minha vaga no Lote ZERO</span>
-              <ArrowRight size={20} strokeWidth={2.4} />
-            </a>
-
-            <div className="cta-wa__trust">
-              <div className="cta-wa__trust-item">
-                <Check size={14} strokeWidth={3} />
-                Acesso gratuito ao grupo
-              </div>
-              <div className="cta-wa__trust-item">
-                <Check size={14} strokeWidth={3} />
-                Vagas limitadas
-              </div>
-            </div>
+          <span className="cta-zero__meta-dot" />
+          <div className="cta-zero__meta-item">
+            <Lock size={14} strokeWidth={2.4} />
+            Vagas limitadas
           </div>
+        </div>
+      </div>
+
+      {/* marquee strip */}
+      <div className="cta-zero__marquee" aria-hidden>
+        <div className="cta-zero__marquee-track">
+          {Array.from({ length: 2 }).map((_, k) => (
+            <div key={k} className="cta-zero__marquee-row">
+              {[
+                "LOTE ZERO",
+                "26 · ABRIL",
+                "ACESSO ANTECIPADO",
+                "MELHOR CONDIÇÃO",
+                "VAGAS LIMITADAS",
+                "IMERSÃO ALAVANCA PATRIMONIAL",
+              ].map((t, i) => (
+                <span key={i}>
+                  {t}
+                  <span className="cta-zero__marquee-star">✦</span>
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>

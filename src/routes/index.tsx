@@ -6,7 +6,7 @@ import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
-import adrianPortrait from "@/assets/adrian.png";
+import HeroPortrait from "@/components/HeroPortrait";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -100,13 +100,7 @@ function Index() {
               </p>
             </div>
 
-            <div className="hero__portrait">
-              <img src={adrianPortrait} alt="Adrian Almeida no palco da Mansão Davos" />
-              <div className="hero__portrait-tag">
-                <strong>Adrian Almeida</strong>
-                <span>Mansão Davos · QuartaVia</span>
-              </div>
-            </div>
+            <HeroPortrait />
           </div>
         </div>
         <Ticker />

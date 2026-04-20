@@ -120,56 +120,11 @@ function Index() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <div className="wrap">
-          <div className="grid md:grid-cols-4 gap-10 pb-10 border-b border-white/10">
-            <div>
-              <div className="hero__brand text-2xl mb-3">
-                Aurum<span style={{ color: "var(--gold-bright)" }}>.</span>
-              </div>
-              <p className="text-white/55 text-sm leading-relaxed">
-                Inteligência financeira para investidores que pensam em décadas, não em pregões.
-              </p>
-            </div>
-            <div>
-              <h5 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Estratégias
-              </h5>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#">Renda Variável</a></li>
-                <li><a href="#">Renda Fixa</a></li>
-                <li><a href="#">Quant</a></li>
-                <li><a href="#">Internacional</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Empresa
-              </h5>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#">Sobre</a></li>
-                <li><a href="#">Time</a></li>
-                <li><a href="#">Carreiras</a></li>
-                <li><a href="#">Imprensa</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
-                Contato
-              </h5>
-              <ul className="space-y-2 text-sm">
-                <li>contato@aurum.cap</li>
-                <li>+55 11 4000-0000</li>
-                <li>Av. Brigadeiro Faria Lima, 3477</li>
-                <li>São Paulo · SP</li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
-            <span>© 2025 Aurum Capital. Todos os direitos reservados.</span>
-            <span>
-              Aurum Capital é agente autônomo de investimentos. Investimentos envolvem riscos.
-            </span>
-          </div>
+        <div className="wrap pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
+          <span>© 2025 Aurum Capital. Todos os direitos reservados.</span>
+          <span>
+            Aurum Capital é agente autônomo de investimentos. Investimentos envolvem riscos.
+          </span>
         </div>
       </footer>
     </main>

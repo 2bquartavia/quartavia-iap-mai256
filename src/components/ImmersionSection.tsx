@@ -97,10 +97,6 @@ export default function ImmersionSection() {
         <div ref={stickyRef} className="immersion__sticky">
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">
-              <span className="eyebrow">Os 5 encontros</span>
-              <h3 className="display immersion__stage-title">
-                Cinco aulas. Um plano <em>inevitável</em>.
-              </h3>
               <div className="immersion__progress">
                 {lessons.map((l, i) => (
                   <div

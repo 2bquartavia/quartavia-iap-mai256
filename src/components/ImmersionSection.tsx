@@ -127,14 +127,13 @@ export default function ImmersionSection() {
             </div>
 
             <div className="immersion__rail-wrap">
-              <div
-                className="immersion__rail"
-                style={{
-                  transform: `translateX(calc(${-activeIndex * 100}% - ${activeIndex * 24}px))`,
-                }}
-              >
-                {lessons.map((l) => (
-                  <article key={l.n} className="lesson-card">
+              <div className="immersion__stack">
+                {lessons.map((l, i) => (
+                  <article
+                    key={l.n}
+                    className={`lesson-card ${i === activeIndex ? "is-active" : ""}`}
+                    aria-hidden={i !== activeIndex}
+                  >
                     <div className="lesson-card__top">
                       <span className="lesson-card__n">{l.n}</span>
                       <span className="lesson-card__tag">{l.tag}</span>

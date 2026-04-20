@@ -705,7 +705,7 @@
   pointer-events: none;
 }
 .lesson-card__top {
-  display: flex; align-items: center; justify-content: flex-start;
+  display: flex; align-items: flex-end; justify-content: flex-start;
   gap: 1.25rem;
   position: relative;
 }

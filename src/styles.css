@@ -715,20 +715,32 @@
 .lesson-card {
   flex: 0 0 100%;
   min-height: clamp(380px, 52vh, 520px);
-  background: linear-gradient(160deg, #191919 0%, #3a3a3a 100%);
+  /* Mesma imagem da hero, "presa" ao viewport — revela-se magicamente através do card */
+  background-image:
+    linear-gradient(160deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.78) 55%, rgba(10,10,10,0.55) 100%),
+    url("/src/assets/hero-bg.jpg");
+  background-size: cover, cover;
+  background-position: center, center center;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: scroll, fixed;
   color: #fff;
   border-radius: 1.75rem;
   padding: clamp(1.75rem, 3.5vw, 3rem);
   display: flex; flex-direction: column;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  isolation: isolate;
 }
 .lesson-card::before {
   content: "";
   position: absolute; inset: 0;
   background: radial-gradient(circle at 90% 0%, rgba(232,197,71,0.18), transparent 50%);
   pointer-events: none;
+  z-index: 0;
+}
+@media (hover: none) {
+  .lesson-card { background-attachment: scroll, scroll; }
 }
 .lesson-card__top {
   display: flex; align-items: flex-end; justify-content: flex-start;

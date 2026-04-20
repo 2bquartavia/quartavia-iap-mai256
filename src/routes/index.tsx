@@ -38,8 +38,16 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main>
+      {/* TOP BAR — fixed */}
+      <div
+        className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
+        style={{ background: "#cc7514" }}
+      >
+        OPORTUNIDADE EXCLUSIVA PARA PROFISSIONAIS COM RENDA ACIMA DE R$ 20 MIL
+      </div>
+
       {/* HERO */}
-      <section className="hero">
+      <section className="hero" style={{ paddingTop: "2.25rem" }}>
         <div className="hero__inner">
           <nav className="hero__nav">
             <div className="hero__brand">

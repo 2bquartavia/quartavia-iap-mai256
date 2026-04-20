@@ -1088,8 +1088,8 @@
 .cta-thirds__line--v1, .cta-thirds__line--v2 {
   top: 0; bottom: 0; width: 1px;
 }
-.cta-thirds__line--v1 { left: 33.333%; }
-.cta-thirds__line--v2 { left: 66.666%; }
+.cta-thirds__line--v1 { left: 22%; }
+.cta-thirds__line--v2 { left: 78%; }
 .cta-thirds__line--h1, .cta-thirds__line--h2 {
   left: 0; right: 0; height: 1px;
 }
@@ -1102,9 +1102,9 @@
 }
 .cta-thirds__center {
   position: absolute;
-  left: 33.333%;
+  left: 22%;
   top: 33.333%;
-  width: 33.334%;
+  width: 56%;
   height: 33.334%;
   pointer-events: auto;
   display: flex; flex-direction: column;

@@ -662,6 +662,21 @@
   padding-top: clamp(1rem, 2vw, 2rem);
   padding-bottom: 0;
   overflow: hidden;
+  isolation: isolate;
+}
+/* Imagem da hero PRESA ao viewport real do navegador.
+   inset:0 sem width/height = sempre = tamanho do viewport, mesmo se redimensionar.
+   O sticky tem overflow:hidden, então a imagem só "aparece" na área da seção. */
+.immersion__sticky::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/src/assets/hero-bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  pointer-events: none;
 }
 .immersion__stage {
   width: 100%;

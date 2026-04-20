@@ -136,10 +136,46 @@
 .pill-btn:hover .pill-btn__circle { transform: scale(1.05); }
 
 .pill-btn--gold {
-  background: linear-gradient(135deg, #191919 0%, #2a2a2a 50%, #0f0f0f 100%);
-  box-shadow: 0 6px 28px rgba(25,25,25,0.4);
+  background: linear-gradient(135deg, #CC7514 0%, #E89331 50%, #B25E00 100%);
+  background-size: 200% 200%;
+  box-shadow: 0 6px 28px rgba(204,117,20,0.45), 0 0 0 0 rgba(204,117,20,0.7);
+  position: relative;
+  overflow: hidden;
+  animation: pillPulse 2.4s ease-in-out infinite, pillShift 6s ease-in-out infinite;
 }
-.pill-btn--gold .pill-btn__circle { color: #191919; }
+.pill-btn--gold::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: pillShine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.pill-btn--gold .pill-btn__circle {
+  color: #CC7514;
+  animation: pillArrow 1.6s ease-in-out infinite;
+}
+.pill-btn--gold:hover { animation-play-state: paused; transform: translateY(-2px) scale(1.02); }
+.pill-btn--gold:hover .pill-btn__circle { animation: none; transform: translateX(3px); }
+
+@keyframes pillPulse {
+  0%, 100% { box-shadow: 0 6px 28px rgba(204,117,20,0.45), 0 0 0 0 rgba(204,117,20,0.55); }
+  50% { box-shadow: 0 6px 32px rgba(204,117,20,0.6), 0 0 0 12px rgba(204,117,20,0); }
+}
+@keyframes pillShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes pillShine {
+  0% { left: -75%; }
+  60%, 100% { left: 125%; }
+}
+@keyframes pillArrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
 
 .pill-btn--ghost {
   background: transparent;

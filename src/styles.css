@@ -671,13 +671,14 @@
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url("/src/assets/hero-bg.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.25) 35%, rgba(10,10,10,0.45) 75%, rgba(10,10,10,0.7) 100%),
+    url("/src/assets/hero-bg.jpg");
+  background-size: cover, cover;
+  background-position: center center, center center;
+  background-repeat: no-repeat, no-repeat;
   z-index: -1;
   pointer-events: none;
-  /* Atualizado via JS: recortado para a bounding box do card ativo */
   clip-path: var(--card-clip, inset(50% 50% 50% 50%));
 }
 .immersion__stage {

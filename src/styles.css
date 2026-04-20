@@ -809,33 +809,65 @@
   margin-top: 0.75rem;
   color: var(--ink);
 }
-.testimonials__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  align-items: start;
+.testimonials__carousel {
+  position: relative;
 }
+.testimonials__track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0.25rem 1.25rem;
+  scrollbar-width: none;
+}
+.testimonials__track::-webkit-scrollbar { display: none; }
 .testimonial-card {
   margin: 0;
+  flex: 0 0 auto;
+  width: clamp(240px, 28vw, 320px);
+  height: 460px;
   border-radius: 18px;
   overflow: hidden;
   background: #0e0e0e;
-  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.45);
+  scroll-snap-align: start;
 }
 .testimonial-card img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
+.testimonials__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent);
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.testimonials__nav:hover { background: var(--bg); transform: translateY(-50%) scale(1.05); }
+.testimonials__nav--prev { left: -8px; }
+.testimonials__nav--next { right: -8px; }
 .testimonials__cta {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
-@media (max-width: 1000px) {
-  .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 560px) {
-  .testimonials__grid { grid-template-columns: 1fr; }
+@media (max-width: 700px) {
+  .testimonial-card { width: 78vw; height: 420px; }
+  .testimonials__nav { display: none; }
 }
 

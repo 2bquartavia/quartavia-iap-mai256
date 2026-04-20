@@ -881,7 +881,7 @@
 }
 .speaker-v3__grid {
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 1fr 1.1fr;
   gap: 4rem;
   align-items: center;
 }
@@ -896,17 +896,18 @@
 }
 .speaker-v3__title {
   font-family: var(--font-display, serif);
-  font-size: clamp(3rem, 6vw, 5.25rem);
-  font-weight: 600;
-  line-height: 0.95;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
   color: #2a1a08;
   letter-spacing: -0.02em;
   margin-bottom: 0.75rem;
+  white-space: nowrap;
 }
 .speaker-v3__title em {
-  font-style: italic;
-  color: #cc7514;
-  font-weight: 500;
+  font-style: normal;
+  color: #2a1a08;
+  font-weight: 700;
 }
 .speaker-v3__role {
   font-size: 0.95rem;
@@ -949,11 +950,9 @@
 
 .speaker-v3__media {
   position: relative;
-  border-radius: 1.5rem;
   overflow: hidden;
   aspect-ratio: 4 / 5;
   background: #d8d4c8;
-  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.25);
 }
 .speaker-v3__media img {
   width: 100%;

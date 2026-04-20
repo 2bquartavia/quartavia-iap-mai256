@@ -30,19 +30,17 @@ export default function SpeakerSection() {
 
             <div className="speaker-v3__bio">
               <p>
-                Além de assessorar profissionais de alta renda, Adrian transformou mais de uma
-                década de prática em conteúdo e mentoria — ajudando médicos, advogados,
-                empresários e executivos a estruturarem patrimônio com método.
+                Além de projetar identidades visuais para os meus clientes, transformo minhas
+                profissionais em conteúdo.
               </p>
               <p>
-                Fundou a <strong>QuartaVia</strong> e desenvolveu a metodologia{" "}
-                <strong>O Quarto Caminho</strong>: um sistema que combina decisão financeira,
-                estruturação patrimonial e multiplicação de ativos. Ao todo, já são milhares
-                de famílias atendidas.
+                Esse conteúdo gerou demanda por um conteúdo mais aprofundado, então criei o ID
+                Class, Forma e agora o Nexus. Ao todo já somos quase 20 mil alunos.
               </p>
               <p>
-                Reconhecido por pares e clientes como referência em liberdade patrimonial real
-                — sem precisar trabalhar mais e sem abrir mão do padrão de vida conquistado.
+                Além do curso, tenho meu estúdio de design, e fui premiado em 2018 com um
+                A'Design Awards, um dos mais prestigiados prêmios de design do mundo. E em 2019
+                premiado pela Brasil Design Award.
               </p>
             </div>
 

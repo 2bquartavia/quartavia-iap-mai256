@@ -85,13 +85,9 @@ export default function ImmersionSection() {
     };
   }, []);
 
-  // Antes da fase de expansão, distribui entre os N cards;
-  // durante a expansão (último 1/(N+1) do scroll) trava no último card
-  const cardsPhase = lessons.length / (lessons.length + 1);
-  const cardProgress = Math.min(progress / cardsPhase, 1);
   const activeIndex = Math.min(
     lessons.length - 1,
-    Math.floor(cardProgress * lessons.length * 0.999),
+    Math.floor(progress * lessons.length * 0.999),
   );
 
   return (

@@ -73,10 +73,8 @@ export default function ImmersionSection() {
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
       setProgress(p);
-      // Expansão acontece no último trecho (após o último card aparecer)
-      const expandStart = (lessons.length - 1) / lessons.length;
-      const expand = (p - expandStart) / (1 - expandStart);
-      updateClip(expand);
+      // Expansão linear ao longo de todo o scroll (do card 01 até o 05)
+      updateClip(p);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -87,13 +85,9 @@ export default function ImmersionSection() {
     };
   }, []);
 
-  // Antes da fase de expansão, distribui entre os N cards;
-  // durante a expansão (último 1/(N+1) do scroll) trava no último card
-  const cardsPhase = lessons.length / (lessons.length + 1);
-  const cardProgress = Math.min(progress / cardsPhase, 1);
   const activeIndex = Math.min(
     lessons.length - 1,
-    Math.floor(cardProgress * lessons.length * 0.999),
+    Math.floor(progress * lessons.length * 0.999),
   );
 
   return (
@@ -123,7 +117,7 @@ export default function ImmersionSection() {
       <div
         ref={trackRef}
         className="immersion__scroll"
-        style={{ height: `${(lessons.length + 1) * 100}vh` }}
+        style={{ height: `${lessons.length * 100}vh` }}
       >
         <div ref={stickyRef} className="immersion__sticky">
           <div className="wrap immersion__stage">

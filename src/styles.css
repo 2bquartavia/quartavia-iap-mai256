@@ -660,9 +660,10 @@
   height: 100svh;
   display: flex; align-items: center;
   padding-block: clamp(1rem, 2vw, 2rem);
-  overflow: hidden;
+  overflow: visible;
   background: #F7F2EB;
   isolation: isolate;
+  z-index: 5;
 }
 /* Imagem da hero PRESA ao viewport — vive aqui (sem transform ancestral)
    e é "espiada" através da janela do card via clip-path no .lesson-card */
@@ -742,7 +743,7 @@
   pointer-events: none;
 }
 .immersion__stack .lesson-card.is-active {
-  opacity: calc(1 - var(--expand, 0));
+  opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }

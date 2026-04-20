@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const lessons = [
   {

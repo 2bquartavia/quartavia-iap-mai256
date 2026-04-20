@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import PillButton from "@/components/PillButton";
-import Ticker from "@/components/Ticker";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
@@ -11,17 +10,11 @@ import HeroPortrait from "@/components/HeroPortrait";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aurum Capital — Inteligência para o Mercado Financeiro" },
+      { title: "Aurum Capital — Imersão Alavanca Patrimonial" },
       {
         name: "description",
         content:
-          "Estratégias profissionais de renda variável, renda fixa e ativos alternativos. Análises diárias, gestão de risco e mentoria para investidores que pensam grande.",
-      },
-      { property: "og:title", content: "Aurum Capital — Inteligência para o Mercado Financeiro" },
-      {
-        property: "og:description",
-        content:
-          "Estratégias profissionais de renda variável, renda fixa e ativos alternativos para investidores exigentes.",
+          "Descubra como ter ativos que pagam o seu custo de vida hoje — sem depender do seu trabalho. Pré-venda do Lote ZERO em 26/04.",
       },
     ],
   }),
@@ -39,49 +32,39 @@ function Index() {
         OPORTUNIDADE EXCLUSIVA PARA PROFISSIONAIS COM RENDA ACIMA DE R$ 20 MIL
       </div>
 
-      {/* HERO */}
+      {/* HERO — full-bleed com foto de fundo + degradê + texto na base */}
       <section className="hero" style={{ paddingTop: "2.25rem" }}>
-        <div className="hero__inner">
-          <nav className="hero__nav">
-            <div className="hero__brand">
-              Aurum<span>.</span>
-            </div>
-            <div className="hero__nav-links">
-              <a href="#estrategias">Estratégias</a>
-              <a href="#metodo">Método</a>
-              <a href="#resultados">Resultados</a>
-              <a href="#contato">Contato</a>
-            </div>
-            <PillButton label="Acessar" variant="gold" />
-          </nav>
+        {/* Foto de fundo (vem do background) */}
+        <HeroPortrait />
 
+        <div className="hero__inner">
           <div className="hero__layout">
             <div className="hero__content">
               <span className="hero__pill">
                 <span className="hero__pill-dot" />
                 Imersão Alavanca Patrimonial
               </span>
+
               <h1 className="hero__h1">
                 IMERSÃO ALAVANCA <em>PATRIMONIAL</em>
               </h1>
+
               <p className="hero__lead">
                 Descubra como ter ativos que pagam o seu custo de vida hoje — sem depender do seu
                 trabalho.
                 <br />
-                <strong style={{ color: "var(--ink)" }}>
-                  Pré-Venda do Lote ZERO no dia 26/04
-                </strong>
+                <strong style={{ color: "#fff" }}>Pré-Venda do Lote ZERO no dia 26/04</strong>
               </p>
 
               <ul className="hero__bullets">
                 {[
-                  "Independente do seu nível de conhecimento em finanças",
-                  "Sem correr riscos desnecessários",
-                  "Sem fazer esforços adicionais",
+                  "Independente do seu nível em finanças",
+                  "Sem riscos desnecessários",
+                  "Sem esforços adicionais",
                 ].map((b) => (
                   <li key={b}>
                     <span className="hero__bullets-check">
-                      <Check size={14} strokeWidth={3} />
+                      <Check size={12} strokeWidth={3} />
                     </span>
                     {b}
                   </li>
@@ -99,11 +82,8 @@ function Index() {
                 Acesso exclusivo ao LOTE ZERO para quem entrar no grupo de WhatsApp.
               </p>
             </div>
-
-            <HeroPortrait />
           </div>
         </div>
-        <Ticker />
       </section>
 
       {/* IMMERSION — segunda dobra */}
@@ -122,9 +102,7 @@ function Index() {
       <footer className="footer">
         <div className="wrap pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
           <span>© 2025 Aurum Capital. Todos os direitos reservados.</span>
-          <span>
-            Aurum Capital é agente autônomo de investimentos. Investimentos envolvem riscos.
-          </span>
+          <span>Investimentos envolvem riscos.</span>
         </div>
       </footer>
     </main>

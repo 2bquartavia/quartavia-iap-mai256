@@ -261,11 +261,13 @@
 .hero__h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-  line-height: 1.0;
+  font-size: clamp(2.2rem, 4.6vw, 3.9rem);
+  line-height: 1.04;
   letter-spacing: -0.035em;
   color: #fff;
   text-wrap: balance;
+  max-width: 18ch;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.5);
 }
 .hero__h1 em {
   font-style: normal;

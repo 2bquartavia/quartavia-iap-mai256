@@ -475,7 +475,7 @@
 
 .immersion__intro {
   padding-top: var(--s);
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(1rem, 2vw, 1.5rem);
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;

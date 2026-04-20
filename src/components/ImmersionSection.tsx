@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Calendar, Users, Lock, Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
 
 const lessons = [
@@ -69,44 +69,18 @@ export default function ImmersionSection() {
     <section id="imersao" className="immersion">
       {/* Intro / hero da seção */}
       <div className="wrap immersion__intro">
-        <div className="immersion__badge">
-          <Sparkles size={14} />
-          <span>Imersão QuartaVia</span>
-        </div>
-
         <h2 className="display immersion__title">
           A imersão mais completa da QuartaVia para quem quer fazer o{" "}
           <em>patrimônio crescer</em> sem trabalhar mais.
         </h2>
 
         <p className="immersion__lead">
-          5 encontros ao vivo para desenhar um plano real e personalizado para alavancar o que
-          você já tem — sem precisar aportar mais e sem depender só do seu trabalho para crescer.
+          Serão 5 encontros ao vivo para desenhar um plano real e personalizado para alavancar o
+          que você já tem, sem precisar aportar mais e sem depender só do seu trabalho para
+          crescer.
         </p>
 
-        <div className="immersion__meta">
-          <div className="immersion__meta-item">
-            <div className="immersion__meta-icon"><Calendar size={18} /></div>
-            <div>
-              <div className="immersion__meta-label">Quando</div>
-              <div className="immersion__meta-value">25 a 29 de maio</div>
-            </div>
-          </div>
-          <div className="immersion__meta-item">
-            <div className="immersion__meta-icon"><Users size={18} /></div>
-            <div>
-              <div className="immersion__meta-label">Formato</div>
-              <div className="immersion__meta-value">5 encontros ao vivo</div>
-            </div>
-          </div>
-          <div className="immersion__meta-item">
-            <div className="immersion__meta-icon"><Lock size={18} /></div>
-            <div>
-              <div className="immersion__meta-label">Acesso</div>
-              <div className="immersion__meta-value">Lote ZERO · grupo de WhatsApp</div>
-            </div>
-          </div>
-        </div>
+        <p className="immersion__kicker">5 encontros ao vivo · 25 a 29 de maio</p>
       </div>
 
       {/* Scroll horizontal sticky */}

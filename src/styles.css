@@ -951,8 +951,11 @@
 
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
-  padding: 6rem 0 7rem;
+  padding: clamp(5rem, 8vw, 7rem) 0;
   background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 .speaker-v3__grid {
   display: grid;

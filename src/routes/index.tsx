@@ -13,7 +13,7 @@ import {
 import PillButton from "@/components/PillButton";
 import Ticker from "@/components/Ticker";
 import ImmersionSection from "@/components/ImmersionSection";
-import heroTrader from "@/assets/hero-trader.jpg";
+import adrianPortrait from "@/assets/adrian.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,11 +40,6 @@ function Index() {
     <main>
       {/* HERO */}
       <section className="hero">
-        <div
-          className="hero__bg"
-          style={{ backgroundImage: `url(${heroTrader})` }}
-          aria-hidden="true"
-        />
         <div className="hero__inner">
           <nav className="hero__nav">
             <div className="hero__brand">
@@ -59,25 +54,35 @@ function Index() {
             <PillButton label="Acessar" variant="gold" />
           </nav>
 
-          <div className="hero__content">
-            <span className="hero__pill">
-              <span className="hero__pill-dot" />
-              Mesa aberta · Pregão ao vivo
-            </span>
-            <h1 className="hero__h1">
-              Decisões de investimento <em>com a precisão</em> de uma mesa institucional.
-            </h1>
-            <p className="hero__lead">
-              Análises proprietárias, modelos quantitativos e gestão de risco para investidores que
-              tratam o capital como um ofício — não como aposta.
-            </p>
-            <div className="hero__actions">
-              <PillButton label="Quero conversar com um especialista" variant="gold" />
-              <PillButton
-                label="Ver carteira recomendada"
-                variant="dark"
-                icon={<ArrowRight size={18} strokeWidth={2.2} />}
-              />
+          <div className="hero__layout">
+            <div className="hero__content">
+              <span className="hero__pill">
+                <span className="hero__pill-dot" />
+                Mesa aberta · Pregão ao vivo
+              </span>
+              <h1 className="hero__h1">
+                Decisões de investimento <em>com a precisão</em> de uma mesa institucional.
+              </h1>
+              <p className="hero__lead">
+                Análises proprietárias, modelos quantitativos e gestão de risco para investidores que
+                tratam o capital como um ofício — não como aposta.
+              </p>
+              <div className="hero__actions">
+                <PillButton label="Quero conversar com um especialista" variant="gold" />
+                <PillButton
+                  label="Ver carteira recomendada"
+                  variant="dark"
+                  icon={<ArrowRight size={18} strokeWidth={2.2} />}
+                />
+              </div>
+            </div>
+
+            <div className="hero__portrait">
+              <img src={adrianPortrait} alt="Adrian — fundador da Aurum Capital" />
+              <div className="hero__portrait-tag">
+                <strong>Adrian Almeida</strong>
+                <span>Fundador · Aurum Capital</span>
+              </div>
             </div>
           </div>
         </div>

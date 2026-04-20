@@ -66,30 +66,52 @@ function Index() {
             <div className="hero__content">
               <span className="hero__pill">
                 <span className="hero__pill-dot" />
-                Mesa aberta · Pregão ao vivo
+                Imersão Alavanca Patrimonial
               </span>
               <h1 className="hero__h1">
-                Decisões de investimento <em>com a precisão</em> de uma mesa institucional.
+                IMERSÃO ALAVANCA <em>PATRIMONIAL</em>
               </h1>
               <p className="hero__lead">
-                Análises proprietárias, modelos quantitativos e gestão de risco para investidores que
-                tratam o capital como um ofício — não como aposta.
+                Descubra como ter ativos que pagam o seu custo de vida hoje — sem depender do seu
+                trabalho.
+                <br />
+                <strong style={{ color: "var(--ink)" }}>
+                  Pré-Venda do Lote ZERO no dia 26/04
+                </strong>
               </p>
+
+              <ul className="hero__bullets">
+                {[
+                  "Independente do seu nível de conhecimento em finanças",
+                  "Sem correr riscos desnecessários",
+                  "Sem fazer esforços adicionais",
+                ].map((b) => (
+                  <li key={b}>
+                    <span className="hero__bullets-check">
+                      <Check size={14} strokeWidth={3} />
+                    </span>
+                    {b}
+                  </li>
+                ))}
+              </ul>
+
               <div className="hero__actions">
-                <PillButton label="Quero conversar com um especialista" variant="gold" />
                 <PillButton
-                  label="Ver carteira recomendada"
-                  variant="dark"
+                  label="Quero garantir minha vaga no Lote ZERO"
+                  variant="gold"
                   icon={<ArrowRight size={18} strokeWidth={2.2} />}
                 />
               </div>
+              <p className="hero__fineprint">
+                Acesso exclusivo ao LOTE ZERO para quem entrar no grupo de WhatsApp.
+              </p>
             </div>
 
             <div className="hero__portrait">
-              <img src={adrianPortrait} alt="Adrian — fundador da Aurum Capital" />
+              <img src={adrianPortrait} alt="Adrian Almeida no palco da Mansão Davos" />
               <div className="hero__portrait-tag">
                 <strong>Adrian Almeida</strong>
-                <span>Fundador · Aurum Capital</span>
+                <span>Mansão Davos · QuartaVia</span>
               </div>
             </div>
           </div>

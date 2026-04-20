@@ -1049,6 +1049,7 @@
   .speaker-v2__media { min-height: 420px; }
   .speaker-v2__body { padding: 2.25rem 1.75rem; }
   .speaker-v2__stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+}
 
 /* =========================================================
    CTA FINAL — Elegant

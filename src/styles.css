@@ -2,7 +2,8 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=mixta-sharp@400,500,600,700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,7 +85,7 @@
   --green: #22E36B;
 
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
+  --font-display: 'Mixta Sharp', 'Plus Jakarta Sans', Georgia, serif;
 
   --s: clamp(3rem, 7vw, 6.5rem);
 }

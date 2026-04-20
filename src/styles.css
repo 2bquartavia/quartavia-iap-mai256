@@ -723,16 +723,14 @@
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.08);
-  isolation: isolate;
+  /* SEM isolation/transform/filter aqui — qualquer um quebra position:fixed do filho */
 }
-/* Imagem da hero "presa" ao viewport — escala = viewport, igual à hero,
-   mas só aparece dentro do recorte do card (overflow:hidden acima). */
+/* Imagem da hero "presa" ao viewport real (segue o tamanho da janela ao redimensionar).
+   inset:0 sem width/height = preenche exatamente o viewport do browser. */
 .lesson-card::after {
   content: "";
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
   background-image: url("/src/assets/hero-bg.jpg");
   background-size: cover;
   background-position: center center;
@@ -740,7 +738,7 @@
   z-index: 0;
   pointer-events: none;
 }
-/* Overlay escuro para legibilidade do texto */
+/* Overlay escuro para legibilidade — esse sim é absolute dentro do card */
 .lesson-card::before {
   content: "";
   position: absolute; inset: 0;

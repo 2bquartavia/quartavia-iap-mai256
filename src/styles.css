@@ -73,11 +73,11 @@
   --ink-2: #2F2820;
   --ink-3: #6B5F52;
   --ink-4: #A8998A;
-  --gold: #CC7514;
-  --gold-2: #E08A2A;
-  --gold-bright: #F2A04A;
-  --gold-pale: #FBEFE0;
-  --gold-border: #EBC9A2;
+  --gold: #191919;
+  --gold-2: #2a2a2a;
+  --gold-bright: #4a4a4a;
+  --gold-pale: #ededed;
+  --gold-border: #c9c9c9;
   --navy: #031A28;
   --navy-2: #0A2A3D;
   --navy-3: #15466A;
@@ -136,10 +136,10 @@
 .pill-btn:hover .pill-btn__circle { transform: scale(1.05); }
 
 .pill-btn--gold {
-  background: linear-gradient(135deg, #B8860B 0%, #D4A017 50%, #C6930A 100%);
-  box-shadow: 0 6px 28px rgba(184,134,11,0.4);
+  background: linear-gradient(135deg, #191919 0%, #2a2a2a 50%, #0f0f0f 100%);
+  box-shadow: 0 6px 28px rgba(25,25,25,0.4);
 }
-.pill-btn--gold .pill-btn__circle { color: #8B6914; }
+.pill-btn--gold .pill-btn__circle { color: #191919; }
 
 .pill-btn--ghost {
   background: transparent;
@@ -866,7 +866,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #cc7514;
+  color: #191919;
   font-weight: 700;
   margin-bottom: 1.25rem;
 }
@@ -912,7 +912,7 @@
 .speaker-v3__quote {
   margin: 2rem 0 2.25rem;
   padding-left: 1.25rem;
-  border-left: 3px solid #cc7514;
+  border-left: 3px solid #191919;
 }
 .speaker-v3__quote blockquote {
   font-family: var(--font-display, serif);
@@ -925,7 +925,7 @@
 .speaker-v3__quote figcaption {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #cc7514;
+  color: #191919;
   letter-spacing: 0.04em;
 }
 
@@ -1032,7 +1032,7 @@
 }
 .cta-thirds__title em {
   font-style: italic;
-  background: linear-gradient(135deg, #f0c389 0%, #e8a155 50%, #cc7514 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #191919 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .cta-thirds__lead {
@@ -1047,7 +1047,7 @@
   border-radius: 4px; text-decoration: none;
   color: #0a0a0b; font-size: clamp(0.7rem, 0.85vw, 0.88rem); font-weight: 700;
   letter-spacing: -0.005em; overflow: hidden;
-  background: linear-gradient(135deg, #f0c389 0%, #e8a155 50%, #cc7514 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #191919 100%);
   box-shadow: 0 14px 32px -12px rgba(204,117,20,0.55), 0 0 0 1px rgba(255,255,255,0.18) inset;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1065,7 +1065,7 @@
 .cta-thirds__cta-arrow {
   display: inline-flex; align-items: center; justify-content: center;
   width: 22px; height: 22px; border-radius: 4px;
-  background: #0a0a0b; color: #e8a155;
+  background: #0a0a0b; color: #2a2a2a;
 }
 .cta-thirds__meta {
   display: flex; align-items: center; justify-content: center; gap: 0.6rem;

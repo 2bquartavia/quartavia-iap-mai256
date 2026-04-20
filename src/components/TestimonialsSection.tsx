@@ -1,7 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
+import dep1 from "@/assets/depoimento-1.jpeg";
+import dep2 from "@/assets/depoimento-2.jpeg";
+import dep3 from "@/assets/depoimento-3.jpeg";
+import dep4 from "@/assets/depoimento-4.jpeg";
 
-const placeholders = Array.from({ length: 6 });
+const images = [dep1, dep2, dep3, dep4];
 
 export default function TestimonialsSection() {
   return (
@@ -15,11 +19,9 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="testimonials__grid">
-          {placeholders.map((_, i) => (
+          {images.map((src, i) => (
             <figure key={i} className="testimonial-card">
-              <div className="testimonial-card__img">
-                <span>Foto {i + 1}</span>
-              </div>
+              <img src={src} alt={`Depoimento ${i + 1}`} loading="lazy" />
             </figure>
           ))}
         </div>

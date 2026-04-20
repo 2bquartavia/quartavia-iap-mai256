@@ -44,15 +44,14 @@ export default function ImmersionSection() {
     const updateClip = () => {
       const sticky = stickyRef.current;
       if (!sticky) return;
-      // Encontra o card ativo (primeiro .lesson-card visível dentro do sticky)
-      const card = sticky.querySelector<HTMLElement>(".lesson-card");
-      if (!card) return;
-      const r = card.getBoundingClientRect();
+      // Clipa pela JANELA do trilho (fixa na tela), não pelo card individual
+      const railWrap = sticky.querySelector<HTMLElement>(".immersion__rail-wrap");
+      if (!railWrap) return;
+      const r = railWrap.getBoundingClientRect();
       const top = Math.max(0, r.top);
       const left = Math.max(0, r.left);
       const right = Math.max(0, window.innerWidth - r.right);
       const bottom = Math.max(0, window.innerHeight - r.bottom);
-      // Aplica raio igual ao border-radius do card (1.75rem ≈ 28px)
       sticky.style.setProperty(
         "--card-clip",
         `inset(${top}px ${right}px ${bottom}px ${left}px round 28px)`,

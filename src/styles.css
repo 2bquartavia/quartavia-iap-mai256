@@ -698,30 +698,34 @@
 }
 .immersion__progress {
   display: flex; gap: .5rem;
-  margin-top: .5rem;
+  margin: .5rem auto 0;
+  justify-content: center;
 }
 .immersion__dot {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 2.4rem; height: 2.4rem; padding: 0 .7rem;
   border-radius: 9999px;
-  background: rgba(24,20,15,0.06);
-  color: var(--ink-3);
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+  backdrop-filter: blur(6px);
   font-family: var(--font-display);
   font-style: italic;
   font-size: .9rem;
-  border: 1px solid transparent;
+  border: 1px solid rgba(255,255,255,0.2);
   transition: all .35s ease;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 .immersion__dot.is-past {
-  background: var(--gold-pale);
-  color: var(--gold);
-  border-color: var(--gold-border);
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  border-color: rgba(255,255,255,0.35);
 }
 .immersion__dot.is-active {
-  background: var(--ink);
-  color: var(--gold-bright);
+  background: #fff;
+  color: var(--ink);
   transform: scale(1.08);
-  border-color: var(--ink);
+  border-color: #fff;
+  text-shadow: none;
 }
 
 .immersion__rail-wrap {

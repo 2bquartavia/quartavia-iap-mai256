@@ -877,7 +877,7 @@
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
   padding: 6rem 0 7rem;
-  background: var(--bg);
+  background: #0e0e10;
 }
 .speaker-v3__grid {
   display: grid;

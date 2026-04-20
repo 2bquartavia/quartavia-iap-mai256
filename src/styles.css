@@ -671,13 +671,14 @@
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url("/src/assets/hero-bg.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.25) 35%, rgba(10,10,10,0.45) 75%, rgba(10,10,10,0.7) 100%),
+    url("/src/assets/hero-bg.jpg");
+  background-size: cover, cover;
+  background-position: center center, center center;
+  background-repeat: no-repeat, no-repeat;
   z-index: -1;
   pointer-events: none;
-  /* Atualizado via JS: recortado para a bounding box do card ativo */
   clip-path: var(--card-clip, inset(50% 50% 50% 50%));
 }
 .immersion__stage {
@@ -751,25 +752,15 @@
 .lesson-card {
   flex: 0 0 100%;
   min-height: clamp(380px, 52vh, 520px);
-  /* Fundo transparente — a imagem fixa vem do .immersion__sticky::before */
   background: transparent;
   color: #fff;
   border-radius: 1.75rem;
   padding: clamp(1.75rem, 3.5vw, 3rem);
   display: flex; flex-direction: column;
   position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 0;
 }
-/* Overlay sutil só para legibilidade — sem gradiente pesado */
-.lesson-card::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: rgba(10,10,10,0.35);
-  pointer-events: none;
-  z-index: 1;
-  border-radius: inherit;
-}
+.lesson-card::before { content: none; }
 .lesson-card > * { position: relative; z-index: 2; }
 .lesson-card__top {
   display: flex; align-items: flex-end; justify-content: flex-start;

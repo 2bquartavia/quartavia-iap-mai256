@@ -668,8 +668,12 @@
    e é "espiada" através da janela do card via clip-path no .lesson-card */
 .immersion__sticky::after {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
+  width: 100vw;
+  height: 100svh;
+  left: 50%;
+  transform: translateX(-50%);
   background-image:
     linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.25) 35%, rgba(10,10,10,0.45) 75%, rgba(10,10,10,0.7) 100%),
     var(--hero-bg);

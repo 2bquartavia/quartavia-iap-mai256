@@ -1071,19 +1071,11 @@
   position: absolute; inset: 0; z-index: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(6px) saturate(0.85);
-  transform: scale(1.08);
-  animation: ctaThirdsZoom 18s ease-in-out infinite alternate;
-}
-@keyframes ctaThirdsZoom {
-  from { transform: scale(1.08); }
-  to   { transform: scale(1.15); }
 }
 .cta-thirds__overlay {
   position: absolute; inset: 0; z-index: 1;
   background:
-    linear-gradient(180deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.7) 45%, rgba(5,5,5,0.95) 100%),
-    radial-gradient(ellipse at 50% 50%, rgba(204,117,20,0.18) 0%, transparent 60%);
+    linear-gradient(180deg, rgba(5,5,5,0.35) 0%, rgba(5,5,5,0.6) 55%, rgba(5,5,5,0.95) 100%);
 }
 .cta-thirds__grid {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;

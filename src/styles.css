@@ -751,25 +751,15 @@
 .lesson-card {
   flex: 0 0 100%;
   min-height: clamp(380px, 52vh, 520px);
-  /* Fundo transparente — a imagem fixa vem do .immersion__sticky::before */
   background: transparent;
   color: #fff;
   border-radius: 1.75rem;
   padding: clamp(1.75rem, 3.5vw, 3rem);
   display: flex; flex-direction: column;
   position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 0;
 }
-/* Overlay sutil só para legibilidade — sem gradiente pesado */
-.lesson-card::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: rgba(10,10,10,0.35);
-  pointer-events: none;
-  z-index: 1;
-  border-radius: inherit;
-}
+.lesson-card::before { content: none; }
 .lesson-card > * { position: relative; z-index: 2; }
 .lesson-card__top {
   display: flex; align-items: flex-end; justify-content: flex-start;

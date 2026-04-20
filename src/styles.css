@@ -715,7 +715,8 @@
 .lesson-card {
   flex: 0 0 100%;
   min-height: clamp(380px, 52vh, 520px);
-  background: #0a0a0a;
+  /* Fundo transparente — a imagem fixa vem do .immersion__sticky::before */
+  background: transparent;
   color: #fff;
   border-radius: 1.75rem;
   padding: clamp(1.75rem, 3.5vw, 3rem);
@@ -723,30 +724,17 @@
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.08);
-  /* SEM isolation/transform/filter aqui — qualquer um quebra position:fixed do filho */
 }
-/* Imagem da hero "presa" ao viewport real (segue o tamanho da janela ao redimensionar).
-   inset:0 sem width/height = preenche exatamente o viewport do browser. */
-.lesson-card::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("/src/assets/hero-bg.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  z-index: 0;
-  pointer-events: none;
-}
-/* Overlay escuro para legibilidade — esse sim é absolute dentro do card */
+/* Overlay escuro do card para legibilidade */
 .lesson-card::before {
   content: "";
   position: absolute; inset: 0;
   background:
-    linear-gradient(160deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.7) 55%, rgba(10,10,10,0.45) 100%),
+    linear-gradient(160deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.62) 55%, rgba(10,10,10,0.4) 100%),
     radial-gradient(circle at 90% 0%, rgba(232,197,71,0.15), transparent 55%);
   pointer-events: none;
   z-index: 1;
+  border-radius: inherit;
 }
 .lesson-card > * { position: relative; z-index: 2; }
 .lesson-card__top {

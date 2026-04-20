@@ -69,18 +69,38 @@ export default function ImmersionSection() {
     <section id="imersao" className="immersion">
       {/* Intro / hero da seção */}
       <div className="wrap immersion__intro">
-        <h2 className="display immersion__title">
-          A imersão mais completa da QuartaVia para quem quer fazer o{" "}
-          <em>patrimônio crescer</em> sem trabalhar mais.
-        </h2>
+        <div className="immersion__intro-left">
+          <span className="immersion__eyebrow">A Imersão</span>
+          <h2 className="display immersion__title">
+            A imersão mais completa da QuartaVia para quem quer fazer o{" "}
+            <em>patrimônio crescer</em> sem trabalhar mais.
+          </h2>
+        </div>
 
-        <p className="immersion__lead">
-          Serão 5 encontros ao vivo para desenhar um plano real e personalizado para alavancar o
-          que você já tem, sem precisar aportar mais e sem depender só do seu trabalho para
-          crescer.
-        </p>
+        <div className="immersion__intro-right">
+          <p className="immersion__lead">
+            Serão <strong>5 encontros ao vivo</strong> para desenhar um plano real e personalizado
+            para alavancar o que você já tem, sem precisar aportar mais e sem depender só do seu
+            trabalho para crescer.
+          </p>
 
-        <p className="immersion__kicker">5 encontros ao vivo · 25 a 29 de maio</p>
+          <ul className="immersion__bullets">
+            <li>
+              <span className="immersion__bullet-n">01</span>
+              <span>Plano patrimonial sob medida para o seu momento atual.</span>
+            </li>
+            <li>
+              <span className="immersion__bullet-n">02</span>
+              <span>Estratégias para alavancar o que você já construiu.</span>
+            </li>
+            <li>
+              <span className="immersion__bullet-n">03</span>
+              <span>Renda recorrente sem depender de mais horas de trabalho.</span>
+            </li>
+          </ul>
+
+          <p className="immersion__kicker">5 encontros ao vivo · 25 a 29 de maio</p>
+        </div>
       </div>
 
       {/* Scroll horizontal sticky */}

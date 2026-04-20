@@ -635,6 +635,7 @@
   height: 100svh;
   display: flex; align-items: flex-start;
   padding-top: clamp(1rem, 2vw, 2rem);
+  padding-bottom: 0;
   overflow: hidden;
 }
 .immersion__stage {

@@ -874,184 +874,99 @@
   .testimonials__nav { display: none; }
 }
 
-/* ===================== SPEAKER V2 ===================== */
-.speaker-v2 {
-  padding: 5rem 0 6rem;
+/* ===================== SPEAKER V3 — open editorial layout ===================== */
+.speaker-v3 {
+  padding: 6rem 0 7rem;
   background: var(--bg);
 }
-.speaker-v2__card {
+.speaker-v3__grid {
   display: grid;
-  grid-template-columns: minmax(300px, 0.85fr) 1.15fr;
-  background: #0e0e10;
-  border-radius: 1.5rem;
-  overflow: hidden;
-  box-shadow: 0 50px 120px -40px rgba(0,0,0,0.5);
-  border: 1px solid rgba(204, 117, 20, 0.18);
-  position: relative;
-}
-.speaker-v2__card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 70% 0%, rgba(204,117,20,0.18), transparent 55%);
-  pointer-events: none;
-}
-
-/* Media */
-.speaker-v2__media {
-  position: relative;
-  min-height: 520px;
-  background: #1a1a1a;
-}
-.speaker-v2__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  position: absolute;
-  inset: 0;
-  filter: contrast(1.05) saturate(1.05);
-}
-.speaker-v2__media-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0) 40%, rgba(14,14,16,0.85) 100%),
-              linear-gradient(0deg, rgba(14,14,16,0.6) 0%, transparent 35%);
-}
-.speaker-v2__media-tag {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  z-index: 2;
-  display: inline-flex;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 4rem;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.9rem;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 999px;
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
-.speaker-v2__media-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--gold-bright, #e0a040);
-  box-shadow: 0 0 10px var(--gold-bright, #e0a040);
-}
-
-/* Body */
-.speaker-v2__body {
-  padding: 3rem 3rem 3rem 2.75rem;
-  color: rgba(255,255,255,0.85);
-  position: relative;
-  z-index: 1;
-}
-.speaker-v2__eyebrow {
+.speaker-v3__eyebrow {
   display: inline-block;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-bright, #e0a040);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
-.speaker-v2__title {
+.speaker-v3__title {
   font-family: var(--font-display, serif);
-  font-size: clamp(2.25rem, 3.5vw, 3.25rem);
-  font-weight: 500;
-  line-height: 1;
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  font-weight: 600;
+  line-height: 0.95;
   color: #fff;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
 }
-.speaker-v2__title em {
+.speaker-v3__title em {
   font-style: italic;
   color: var(--gold-bright, #e0a040);
-  font-weight: 400;
-}
-.speaker-v2__role {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.6);
   font-weight: 500;
-  margin-bottom: 1.75rem;
-  padding-bottom: 1.5rem;
+}
+.speaker-v3__role {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-
-/* Stats */
-.speaker-v2__stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.speaker-v2__stat-n {
-  font-family: var(--font-display, serif);
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: var(--gold-bright, #e0a040);
-  line-height: 1;
-  margin-bottom: 0.35rem;
-}
-.speaker-v2__stat-l {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.04em;
-  line-height: 1.3;
-}
-
-/* Bio */
-.speaker-v2__bio p {
-  font-size: 0.97rem;
-  line-height: 1.7;
+.speaker-v3__bio p {
+  font-size: 1rem;
+  line-height: 1.75;
   color: rgba(255,255,255,0.72);
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.1rem;
+  max-width: 38rem;
 }
-.speaker-v2__bio strong { color: #fff; font-weight: 600; }
+.speaker-v3__bio strong { color: #fff; font-weight: 600; }
 
-/* Quote */
-.speaker-v2__quote {
-  position: relative;
-  margin: 2rem 0;
-  padding: 1.5rem 1.75rem 1.5rem 3.5rem;
-  background: rgba(204,117,20,0.06);
-  border: 1px solid rgba(204,117,20,0.2);
-  border-radius: 0.85rem;
+.speaker-v3__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 2rem 0 2.25rem;
 }
-.speaker-v2__quote-icon {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-  color: var(--gold-bright, #e0a040);
-  opacity: 0.7;
-}
-.speaker-v2__quote blockquote {
-  font-family: var(--font-display, serif);
-  font-size: 1.05rem;
-  font-style: italic;
-  line-height: 1.5;
-  color: #fff;
-  margin: 0 0 0.6rem;
-}
-.speaker-v2__quote figcaption {
-  font-size: 0.8rem;
+.speaker-v3__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--gold-bright, #e0a040);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(204,117,20,0.25);
+  border-radius: 999px;
 }
 
-.speaker-v2__cta { margin-top: 1.75rem; }
+.speaker-v3__cta { margin-top: 0.5rem; }
+
+.speaker-v3__media {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #1a1a1a;
+  box-shadow: 0 50px 120px -40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(204,117,20,0.18);
+}
+.speaker-v3__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(0.15) contrast(1.05);
+}
 
 @media (max-width: 960px) {
-  .speaker-v2__card { grid-template-columns: 1fr; }
-  .speaker-v2__media { min-height: 420px; }
-  .speaker-v2__body { padding: 2.25rem 1.75rem; }
-  .speaker-v2__stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .speaker-v3__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .speaker-v3__media { aspect-ratio: 4 / 4.4; order: -1; }
 }
 
 /* =========================================================

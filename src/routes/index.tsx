@@ -42,25 +42,24 @@ function Index() {
             <div className="hero__content">
               <span className="hero__pill">
                 <span className="hero__pill-dot" />
-                Imersão Alavanca Patrimonial
+                Pré-venda Lote ZERO · 26/04
               </span>
 
               <h1 className="hero__h1">
-                IMERSÃO ALAVANCA <em>PATRIMONIAL</em>
+                Construa a renda que <em>liberta</em> você do trabalho.
               </h1>
 
               <p className="hero__lead">
-                Descubra como ter ativos que pagam o seu custo de vida hoje — sem depender do seu
-                trabalho.
-                <br />
-                <strong style={{ color: "#fff" }}>Pré-Venda do Lote ZERO no dia 26/04</strong>
+                A Imersão <strong style={{ color: "#fff" }}>Alavanca Patrimonial</strong> revela o
+                método usado por investidores de alto padrão para montar uma carteira que paga o
+                custo de vida — sem sorte, sem achismo e sem depender do próximo salário.
               </p>
 
               <ul className="hero__bullets">
                 {[
-                  "Independente do seu nível em finanças",
-                  "Sem riscos desnecessários",
-                  "Sem esforços adicionais",
+                  "Para qualquer nível de conhecimento",
+                  "Estratégia de baixo risco",
+                  "Sem esforço extra no dia a dia",
                 ].map((b) => (
                   <li key={b}>
                     <span className="hero__bullets-check">

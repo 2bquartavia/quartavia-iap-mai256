@@ -662,13 +662,12 @@
   padding-top: clamp(1rem, 2vw, 2rem);
   padding-bottom: 0;
   overflow: hidden;
+  background: #F7F2EB;
   isolation: isolate;
-  /* clip-path recorta TAMBÉM filhos position:fixed — confina a imagem só na seção */
-  clip-path: inset(0);
 }
-/* Imagem da hero PRESA ao viewport real (segue o tamanho da janela ao redimensionar).
-   Visível apenas dentro do clip-path do sticky acima. */
-.immersion__sticky::before {
+/* Imagem da hero PRESA ao viewport — vive aqui (sem transform ancestral)
+   e é "espiada" através da janela do card via clip-path no .lesson-card */
+.immersion__sticky::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -676,8 +675,10 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
+  /* Atualizado via JS: recortado para a bounding box do card ativo */
+  clip-path: var(--card-clip, inset(0));
 }
 .immersion__stage {
   width: 100%;

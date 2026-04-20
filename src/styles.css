@@ -877,7 +877,7 @@
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
   padding: 6rem 0 7rem;
-  background: #0e0e10;
+  background: #e8e4d8;
 }
 .speaker-v3__grid {
   display: grid;
@@ -890,7 +890,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-bright, #e0a040);
+  color: #cc7514;
   font-weight: 700;
   margin-bottom: 1.25rem;
 }
@@ -899,31 +899,31 @@
   font-size: clamp(3rem, 6vw, 5.25rem);
   font-weight: 600;
   line-height: 0.95;
-  color: #fff;
+  color: #2a1a08;
   letter-spacing: -0.02em;
   margin-bottom: 0.75rem;
 }
 .speaker-v3__title em {
   font-style: italic;
-  color: var(--gold-bright, #e0a040);
+  color: #cc7514;
   font-weight: 500;
 }
 .speaker-v3__role {
   font-size: 0.95rem;
-  color: rgba(255,255,255,0.55);
+  color: rgba(40,28,16,0.6);
   font-weight: 500;
   margin-bottom: 2rem;
   padding-bottom: 1.75rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(40,28,16,0.12);
 }
 .speaker-v3__bio p {
   font-size: 1rem;
   line-height: 1.75;
-  color: rgba(255,255,255,0.72);
+  color: rgba(30,22,12,0.78);
   margin-bottom: 1.1rem;
   max-width: 38rem;
 }
-.speaker-v3__bio strong { color: #fff; font-weight: 600; }
+.speaker-v3__bio strong { color: #18140F; font-weight: 600; }
 
 .speaker-v3__badges {
   display: flex;
@@ -939,9 +939,9 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.78);
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(204,117,20,0.25);
+  color: #3a2a14;
+  background: rgba(204,117,20,0.08);
+  border: 1px solid rgba(204,117,20,0.3);
   border-radius: 999px;
 }
 
@@ -952,9 +952,8 @@
   border-radius: 1.5rem;
   overflow: hidden;
   aspect-ratio: 4 / 5;
-  background: #1a1a1a;
-  box-shadow: 0 50px 120px -40px rgba(0,0,0,0.6);
-  border: 1px solid rgba(204,117,20,0.18);
+  background: #d8d4c8;
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.25);
 }
 .speaker-v3__media img {
   width: 100%;

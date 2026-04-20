@@ -663,10 +663,11 @@
   padding-bottom: 0;
   overflow: hidden;
   isolation: isolate;
+  /* clip-path recorta TAMBÉM filhos position:fixed — confina a imagem só na seção */
+  clip-path: inset(0);
 }
-/* Imagem da hero PRESA ao viewport real do navegador.
-   inset:0 sem width/height = sempre = tamanho do viewport, mesmo se redimensionar.
-   O sticky tem overflow:hidden, então a imagem só "aparece" na área da seção. */
+/* Imagem da hero PRESA ao viewport real (segue o tamanho da janela ao redimensionar).
+   Visível apenas dentro do clip-path do sticky acima. */
 .immersion__sticky::before {
   content: "";
   position: fixed;

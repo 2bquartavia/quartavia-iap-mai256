@@ -1061,8 +1061,11 @@
    CTA FINAL — Rule of Thirds (background photo + grid)
    ========================================================= */
 .cta-thirds {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 30;
   min-height: 100vh;
+  padding: clamp(5rem, 8vw, 7rem) 0;
   display: flex;
   align-items: center;
   justify-content: center;

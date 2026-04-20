@@ -2,7 +2,8 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=mixta-sharp@400,500,600,700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,7 +85,7 @@
   --green: #22E36B;
 
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
+  --font-display: 'Mixta Sharp', 'Plus Jakarta Sans', Georgia, serif;
 
   --s: clamp(3rem, 7vw, 6.5rem);
 }
@@ -494,9 +495,32 @@
 }
 
 .immersion__title {
-  font-size: clamp(2.2rem, 4.8vw, 4rem);
-  max-width: 18ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  max-width: 32ch;
   margin-inline: auto;
+  color: var(--ink);
+}
+.immersion__title em {
+  font-style: normal;
+  background: linear-gradient(120deg, var(--gold) 0%, var(--gold-bright) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  padding: 0 .15em;
+}
+.immersion__title em::after {
+  content: "";
+  position: absolute;
+  left: .15em; right: .15em; bottom: 0.06em;
+  height: 0.18em;
+  background: color-mix(in oklab, var(--gold) 28%, transparent);
+  border-radius: 4px;
+  z-index: -1;
 }
 
 .immersion__lead {

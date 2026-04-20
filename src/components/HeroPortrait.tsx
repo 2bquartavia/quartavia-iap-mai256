@@ -16,25 +16,17 @@ export default function HeroPortrait() {
 
       const rect = wrap.getBoundingClientRect();
       const vh = window.innerHeight || 1;
-      // progress: 0 when hero top at viewport top; 1 when fully scrolled past
-      const progress = Math.min(Math.max(-rect.top / (rect.height || vh), 0), 1.2);
+      // 0 no topo do hero, 1 quando o hero saiu completamente da tela
+      const progress = Math.min(Math.max(-rect.top / (rect.height || vh), 0), 1);
 
-      // Innovative multi-layer parallax:
-      // - image translates up slower than scroll (classic parallax)
-      // - subtle zoom-in as you scroll (cinematic dolly)
-      // - slight rotate/skew for depth
-      // - radial glow drifts down for atmosphere
-      const translateY = progress * 120; // px
-      const scale = 1 + progress * 0.18;
-      const blur = progress * 4; // px
-      const rotate = progress * -1.2; // deg
-
-      img.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale}) rotate(${rotate}deg)`;
-      img.style.filter = `blur(${blur}px) brightness(${1 - progress * 0.35})`;
+      // Imagem fica PRESA (fixed). Apenas a "máscara" se fecha conforme rolamos,
+      // revelando o conteúdo escuro abaixo. Sem zoom, sem expandir.
+      const reveal = progress * 100; // %
+      img.style.clipPath = `inset(0 0 ${reveal}% 0)`;
+      img.style.opacity = `${1 - progress * 0.15}`;
 
       if (glow) {
-        glow.style.transform = `translate3d(0, ${progress * 200}px, 0)`;
-        glow.style.opacity = `${0.55 - progress * 0.5}`;
+        glow.style.opacity = `${0.6 - progress * 0.55}`;
       }
       raf = 0;
     };
@@ -56,14 +48,16 @@ export default function HeroPortrait() {
 
   return (
     <div className="hero__portrait" ref={wrapRef}>
-      <img
-        ref={imgRef}
-        src={heroBg}
-        alt="Adrian Carvalho no palco da Mansão Davos"
-        className="hero__portrait-img"
-      />
-      <div className="hero__portrait-glow" ref={glowRef} aria-hidden />
-      <div className="hero__portrait-grain" aria-hidden />
+      <div className="hero__portrait-fixed">
+        <img
+          ref={imgRef}
+          src={heroBg}
+          alt="Adrian Carvalho no palco da Mansão Davos"
+          className="hero__portrait-img"
+        />
+        <div className="hero__portrait-glow" ref={glowRef} aria-hidden />
+        <div className="hero__portrait-grain" aria-hidden />
+      </div>
     </div>
   );
 }

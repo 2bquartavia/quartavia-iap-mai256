@@ -44,15 +44,14 @@ export default function ImmersionSection() {
     const updateClip = () => {
       const sticky = stickyRef.current;
       if (!sticky) return;
-      // Encontra o card ativo (primeiro .lesson-card visível dentro do sticky)
-      const card = sticky.querySelector<HTMLElement>(".lesson-card");
-      if (!card) return;
-      const r = card.getBoundingClientRect();
+      // Clipa pela JANELA do trilho (fixa na tela), não pelo card individual
+      const railWrap = sticky.querySelector<HTMLElement>(".immersion__rail-wrap");
+      if (!railWrap) return;
+      const r = railWrap.getBoundingClientRect();
       const top = Math.max(0, r.top);
       const left = Math.max(0, r.left);
       const right = Math.max(0, window.innerWidth - r.right);
       const bottom = Math.max(0, window.innerHeight - r.bottom);
-      // Aplica raio igual ao border-radius do card (1.75rem ≈ 28px)
       sticky.style.setProperty(
         "--card-clip",
         `inset(${top}px ${right}px ${bottom}px ${left}px round 28px)`,
@@ -128,14 +127,13 @@ export default function ImmersionSection() {
             </div>
 
             <div className="immersion__rail-wrap">
-              <div
-                className="immersion__rail"
-                style={{
-                  transform: `translateX(calc(${-activeIndex * 100}% - ${activeIndex * 24}px))`,
-                }}
-              >
-                {lessons.map((l) => (
-                  <article key={l.n} className="lesson-card">
+              <div className="immersion__stack">
+                {lessons.map((l, i) => (
+                  <article
+                    key={l.n}
+                    className={`lesson-card ${i === activeIndex ? "is-active" : ""}`}
+                    aria-hidden={i !== activeIndex}
+                  >
                     <div className="lesson-card__top">
                       <span className="lesson-card__n">{l.n}</span>
                       <span className="lesson-card__tag">{l.tag}</span>

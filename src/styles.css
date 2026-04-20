@@ -663,6 +663,22 @@
   padding-bottom: 0;
   overflow: hidden;
   background: #F7F2EB;
+  isolation: isolate;
+}
+/* Imagem da hero PRESA ao viewport — vive aqui (sem transform ancestral)
+   e é "espiada" através da janela do card via clip-path no .lesson-card */
+.immersion__sticky::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/src/assets/hero-bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+  /* Atualizado via JS: recortado para a bounding box do card ativo */
+  clip-path: var(--card-clip, inset(0));
 }
 .immersion__stage {
   width: 100%;

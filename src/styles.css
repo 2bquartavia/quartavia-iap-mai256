@@ -632,7 +632,7 @@
 .immersion__scroll { position: relative; }
 .immersion__sticky {
   position: sticky; top: 0;
-  height: 100svh;
+  height: 78svh;
   display: flex; align-items: flex-start;
   padding-top: clamp(1rem, 2vw, 2rem);
   padding-bottom: 0;

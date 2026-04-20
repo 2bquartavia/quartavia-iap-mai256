@@ -675,12 +675,14 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   /* Atualizado via JS: recortado para a bounding box do card ativo */
-  clip-path: var(--card-clip, inset(0));
+  clip-path: var(--card-clip, inset(50% 50% 50% 50%));
 }
 .immersion__stage {
+  position: relative;
+  z-index: 1;
   width: 100%;
   display: flex; flex-direction: column;
   gap: 2rem;

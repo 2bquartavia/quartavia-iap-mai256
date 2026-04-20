@@ -507,6 +507,15 @@
   line-height: 1.6;
 }
 
+.immersion__kicker {
+  margin-top: 1.25rem;
+  font-size: .8rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
 .immersion__meta {
   margin-top: 2.5rem;
   display: grid;

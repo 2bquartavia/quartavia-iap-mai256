@@ -14,6 +14,7 @@ import PillButton from "@/components/PillButton";
 import Ticker from "@/components/Ticker";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import SpeakerSection from "@/components/SpeakerSection";
 import adrianPortrait from "@/assets/adrian.png";
 
 export const Route = createFileRoute("/")({
@@ -125,6 +126,9 @@ function Index() {
 
       {/* DEPOIMENTOS */}
       <TestimonialsSection />
+
+      {/* SPEAKER */}
+      <SpeakerSection />
 
       <div className="wrap">
         <div className="rule" />

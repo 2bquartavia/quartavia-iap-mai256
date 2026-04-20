@@ -34,7 +34,7 @@ function Index() {
       {/* TOP BAR — fixed */}
       <div
         className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
-        style={{ background: "linear-gradient(135deg, #191919 0%, #2a2a2a 100%)" }}
+        style={{ background: "#CC7514" }}
       >
         OPORTUNIDADE EXCLUSIVA PARA PROFISSIONAIS COM RENDA ACIMA DE R$ 20 MIL
       </div>

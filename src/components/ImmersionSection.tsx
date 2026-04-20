@@ -119,7 +119,7 @@ export default function ImmersionSection() {
       <div
         ref={trackRef}
         className="immersion__scroll"
-        style={{ height: `${lessons.length * 100}vh` }}
+        style={{ height: `${(lessons.length + 1) * 100}vh` }}
       >
         <div ref={stickyRef} className="immersion__sticky">
           <div className="wrap immersion__stage">

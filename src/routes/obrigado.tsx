@@ -129,6 +129,7 @@ function ObrigadoPage() {
             <FillInText
               text="Falta apenas um passo para garantir a sua pré-inscrição no Lote ZERO"
               highlight="um passo"
+              stagger={18}
             />
           </h1>
 

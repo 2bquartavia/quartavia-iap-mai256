@@ -540,8 +540,8 @@
 .hero__h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.2rem, 4.6vw, 3.9rem);
-  line-height: 1.04;
+  font-size: clamp(1.65rem, 4.6vw, 3.9rem);
+  line-height: 1.06;
   letter-spacing: -0.035em;
   color: #fff;
   text-wrap: balance;
@@ -555,11 +555,20 @@
 }
 .hero__lead {
   max-width: 600px;
-  font-size: 1rem;
+  font-size: clamp(0.88rem, 2.2vw, 1rem);
   line-height: 1.55;
   color: rgba(255,255,255,0.82);
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; padding-top: .5rem; justify-content: center; }
+
+@media (max-width: 720px) {
+  .hero__pill { font-size: .62rem; padding: .32rem .7rem; }
+  .hero__h1 { max-width: 14ch; }
+  .hero__logo { height: 38px; }
+  .hero__marquee-item { font-size: .8rem; }
+  .hero__marquee-check { width: 16px; height: 16px; }
+  .hero__fineprint { font-size: .7rem; }
+}
 /* Hero marquee — bullets como tira animada com máscara nas laterais */
 .hero__marquee {
   position: relative;

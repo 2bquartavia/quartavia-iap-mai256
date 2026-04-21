@@ -227,7 +227,7 @@
     0 34px 70px -22px rgba(204,117,20,0.55);
 }
 .pill-btn--gold:hover .pill-btn__circle {
-  color: #F5C883;
+  color: #fff;
   transform: translateX(4px);
 }
 

@@ -1225,3 +1225,13 @@
   .cta-thirds__cta { font-size: 0.95rem; padding: 0.95rem 1.1rem 0.95rem 1.4rem; }
   .cta-thirds__cta-arrow { width: 28px; height: 28px; }
 }
+
+/* =========================================================
+   Performance: content-visibility for off-screen sections
+   ========================================================= */
+.testimonials,
+.speaker-v3,
+.cta-thirds {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}

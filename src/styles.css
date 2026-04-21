@@ -1103,7 +1103,7 @@
 
 /* Boarding pass — bilhete de embarque para a imersão */
 .boarding-pass {
-  margin: 2rem 0 0;
+  margin: 0.5rem 0 0;
   display: grid;
   grid-template-columns: 1fr 7.5rem;
   background:

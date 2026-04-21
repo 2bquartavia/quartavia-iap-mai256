@@ -517,10 +517,15 @@
   width: fit-content;
   padding: .4rem .9rem;
   border-radius: 9999px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.12) inset,
+    0 8px 24px -10px rgba(0,0,0,0.35);
   font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.85);
 }
 .hero__pill-dot {
   width: 7px; height: 7px; border-radius: 50%;

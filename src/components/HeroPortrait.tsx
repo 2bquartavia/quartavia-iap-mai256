@@ -1,10 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
+import heroBgMobile from "@/assets/hero-bg-mobile.jpg";
 
 export default function HeroPortrait() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= 768 : false
+  );
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -51,7 +61,7 @@ export default function HeroPortrait() {
       <div className="hero__portrait-fixed">
         <img
           ref={imgRef}
-          src={heroBg}
+          src={isMobile ? heroBgMobile : heroBg}
           alt="Adrian Carvalho no palco da Mansão Davos"
           className="hero__portrait-img"
           decoding="async"

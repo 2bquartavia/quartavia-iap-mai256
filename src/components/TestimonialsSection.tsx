@@ -39,6 +39,12 @@ export default function TestimonialsSection() {
     let startY = 0;
 
     const tick = (t: number) => {
+      if (document.body.classList.contains("lead-modal-open")) {
+        lastTimeRef.current = t;
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+
       if (!lastTimeRef.current) lastTimeRef.current = t;
       const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = t;

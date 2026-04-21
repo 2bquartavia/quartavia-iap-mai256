@@ -146,49 +146,49 @@ export default function ImmersionSection() {
             certos que se pagam sozinhos.
           </p>
 
-          <ul className="info-cards" aria-label="Informações da imersão">
-            <li className="info-card">
-              <span className="info-card__icon" aria-hidden>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="6" width="14" height="11" rx="2" />
+          <dl className="spec-sheet" aria-label="Informações da imersão">
+            <div className="spec-sheet__row">
+              <dt className="spec-sheet__label">
+                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="6" width="14" height="11" rx="1.5" />
                   <path d="M17 10l4-2v8l-4-2z" />
                 </svg>
-              </span>
-              <div className="info-card__body">
-                <span className="info-card__label">Encontros</span>
-                <span className="info-card__value">5 aulas ao vivo</span>
-                <span className="info-card__hint">100% online · com você ao vivo</span>
-              </div>
-            </li>
+                <span>Encontros</span>
+              </dt>
+              <dd className="spec-sheet__value">
+                <span className="spec-sheet__num">05</span>
+                <span className="spec-sheet__cap">aulas ao vivo</span>
+              </dd>
+            </div>
 
-            <li className="info-card">
-              <span className="info-card__icon" aria-hidden>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <path d="M3 10h18M8 2v4M16 2v4" />
+            <div className="spec-sheet__row">
+              <dt className="spec-sheet__label">
+                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="5" width="18" height="16" rx="1.5" />
+                  <path d="M3 10h18M8 3v4M16 3v4" />
                 </svg>
-              </span>
-              <div className="info-card__body">
-                <span className="info-card__label">Quando</span>
-                <span className="info-card__value">25 a 29 de maio</span>
-                <span className="info-card__hint">segunda a sexta-feira</span>
-              </div>
-            </li>
+                <span>Datas</span>
+              </dt>
+              <dd className="spec-sheet__value">
+                <span className="spec-sheet__num">25<span className="spec-sheet__dash">—</span>29</span>
+                <span className="spec-sheet__cap">de maio · seg a sex</span>
+              </dd>
+            </div>
 
-            <li className="info-card">
-              <span className="info-card__icon" aria-hidden>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <div className="spec-sheet__row">
+              <dt className="spec-sheet__label">
+                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <circle cx="12" cy="12" r="9" />
-                  <path d="M12 7v5l3 2" />
+                  <path d="M12 7v5l3.2 2" />
                 </svg>
-              </span>
-              <div className="info-card__body">
-                <span className="info-card__label">Horário</span>
-                <span className="info-card__value">20h (Brasília)</span>
-                <span className="info-card__hint">aprox. 90 min por aula</span>
-              </div>
-            </li>
-          </ul>
+                <span>Horário</span>
+              </dt>
+              <dd className="spec-sheet__value">
+                <span className="spec-sheet__num">20<span className="spec-sheet__h">h</span></span>
+                <span className="spec-sheet__cap">Brasília · ~90 min</span>
+              </dd>
+            </div>
+          </dl>
         </div>
       </div>
 

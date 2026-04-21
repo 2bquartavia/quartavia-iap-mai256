@@ -173,6 +173,7 @@ function ObrigadoPage() {
           label="Entrar no grupo de WhatsApp"
           variant="gold"
           size="lg"
+          noModal
         />
       </section>
 

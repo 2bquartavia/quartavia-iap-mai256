@@ -44,10 +44,15 @@ function ObrigadoPage() {
   const nome = params.get("nome") ?? "";
   const email = params.get("email") ?? "";
   const telefone = params.get("telefone") ?? "";
+  const src = params.get("utm_source") ?? params.get("src") ?? "";
+  const sck = params.get("sck") ?? params.get("utm_content") ?? "";
   const tfHidden = [
-    `nome=${encodeURIComponent(nome)}`,
+    `name=${encodeURIComponent(nome)}`,
     `email=${encodeURIComponent(email)}`,
-    `telefone=${encodeURIComponent(telefone)}`,
+    `phone_number=${encodeURIComponent(telefone)}`,
+    `phonenumber=${encodeURIComponent(telefone)}`,
+    `src=${encodeURIComponent(src)}`,
+    `sck=${encodeURIComponent(sck)}`,
   ].join(",");
 
   return (

@@ -29,7 +29,7 @@ export default function TestimonialsSection() {
     const cycle = track.scrollWidth / 3;
     track.scrollLeft = cycle;
 
-    const SPEED = 40; // px/segundo
+    const SPEED = 90; // px/segundo
 
     const tick = (t: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = t;

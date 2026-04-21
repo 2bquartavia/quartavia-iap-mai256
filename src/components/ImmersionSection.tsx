@@ -146,49 +146,64 @@ export default function ImmersionSection() {
             certos que se pagam sozinhos.
           </p>
 
-          <dl className="spec-sheet" aria-label="Informações da imersão">
-            <div className="spec-sheet__row">
-              <dt className="spec-sheet__label">
-                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <rect x="3" y="6" width="14" height="11" rx="1.5" />
-                  <path d="M17 10l4-2v8l-4-2z" />
-                </svg>
-                <span>Encontros</span>
-              </dt>
-              <dd className="spec-sheet__value">
-                <span className="spec-sheet__num">05</span>
-                <span className="spec-sheet__cap">aulas ao vivo</span>
-              </dd>
+          <div className="boarding-pass" role="group" aria-label="Bilhete da imersão">
+            <div className="boarding-pass__main">
+              <div className="boarding-pass__head">
+                <span className="boarding-pass__brand">
+                  <span className="boarding-pass__brand-mark" aria-hidden>QV</span>
+                  <span className="boarding-pass__brand-text">QuartaVia · Boarding Pass</span>
+                </span>
+                <span className="boarding-pass__class">Classe&nbsp;A</span>
+              </div>
+
+              <div className="boarding-pass__route" aria-label="Trajeto: do improviso à liberdade patrimonial">
+                <div className="boarding-pass__node">
+                  <span className="boarding-pass__code">HOJE</span>
+                  <span className="boarding-pass__city">Improviso</span>
+                </div>
+                <div className="boarding-pass__path" aria-hidden>
+                  <span className="boarding-pass__line" />
+                  <svg className="boarding-pass__plane" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 12h14l-3-7 2-1 7 8-7 8-2-1 3-7H2z" />
+                  </svg>
+                </div>
+                <div className="boarding-pass__node boarding-pass__node--dest">
+                  <span className="boarding-pass__code">QV·5</span>
+                  <span className="boarding-pass__city">Liberdade</span>
+                </div>
+              </div>
+
+              <dl className="boarding-pass__grid">
+                <div className="boarding-pass__cell">
+                  <dt>Encontros</dt>
+                  <dd>05<span className="boarding-pass__unit">aulas</span></dd>
+                </div>
+                <div className="boarding-pass__cell">
+                  <dt>Embarque</dt>
+                  <dd>25/05<span className="boarding-pass__unit">a 29/05</span></dd>
+                </div>
+                <div className="boarding-pass__cell">
+                  <dt>Horário</dt>
+                  <dd>20h<span className="boarding-pass__unit">BRT · 90min</span></dd>
+                </div>
+                <div className="boarding-pass__cell">
+                  <dt>Formato</dt>
+                  <dd>Live<span className="boarding-pass__unit">100% online</span></dd>
+                </div>
+              </dl>
             </div>
 
-            <div className="spec-sheet__row">
-              <dt className="spec-sheet__label">
-                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <rect x="3" y="5" width="18" height="16" rx="1.5" />
-                  <path d="M3 10h18M8 3v4M16 3v4" />
-                </svg>
-                <span>Datas</span>
-              </dt>
-              <dd className="spec-sheet__value">
-                <span className="spec-sheet__num">25<span className="spec-sheet__dash">—</span>29</span>
-                <span className="spec-sheet__cap">de maio · seg a sex</span>
-              </dd>
+            <div className="boarding-pass__stub" aria-hidden>
+              <div className="boarding-pass__stub-label">Seat</div>
+              <div className="boarding-pass__stub-seat">01A</div>
+              <div className="boarding-pass__barcode">
+                {Array.from({ length: 28 }).map((_, i) => (
+                  <span key={i} style={{ width: `${1 + (i % 4)}px` }} />
+                ))}
+              </div>
+              <div className="boarding-pass__stub-foot">LOTE&nbsp;ZERO</div>
             </div>
-
-            <div className="spec-sheet__row">
-              <dt className="spec-sheet__label">
-                <svg className="spec-sheet__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 7v5l3.2 2" />
-                </svg>
-                <span>Horário</span>
-              </dt>
-              <dd className="spec-sheet__value">
-                <span className="spec-sheet__num">20<span className="spec-sheet__h">h</span></span>
-                <span className="spec-sheet__cap">Brasília · ~90 min</span>
-              </dd>
-            </div>
-          </dl>
+          </div>
         </div>
       </div>
 

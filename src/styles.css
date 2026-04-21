@@ -1366,8 +1366,8 @@
     right: -9px; bottom: calc(8.5rem - 9px); transform: none;
   }
   .boarding-pass__main { padding: 1.1rem 1.1rem 1.3rem; }
-  .boarding-pass__head { flex-wrap: wrap; gap: 0.6rem; }
-  .boarding-pass__brand-text { font-size: 0.6rem; letter-spacing: 0.18em; }
+  .boarding-pass__head { flex-wrap: nowrap; gap: 0.6rem; align-items: center; justify-content: space-between; }
+  .boarding-pass__brand-text { font-size: 0.6rem; letter-spacing: 0.18em; white-space: nowrap; }
   .boarding-pass__route {
     grid-template-columns: 1fr auto 1fr;
     gap: 0.6rem;

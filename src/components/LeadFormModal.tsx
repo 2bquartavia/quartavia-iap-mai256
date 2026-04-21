@@ -210,6 +210,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           </DialogHeader>
 
           <form
+            className="lead-form"
             onSubmit={handleSubmit}
             style={{
               display: "flex",

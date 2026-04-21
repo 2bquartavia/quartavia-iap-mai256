@@ -1402,8 +1402,8 @@
     height: 1px;
     background: color-mix(in oklab, var(--gold, #CC7514) 32%, transparent);
   }
-  .boarding-pass__cell dd { font-size: 1.4rem; }
-  .boarding-pass__cell dd .boarding-pass__unit { font-size: 0.65rem; }
+  .boarding-pass__cell dd { font-size: 1.85rem; }
+  .boarding-pass__cell dd .boarding-pass__unit { font-size: 0.7rem; }
   .boarding-pass__stub {
     flex-direction: row; justify-content: space-between; align-items: center;
     border-left: none;

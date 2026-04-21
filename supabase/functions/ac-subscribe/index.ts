@@ -11,6 +11,17 @@ const corsHeaders = {
 const TAG_ID = 371; // IAP - METEORICO
 const LIST_ID = 120; // IAP - METEORICO
 
+// Field IDs (Last - utm_*) hardcoded — looked up once via API
+const FIELD_IDS: Record<string, number> = {
+  utm_source: 1,
+  utm_medium: 2,
+  utm_campaign: 3,
+  utm_term: 4,
+  utm_content: 5,
+  utm_pagina: 53,
+  utm_id: 73,
+};
+
 interface Payload {
   nome: string;
   email: string;
@@ -23,16 +34,6 @@ interface Payload {
   utm_id?: string;
   utm_pagina?: string;
 }
-
-const UTM_FIELD_KEYS = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_content",
-  "utm_term",
-  "utm_id",
-  "utm_pagina",
-] as const;
 
 async function ac(
   baseUrl: string,
@@ -63,75 +64,6 @@ async function ac(
   return json;
 }
 
-// Cache field-id mapping in memory of the worker
-let cachedFieldMap: Record<string, number> | null = null;
-
-async function ensureCustomFields(baseUrl: string, apiKey: string) {
-  if (cachedFieldMap) return cachedFieldMap;
-
-  // Fetch ALL fields (paginate) — AC default limit is small
-  const map: Record<string, number> = {};
-  let offset = 0;
-  const limit = 100;
-  while (true) {
-    const data = await ac(
-      baseUrl,
-      apiKey,
-      `/fields?limit=${limit}&offset=${offset}`,
-    );
-    const fields = data?.fields ?? [];
-    for (const f of fields) {
-      map[String(f.perstag ?? "").toLowerCase()] = Number(f.id);
-    }
-    if (fields.length < limit) break;
-    offset += limit;
-  }
-
-  // Map our keys to AC perstags. Existing fields use "LAST-" prefix (e.g. LAST-UTM_SOURCE).
-  // We look up by that perstag first, then fall back to the bare name.
-  for (const key of UTM_FIELD_KEYS) {
-    const lastPerstag = `last-${key}`;
-    if (map[lastPerstag] && !map[key]) {
-      map[key] = map[lastPerstag];
-    }
-    const perstag = key.toUpperCase();
-    if (!map[key]) {
-      try {
-        const created = await ac(baseUrl, apiKey, "/fields", {
-          method: "POST",
-          body: JSON.stringify({
-            field: {
-              type: "text",
-              title: key,
-              perstag,
-              descript: `Auto-created for ${key}`,
-              visible: 1,
-            },
-          }),
-        });
-        if (created?.field?.id) {
-          map[key] = Number(created.field.id);
-          // attach to list
-          try {
-            await ac(baseUrl, apiKey, "/fieldRels", {
-              method: "POST",
-              body: JSON.stringify({
-                fieldRel: { field: created.field.id, relid: 0 },
-              }),
-            });
-          } catch (e) {
-            console.warn("fieldRel error", e);
-          }
-        }
-      } catch (e) {
-        console.warn(`Could not create field ${key}`, e);
-      }
-    }
-  }
-  cachedFieldMap = map;
-  return map;
-}
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -160,7 +92,15 @@ Deno.serve(async (req) => {
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");
 
-    // 1) sync contact
+    // Build fieldValues array for inline submission with contact/sync
+    const fieldValues = Object.entries(FIELD_IDS)
+      .map(([key, field]) => {
+        const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+        return value ? { field, value } : null;
+      })
+      .filter(Boolean);
+
+    // 1) sync contact (with custom fields inline)
     const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
       method: "POST",
       body: JSON.stringify({
@@ -169,55 +109,28 @@ Deno.serve(async (req) => {
           firstName,
           lastName,
           phone: telefone,
+          fieldValues,
         },
       }),
     });
     const contactId = Number(syncRes?.contact?.id);
     if (!contactId) throw new Error("Falha ao criar contato");
 
-    // 2) custom UTM fields
-    const fieldMap = await ensureCustomFields(baseUrl, apiKey);
-    await Promise.all(
-      UTM_FIELD_KEYS.map(async (key) => {
-        const value = (payload[key] ?? "").toString().slice(0, 255);
-        const fieldId = fieldMap[key];
-        if (!fieldId) return;
-        try {
-          await ac(baseUrl, apiKey, "/fieldValues", {
-            method: "POST",
-            body: JSON.stringify({
-              fieldValue: { contact: contactId, field: fieldId, value },
-            }),
-          });
-        } catch (e) {
-          console.warn(`fieldValue ${key} error`, e);
-        }
-      }),
-    );
-
-    // 3) add to list
-    try {
-      await ac(baseUrl, apiKey, "/contactLists", {
+    // 2) add to list + tag in parallel
+    await Promise.all([
+      ac(baseUrl, apiKey, "/contactLists", {
         method: "POST",
         body: JSON.stringify({
           contactList: { list: LIST_ID, contact: contactId, status: 1 },
         }),
-      });
-    } catch (e) {
-      console.warn("contactLists error", e);
-    }
-
-    // 4) add tag
-    try {
-      await ac(baseUrl, apiKey, "/contactTags", {
+      }).catch((e) => console.warn("contactLists error", e)),
+      ac(baseUrl, apiKey, "/contactTags", {
         method: "POST",
         body: JSON.stringify({
           contactTag: { contact: contactId, tag: TAG_ID },
         }),
-      });
-    } catch (e) {
-      console.warn("contactTags error", e);
-    }
+      }).catch((e) => console.warn("contactTags error", e)),
+    ]);
 
     return new Response(
       JSON.stringify({ ok: true, contactId }),

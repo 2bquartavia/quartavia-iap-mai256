@@ -227,13 +227,28 @@ function ObrigadoPage() {
             data-tf-hidden={tfHidden}
             data-tf-full-screen="true"
             className="tf-embed"
-            style={{ width: "100%", height: "min(80vh, 720px)", minHeight: "560px", display: "block" }}
           />
         </div>
       </section>
 
       <style>{`
-        .tf-embed, .tf-embed iframe, .tf-embed > div { width: 100% !important; max-width: 100% !important; height: 100% !important; min-height: 560px; }
+        .tf-embed {
+          display: block;
+          width: 100%;
+          height: clamp(640px, 85vh, 900px);
+        }
+        .tf-embed > div,
+        .tf-embed iframe {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 100% !important;
+          min-height: 100% !important;
+          border: 0 !important;
+          display: block !important;
+        }
+        @media (max-width: 760px) {
+          .tf-embed { height: clamp(620px, 90vh, 820px); }
+        }
       `}</style>
 
       {/* DIVISOR */}

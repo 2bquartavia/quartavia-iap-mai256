@@ -194,9 +194,13 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
 
-      const search =
-        typeof window !== "undefined" ? window.location.search : "";
-      window.location.href = `/obrigado${search}`;
+      const params = new URLSearchParams(
+        typeof window !== "undefined" ? window.location.search : "",
+      );
+      params.set("nome", nomeTrim);
+      params.set("email", emailTrim);
+      params.set("telefone", telefoneE164);
+      window.location.href = `/obrigado?${params.toString()}`;
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Não foi possível enviar agora";

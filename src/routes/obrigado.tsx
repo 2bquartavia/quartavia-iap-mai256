@@ -202,7 +202,11 @@ function ObrigadoPage() {
           </div>
           <div
             data-tf-live="01KPQMFQBBR6A8CPF0MV12PA66"
-            style={{ width: "100%", minHeight: "520px" }}
+            data-tf-opacity="100"
+            data-tf-inline-on-mobile="true"
+            data-tf-iframe-props="title=Desafio Quarto Caminho"
+            data-tf-medium="snippet"
+            style={{ width: "100%", minHeight: "min(80vh, 720px)" }}
           />
         </div>
       </section>

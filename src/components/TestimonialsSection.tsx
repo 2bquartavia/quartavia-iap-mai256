@@ -142,13 +142,23 @@ export default function TestimonialsSection() {
 
       <div className="testimonials__carousel">
         <div ref={trackRef} className="testimonials__track">
-          {loop.map((src, i) => (
-            <figure key={i} className="testimonial-card">
-              <div className="testimonial-card__media">
-                <img src={src} alt={`Depoimento ${(i % images.length) + 1}`} loading="lazy" />
-              </div>
-            </figure>
-          ))}
+          {loop.map((src, i) => {
+            const originalIndex = i % images.length;
+            const isPrimarySet = i < images.length;
+            return (
+              <figure key={i} className="testimonial-card">
+                <div className="testimonial-card__media">
+                  <img
+                    src={src}
+                    alt={`Depoimento ${originalIndex + 1}`}
+                    loading={isPrimarySet ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={isPrimarySet ? "low" : "auto"}
+                  />
+                </div>
+              </figure>
+            );
+          })}
         </div>
       </div>
 

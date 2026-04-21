@@ -57,19 +57,47 @@ const ACTIVE_FIELD_PARAM_KEYS = [
   "utm_term",
 ] as const;
 
-const SESSION_PARAM_PREFIX = "lead_param_";
+const STORAGE_PARAM_PREFIX = "lead_param_";
+
+function safeSet(storage: Storage | null, key: string, value: string) {
+  if (!storage) return;
+  try {
+    storage.setItem(key, value);
+  } catch {
+    /* ignore quota / privacy mode */
+  }
+}
+
+function safeGet(storage: Storage | null, key: string): string | null {
+  if (!storage) return null;
+  try {
+    return storage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function getStorages(): Array<Storage | null> {
+  if (typeof window === "undefined") return [];
+  let local: Storage | null = null;
+  let session: Storage | null = null;
+  try { local = window.localStorage; } catch { local = null; }
+  try { session = window.sessionStorage; } catch { session = null; }
+  return [local, session];
+}
 
 function persistCurrentSearchParams() {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
+  const [local, session] = getStorages();
   params.forEach((value, key) => {
     if (!key || !value) return;
     const safeValue = value.slice(0, 255);
-    try {
-      sessionStorage.setItem(`${SESSION_PARAM_PREFIX}${key}`, safeValue);
-      if (key.startsWith("utm_")) sessionStorage.setItem(key, safeValue);
-    } catch {
-      /* ignore */
+    safeSet(local, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+    safeSet(session, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+    if (key.startsWith("utm_")) {
+      safeSet(local, key, safeValue);
+      safeSet(session, key, safeValue);
     }
   });
 }
@@ -79,6 +107,7 @@ function getLeadParams(): Record<string, string> {
   persistCurrentSearchParams();
 
   const params = new URLSearchParams(window.location.search);
+  const [local, session] = getStorages();
   const out: Record<string, string> = {};
 
   for (const key of ACTIVE_FIELD_PARAM_KEYS) {
@@ -88,14 +117,12 @@ function getLeadParams(): Record<string, string> {
       continue;
     }
 
-    try {
-      const stored =
-        sessionStorage.getItem(`${SESSION_PARAM_PREFIX}${key}`) ??
-        sessionStorage.getItem(key);
-      if (stored) out[key] = stored.slice(0, 255);
-    } catch {
-      /* ignore */
-    }
+    const stored =
+      safeGet(local, `${STORAGE_PARAM_PREFIX}${key}`) ??
+      safeGet(session, `${STORAGE_PARAM_PREFIX}${key}`) ??
+      safeGet(local, key) ??
+      safeGet(session, key);
+    if (stored) out[key] = stored.slice(0, 255);
   }
 
   out.utm_pagina =

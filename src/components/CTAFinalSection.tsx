@@ -32,7 +32,7 @@ export default function CTAFinalSection() {
           </p>
 
           <PillButton
-            label="Quero garantir minha vaga no Lote ZERO"
+            label="Quero garantir minha vaga"
             variant="gold"
             icon={<ArrowRight size={18} strokeWidth={2.2} />}
           />

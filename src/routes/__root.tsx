@@ -14,6 +14,17 @@ const GTM_ID = "GTM-N483RZTK";
 // Tracking é carregado só depois da hidratação/idle para não disputar CPU com o formulário.
 const trackingBootScript = `(function(){
   try {
+    try {
+      var params = new URLSearchParams(window.location.search || '');
+      if (params && params.toString()) {
+        params.forEach(function(value, key){
+          if (!value || !key) return;
+          var safeValue = String(value).slice(0, 255);
+          sessionStorage.setItem('lead_param_' + key, safeValue);
+          if (key.indexOf('utm_') === 0) sessionStorage.setItem(key, safeValue);
+        });
+      }
+    } catch(e) {}
     function loadTracking(){
       window.dataLayer = window.dataLayer || [];
       if (!window.__gtmLoaded) {

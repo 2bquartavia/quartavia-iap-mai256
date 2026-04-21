@@ -11,7 +11,7 @@ const corsHeaders = {
 const TAG_ID = 371; // IAP - METEORICO
 const LIST_ID = 120; // IAP - METEORICO
 
-// Field IDs (Last - utm_*) hardcoded — looked up once via API
+// ActiveCampaign custom field IDs
 const FIELD_IDS: Record<string, number> = {
   utm_source: 1,
   utm_medium: 2,
@@ -19,7 +19,6 @@ const FIELD_IDS: Record<string, number> = {
   utm_term: 4,
   utm_content: 5,
   utm_pagina: 53,
-  utm_id: 73,
 };
 
 interface Payload {
@@ -31,7 +30,6 @@ interface Payload {
   utm_campaign?: string;
   utm_content?: string;
   utm_term?: string;
-  utm_id?: string;
   utm_pagina?: string;
 }
 
@@ -82,7 +80,6 @@ Deno.serve(async (req) => {
     const payload = (await req.json()) as Payload;
     const nome = (payload.nome ?? "").trim();
     const email = (payload.email ?? "").trim().toLowerCase();
-    // Normalize phone to E.164: only "+" and digits, nothing else
     const rawPhone = (payload.telefone ?? "").trim();
     const digits = rawPhone.replace(/\D/g, "");
     const telefone = digits ? `+${digits}` : "";
@@ -96,7 +93,6 @@ Deno.serve(async (req) => {
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");
 
-    // Process AC calls in background — respond to client immediately
     const processAc = async () => {
       try {
         const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
@@ -108,16 +104,28 @@ Deno.serve(async (req) => {
         const contactId = Number(syncRes?.contact?.id);
         if (!contactId) throw new Error("Falha ao criar contato");
 
-        const fieldCalls = Object.entries(FIELD_IDS).map(([key, field]) => {
-          const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-          if (!value) return null;
-          return ac(baseUrl, apiKey, "/fieldValues", {
-            method: "POST",
+        const fieldValues = Object.entries(FIELD_IDS)
+          .map(([key, field]) => {
+            const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+            return value ? { key, field: String(field), value } : null;
+          })
+          .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
+
+        const existingRes = await ac(baseUrl, apiKey, `/contacts/${contactId}/fieldValues`).catch(() => ({ fieldValues: [] }));
+        const existingByField = new Map<string, string>();
+        for (const item of existingRes?.fieldValues ?? []) {
+          if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
+        }
+
+        const fieldCalls = fieldValues.map(({ key, field, value }) => {
+          const existingId = existingByField.get(field);
+          return ac(baseUrl, apiKey, existingId ? `/fieldValues/${existingId}` : "/fieldValues", {
+            method: existingId ? "PUT" : "POST",
             body: JSON.stringify({
-              fieldValue: { contact: contactId, field, value },
+              fieldValue: { contact: String(contactId), field, value },
             }),
           }).catch((e) => console.warn(`fieldValue ${key} error`, e));
-        }).filter(Boolean) as Promise<unknown>[];
+        });
 
         await Promise.all([
           ...fieldCalls,
@@ -134,7 +142,7 @@ Deno.serve(async (req) => {
             }),
           }).catch((e) => console.warn("contactTags error", e)),
         ]);
-        console.log("AC ok", contactId);
+        console.log("AC ok", contactId, fieldValues.map((f) => f.key).join(","));
       } catch (e) {
         console.error("AC bg error:", e);
       }

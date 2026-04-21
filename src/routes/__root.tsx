@@ -49,7 +49,7 @@ const trackingBootScript = `(function(){
       s.setAttribute('data-utmify-prevent-subids','');
       s.setAttribute('data-utmify-ignore-retry','');
       s.setAttribute('data-utmify-ignore-iframe','');
-      s.setAttribute('data-utmify-fast-start','');
+      s.setAttribute('data-utmify-ignore-classes','lead-form');
       s.onerror = function(){
         try { s.parentNode && s.parentNode.removeChild(s); } catch(e) {}
         if ((attempt||0) < 3) setTimeout(function(){ loadUtmify((attempt||0)+1); }, 1500 * ((attempt||0)+1));

@@ -1,9 +1,5 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
-
-
 
 const lessons = [
   {
@@ -38,92 +34,102 @@ const lessons = [
   },
 ];
 
-export default function ImmersionSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const [imageReady, setImageReady] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const heroBgStyle = useMemo(
-    () => ({ ["--hero-bg" as string]: imageReady ? `url(${heroBg})` : "none" }),
-    [imageReady],
-  );
+function buildImmersionScript() {
+  return `
+(() => {
+  const HERO_BG = ${JSON.stringify(`url(${heroBg})`)};
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = heroBg;
-    const onReady = () => setImageReady(true);
-    if (img.complete) {
-      onReady();
-    } else {
-      img.addEventListener("load", onReady, { once: true });
-      img.addEventListener("error", onReady, { once: true });
-    }
-    return () => {
-      img.removeEventListener("load", onReady);
-      img.removeEventListener("error", onReady);
-    };
-  }, []);
+  const init = () => {
+    document.querySelectorAll('[data-immersion-root]').forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.immersionReady === '1') return;
+      root.dataset.immersionReady = '1';
 
-  useEffect(() => {
-    let raf = 0;
-    let lastIdx = -1;
-    const updateClip = (sticky: HTMLElement, expand: number) => {
-      const railWrap = sticky.querySelector<HTMLElement>(".immersion__rail-wrap");
-      if (!railWrap) return;
-      const r = railWrap.getBoundingClientRect();
-      const top = Math.max(0, r.top);
-      const left = Math.max(0, r.left);
-      const right = Math.max(0, window.innerWidth - r.right);
-      const bottom = Math.max(0, window.innerHeight - r.bottom);
-      const t = Math.max(0, Math.min(1, expand));
-      const itop = top * (1 - t);
-      const ileft = left * (1 - t);
-      const iright = right * (1 - t);
-      const ibottom = bottom * (1 - t);
-      const radius = 28 * (1 - t);
-      sticky.style.setProperty(
-        "--card-clip",
-        `inset(${itop}px ${iright}px ${ibottom}px ${ileft}px round ${radius}px)`,
-      );
-      sticky.style.setProperty("--expand", String(t));
-    };
+      const track = root.querySelector('[data-immersion-track]');
+      const sticky = root.querySelector('[data-immersion-sticky]');
+      const railWrap = root.querySelector('.immersion__rail-wrap');
+      const cards = Array.from(root.querySelectorAll('[data-immersion-card]'));
+      const dots = Array.from(root.querySelectorAll('[data-immersion-dot]'));
 
-    const update = () => {
-      raf = 0;
-      const el = trackRef.current;
-      const sticky = stickyRef.current;
-      if (!el || !sticky) return;
-      const rect = el.getBoundingClientRect();
-      const total = el.offsetHeight - sticky.offsetHeight;
-      const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      const p = total > 0 ? scrolled / total : 0;
-      const isMobile = window.innerWidth <= 760;
-      const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
-      updateClip(sticky, expand);
-      const idx = Math.min(lessons.length - 1, Math.floor(p * lessons.length * 0.999));
-      if (idx !== lastIdx) {
-        lastIdx = idx;
-        setActiveIndex(idx);
+      if (!(track instanceof HTMLElement) || !(sticky instanceof HTMLElement) || !(railWrap instanceof HTMLElement) || !cards.length) {
+        return;
       }
-    };
 
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(update);
-    };
+      sticky.style.setProperty('--hero-bg', HERO_BG);
+      const img = new Image();
+      img.src = ${JSON.stringify(heroBg)};
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
+      let raf = 0;
+      let lastIdx = -1;
 
+      const setActive = (idx) => {
+        cards.forEach((card, i) => {
+          if (!(card instanceof HTMLElement)) return;
+          card.classList.toggle('is-active', i === idx);
+          card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+        });
+        dots.forEach((dot, i) => {
+          if (!(dot instanceof HTMLElement)) return;
+          dot.classList.toggle('is-active', i === idx);
+          dot.classList.toggle('is-past', i < idx);
+        });
+      };
+
+      const updateClip = (expand) => {
+        const r = railWrap.getBoundingClientRect();
+        const top = Math.max(0, r.top);
+        const left = Math.max(0, r.left);
+        const right = Math.max(0, window.innerWidth - r.right);
+        const bottom = Math.max(0, window.innerHeight - r.bottom);
+        const t = Math.max(0, Math.min(1, expand));
+        const itop = top * (1 - t);
+        const ileft = left * (1 - t);
+        const iright = right * (1 - t);
+        const ibottom = bottom * (1 - t);
+        const radius = 28 * (1 - t);
+        sticky.style.setProperty('--card-clip', 'inset(' + itop + 'px ' + iright + 'px ' + ibottom + 'px ' + ileft + 'px round ' + radius + 'px)');
+      };
+
+      const update = () => {
+        raf = 0;
+        const rect = track.getBoundingClientRect();
+        const total = track.offsetHeight - sticky.offsetHeight;
+        const scrolled = Math.min(Math.max(-rect.top, 0), total);
+        const p = total > 0 ? scrolled / total : 0;
+        const isMobile = window.innerWidth <= 760;
+        const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
+
+        updateClip(expand);
+
+        const idx = Math.min(cards.length - 1, Math.floor(p * cards.length * 0.999));
+        if (idx !== lastIdx) {
+          lastIdx = idx;
+          setActive(idx);
+        }
+      };
+
+      const onScroll = () => {
+        if (raf) return;
+        raf = window.requestAnimationFrame(update);
+      };
+
+      setActive(0);
+      update();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();`;
+}
+
+export default function ImmersionSection() {
   return (
-    <section id="imersao" className="immersion">
+    <section id="imersao" className="immersion" data-immersion-root>
       <div className="immersion__orbs" aria-hidden>
         <span className="orb orb--1" />
         <span className="orb orb--2" />
@@ -174,33 +180,23 @@ export default function ImmersionSection() {
       </div>
 
       <div
-        ref={trackRef}
+        data-immersion-track
         className="immersion__scroll"
         style={{ height: `${lessons.length * 100}vh` }}
       >
         <div
-          ref={stickyRef}
+          data-immersion-sticky
           className="immersion__sticky"
-          style={heroBgStyle}
+          style={{ ["--hero-bg" as string]: `url(${heroBg})` }}
         >
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              opacity: 0,
-              pointerEvents: "none",
-              backgroundImage: `url(${heroBg})`,
-            }}
-          />
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">
               <div className="immersion__progress">
                 {lessons.map((l, i) => (
                   <div
                     key={l.n}
-                    className={`immersion__dot ${i === activeIndex ? "is-active" : ""} ${i < activeIndex ? "is-past" : ""}`}
+                    data-immersion-dot
+                    className={`immersion__dot ${i === 0 ? "is-active" : ""}`}
                   >
                     <span>{l.n}</span>
                   </div>
@@ -213,8 +209,9 @@ export default function ImmersionSection() {
                 {lessons.map((l, i) => (
                   <article
                     key={l.n}
-                    className={`lesson-card ${i === activeIndex ? "is-active" : ""}`}
-                    aria-hidden={i !== activeIndex}
+                    data-immersion-card
+                    className={`lesson-card ${i === 0 ? "is-active" : ""}`}
+                    aria-hidden={i !== 0}
                   >
                     <div className="lesson-card__top">
                       <span className="lesson-card__n">{l.n}</span>
@@ -245,6 +242,8 @@ export default function ImmersionSection() {
           size="lg"
         />
       </div>
+
+      <script dangerouslySetInnerHTML={{ __html: buildImmersionScript() }} />
     </section>
   );
 }

@@ -609,11 +609,8 @@
   .hero__marquee-item { font-size: .8rem; }
   .hero__marquee-check { width: 16px; height: 16px; }
   .hero__fineprint { font-size: .7rem; }
-  /* Botão menor no mobile */
-  .hero__actions .pill-btn { padding: 0.35rem 0.4rem 0.35rem 1.1rem; gap: 0.5rem; }
-  .hero__actions .pill-btn__label { font-size: 0.82rem; }
-  .hero__actions .pill-btn__circle { width: 2rem; height: 2rem; }
-}
+  /* Botão da hero usa size="sm" no mobile via prop — sem overrides aqui */
+
 /* Hero marquee — bullets como tira animada com máscara nas laterais */
 .hero__marquee {
   position: relative;

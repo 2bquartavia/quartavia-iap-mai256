@@ -16,18 +16,38 @@ const trackingBootScript = `(function(){
   try {
     try {
       var params = new URLSearchParams(window.location.search || '');
-      if (params && params.toString()) {
-        params.forEach(function(value, key){
-          if (!value || !key) return;
-          var safeValue = String(value).slice(0, 255);
-          try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
-          try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
-          if (key.indexOf('utm_') === 0) {
+      var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+      var hasAnyUtm = false;
+      for (var i = 0; i < UTM_KEYS.length; i++) {
+        if (params.get(UTM_KEYS[i])) { hasAnyUtm = true; break; }
+      }
+      // Se a URL atual trouxe QUALQUER UTM, ela é autoritativa: sobrescreve tudo e
+      // limpa as chaves UTM ausentes para evitar mistura com visitas antigas.
+      if (hasAnyUtm) {
+        UTM_KEYS.forEach(function(key){
+          var value = params.get(key);
+          if (value) {
+            var safeValue = String(value).slice(0, 255);
+            try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+            try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
             try { sessionStorage.setItem(key, safeValue); } catch(e){}
             try { localStorage.setItem(key, safeValue); } catch(e){}
+          } else {
+            try { sessionStorage.removeItem('lead_param_' + key); } catch(e){}
+            try { localStorage.removeItem('lead_param_' + key); } catch(e){}
+            try { sessionStorage.removeItem(key); } catch(e){}
+            try { localStorage.removeItem(key); } catch(e){}
           }
         });
       }
+      // Persiste demais params (não-UTM) sem limpar antigos.
+      params.forEach(function(value, key){
+        if (!value || !key) return;
+        if (key.indexOf('utm_') === 0) return;
+        var safeValue = String(value).slice(0, 255);
+        try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+        try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+      });
     } catch(e) {}
     function loadTracking(){
       window.dataLayer = window.dataLayer || [];

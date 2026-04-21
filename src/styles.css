@@ -1003,8 +1003,8 @@
   }
 }
 .immersion__intro--center .immersion__title { max-width: 32ch; margin-inline: auto; }
-.immersion__intro--center .immersion__lead { max-width: 62ch; margin: 0.25rem auto 1rem; }
-.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; margin-top: 0.75rem; }
+.immersion__intro--center .immersion__lead { max-width: 62ch; margin: 0.25rem auto 0.5rem; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin: 0.25rem auto 0; }
 
 .immersion__bullets {
   list-style: none;
@@ -1103,7 +1103,7 @@
 
 /* Boarding pass — bilhete de embarque para a imersão */
 .boarding-pass {
-  margin: 2rem 0 0;
+  margin: 0.5rem 0 0;
   display: grid;
   grid-template-columns: 1fr 7.5rem;
   background:

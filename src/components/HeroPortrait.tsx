@@ -1,19 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import heroBgMobile from "@/assets/hero-bg-mobile.jpg";
 
 export default function HeroPortrait() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const fixedRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth <= 768 : false
-  );
-
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -48,12 +39,16 @@ export default function HeroPortrait() {
   return (
     <div className="hero__portrait" ref={wrapRef}>
       <div className="hero__portrait-fixed" ref={fixedRef} style={{ willChange: "opacity" }}>
-        <img
-          src={isMobile ? heroBgMobile : heroBg}
-          alt="Adrian Carvalho no palco da Mansão Davos"
-          className="hero__portrait-img"
-          decoding="async"
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet={heroBgMobile} />
+          <img
+            src={heroBg}
+            alt="Adrian Carvalho no palco da Mansão Davos"
+            className="hero__portrait-img"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
         <div className="hero__portrait-grain" aria-hidden />
       </div>
     </div>

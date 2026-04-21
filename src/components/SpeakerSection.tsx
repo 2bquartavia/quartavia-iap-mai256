@@ -49,7 +49,7 @@ export default function SpeakerSection() {
 
           {/* RIGHT — Portrait */}
           <div className="speaker-v3__media">
-            <img src={portrait} alt="Adrian Carvalho" />
+            <img src={portrait} alt="Adrian Carvalho" loading="lazy" decoding="async" />
           </div>
         </div>
 

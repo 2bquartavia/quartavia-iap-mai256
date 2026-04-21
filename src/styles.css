@@ -1144,9 +1144,7 @@
   align-items: center; justify-content: center;
   text-align: center;
   padding: 2.25rem 2rem;
-  background: rgba(10, 10, 11, 0.55);
-  backdrop-filter: blur(18px) saturate(1.1);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  background: rgba(10, 10, 11, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 6px;
   box-shadow: 0 30px 80px -30px rgba(0,0,0,0.75);

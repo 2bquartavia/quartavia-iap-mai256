@@ -488,6 +488,20 @@
     #0a0a0a 100%
   );
 }
+@media (max-width: 768px) {
+  .hero__portrait-glow { display: none; }
+  .hero__portrait-grain { opacity: 0.08; }
+  .hero::after {
+    background: linear-gradient(
+      180deg,
+      rgba(10,10,10,0) 0%,
+      rgba(10,10,10,0) 55%,
+      rgba(10,10,10,0.6) 80%,
+      rgba(10,10,10,0.95) 95%,
+      #0a0a0a 100%
+    );
+  }
+}
 
 .hero__inner {
   position: relative; z-index: 2;

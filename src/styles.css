@@ -1366,27 +1366,49 @@
   pointer-events: auto;
 }
 
-/* Variante usada na seção do palestrante */
+/* Variante usada na seção do palestrante — chip com borda dourada */
 .speaker-v3__credentials.vticker {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  min-width: 280px;
+  min-width: 320px;
   height: 2.6em;
-  padding-bottom: 1.1rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(40,28,16,0.12);
+  padding: 0.55rem 1.1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 45%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--gold, #CC7514) 8%, transparent) 0%,
+    color-mix(in oklab, var(--gold, #CC7514) 2%, transparent) 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.6) inset,
+    0 6px 20px -10px color-mix(in oklab, var(--gold, #CC7514) 50%, transparent);
+}
+.speaker-v3__credentials.vticker::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 0.7rem;
+  border-radius: 999px;
+  background: var(--gold, #CC7514);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--gold, #CC7514) 18%, transparent);
+  flex-shrink: 0;
 }
 .speaker-v3__credentials.vticker .vticker__item {
   position: absolute;
-  left: 0;
+  left: 2rem;
+  right: 1.1rem;
   top: 50%;
   transform: translateY(calc(-50% + 14px));
   color: var(--gold, #CC7514);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
   letter-spacing: 0.01em;
 }
 .speaker-v3__credentials.vticker .vticker__item.is-active {
   transform: translateY(-50%);
 }
+
 

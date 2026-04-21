@@ -22,8 +22,7 @@ export default function SpeakerSection() {
               className="speaker-v3__credentials"
               items={[
                 "+3.000 famílias atendidas",
-                "CFP®",
-                "Certificação Internacional",
+                "CFP® · Certificação Internacional",
                 "+10 anos no mercado financeiro",
               ]}
             />

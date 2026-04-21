@@ -27,7 +27,18 @@ export const Route = createFileRoute("/obrigado")({
 
 function ObrigadoPage() {
   return (
-    <main style={{ background: "#031a28", minHeight: "100vh" }}>
+    <main
+      style={{
+        position: "relative",
+        minHeight: "100vh",
+        backgroundColor: "#031a28",
+        backgroundImage: `linear-gradient(180deg, rgba(3,26,40,0.55) 0%, rgba(3,26,40,0.78) 55%, rgba(3,26,40,0.95) 100%), url(${heroBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       {/* TOP BAR */}
       <div
         className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
@@ -36,7 +47,7 @@ function ObrigadoPage() {
         IMERSÃO ALAVANCA PATRIMONIAL
       </div>
 
-      {/* HERO de confirmação — mesmo fundo da home */}
+      {/* HERO de confirmação */}
       <section
         style={{
           position: "relative",
@@ -46,10 +57,6 @@ function ObrigadoPage() {
           paddingRight: "1.25rem",
           color: "#fff",
           textAlign: "center",
-          backgroundImage: `linear-gradient(180deg, rgba(3,26,40,0.55) 0%, rgba(3,26,40,0.85) 70%, #031a28 100%), url(${heroBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
         }}
       >
         <div style={{ maxWidth: "620px", margin: "0 auto" }}>

@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import PillButton from "@/components/PillButton";
 import FillInText from "@/components/FillInText";
 import logoQuartavia from "@/assets/logo-quartavia.png";
+import heroBg from "@/assets/hero-bg.jpg";
 
 export const Route = createFileRoute("/obrigado")({
   head: () => ({
@@ -35,15 +36,20 @@ function ObrigadoPage() {
         IMERSÃO ALAVANCA PATRIMONIAL
       </div>
 
-      {/* HERO de confirmação */}
+      {/* HERO de confirmação — mesmo fundo da home */}
       <section
         style={{
+          position: "relative",
           paddingTop: "5rem",
           paddingBottom: "2rem",
           paddingLeft: "1.25rem",
           paddingRight: "1.25rem",
           color: "#fff",
           textAlign: "center",
+          backgroundImage: `linear-gradient(180deg, rgba(3,26,40,0.55) 0%, rgba(3,26,40,0.85) 70%, #031a28 100%), url(${heroBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <div style={{ maxWidth: "620px", margin: "0 auto" }}>

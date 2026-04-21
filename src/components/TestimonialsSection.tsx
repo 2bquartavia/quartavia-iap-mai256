@@ -155,9 +155,9 @@ export default function TestimonialsSection() {
       <div className="wrap">
         <div className="testimonials__cta">
           <PillButton
-            label="Quero garantir minha vaga no LOTE ZERO"
+            label="Quero garantir minha vaga no Lote ZERO"
             variant="gold"
-            icon={<ArrowRight size={18} strokeWidth={2.2} />}
+            size="lg"
           />
         </div>
       </div>

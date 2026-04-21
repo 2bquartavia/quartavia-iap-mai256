@@ -99,7 +99,7 @@ function Index() {
                 <PillButton
                   label="Quero garantir minha vaga no Lote ZERO"
                   variant="gold"
-                  icon={<ArrowRight size={18} strokeWidth={2.2} />}
+                  size="lg"
                 />
               </div>
               <p className="hero__fineprint">

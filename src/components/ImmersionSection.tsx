@@ -219,7 +219,7 @@ export default function ImmersionSection() {
         <PillButton
           label="Entrar no grupo e garantir Lote ZERO"
           variant="gold"
-          icon={<ArrowRight size={18} strokeWidth={2.2} />}
+          size="lg"
         />
       </div>
     </section>

@@ -102,60 +102,7 @@ Deno.serve(async (req) => {
       req.headers.get("cf-connecting-ip") ??
       "";
 
-    // 1) Create/update contact synchronously
-    const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
-      method: "POST",
-      body: JSON.stringify({
-        contact: { email, firstName, lastName, phone: telefone },
-      }),
-    });
-    const contactId = Number(syncRes?.contact?.id);
-    if (!contactId) throw new Error("Falha ao criar contato");
-
-    // 1b) Persist the lead in our database (best-effort, non-blocking on failure)
-    try {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL");
-      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-      if (supabaseUrl && serviceKey) {
-        const dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: serviceKey,
-            Authorization: `Bearer ${serviceKey}`,
-            Prefer: "return=minimal",
-          },
-          body: JSON.stringify({
-            nome,
-            email,
-            telefone,
-            utm_source: payload.utm_source ?? null,
-            utm_medium: payload.utm_medium ?? null,
-            utm_campaign: payload.utm_campaign ?? null,
-            utm_term: payload.utm_term ?? null,
-            utm_content: payload.utm_content ?? null,
-            utm_pagina: payload.utm_pagina ?? null,
-            landing_url: payload.landing_url ?? null,
-            referrer: payload.referrer ?? null,
-            user_agent: userAgent || null,
-            ip_address: ipAddress || null,
-            ac_contact_id: String(contactId),
-          }),
-        });
-        if (!dbRes.ok) {
-          const txt = await dbRes.text();
-          console.error("DB insert leads failed:", dbRes.status, txt);
-        } else {
-          console.log("Lead persisted", email);
-        }
-      } else {
-        console.warn("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured");
-      }
-    } catch (e) {
-      console.error("DB insert error:", e);
-    }
-
-    // 2) Apply LIST + TAG synchronously with retry — these MUST be guaranteed
+    // Helper: retry with backoff
     const withRetry = async (label: string, fn: () => Promise<unknown>) => {
       let lastErr: unknown = null;
       for (let attempt = 1; attempt <= 3; attempt++) {
@@ -172,70 +119,146 @@ Deno.serve(async (req) => {
       throw lastErr;
     };
 
-    await Promise.all([
-      withRetry("contactLists", () =>
+    // 1) Create/update contact — REQUIRED to get contactId
+    const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
+      method: "POST",
+      body: JSON.stringify({
+        contact: { email, firstName, lastName, phone: telefone },
+      }),
+    });
+    const contactId = Number(syncRes?.contact?.id);
+    if (!contactId) throw new Error("Falha ao criar contato");
+
+    // 2) Background work — list, tag, custom fields, DB insert.
+    // Respond to the client IMMEDIATELY after contact sync; the rest
+    // continues server-side via waitUntil so the user sees instant success.
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    const background = (async () => {
+      // 2a) DB insert (best-effort)
+      const dbInsert = (async () => {
+        if (!supabaseUrl || !serviceKey) {
+          console.warn("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured");
+          return;
+        }
+        try {
+          const dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: serviceKey,
+              Authorization: `Bearer ${serviceKey}`,
+              Prefer: "return=minimal",
+            },
+            body: JSON.stringify({
+              nome,
+              email,
+              telefone,
+              utm_source: payload.utm_source ?? null,
+              utm_medium: payload.utm_medium ?? null,
+              utm_campaign: payload.utm_campaign ?? null,
+              utm_term: payload.utm_term ?? null,
+              utm_content: payload.utm_content ?? null,
+              utm_pagina: payload.utm_pagina ?? null,
+              landing_url: payload.landing_url ?? null,
+              referrer: payload.referrer ?? null,
+              user_agent: userAgent || null,
+              ip_address: ipAddress || null,
+              ac_contact_id: String(contactId),
+            }),
+          });
+          if (!dbRes.ok) {
+            const txt = await dbRes.text();
+            console.error("DB insert leads failed:", dbRes.status, txt);
+          } else {
+            console.log("Lead persisted", email);
+          }
+        } catch (e) {
+          console.error("DB insert error:", e);
+        }
+      })();
+
+      // 2b) Apply LIST + TAG with retry — guaranteed
+      const listP = withRetry("contactLists", () =>
         ac(baseUrl, apiKey, "/contactLists", {
           method: "POST",
           body: JSON.stringify({
             contactList: { list: LIST_ID, contact: contactId, status: 1 },
           }),
         }),
-      ),
-      withRetry("contactTags", () =>
+      ).catch((e) => console.error("contactLists fatal:", e));
+
+      const tagP = withRetry("contactTags", () =>
         ac(baseUrl, apiKey, "/contactTags", {
           method: "POST",
           body: JSON.stringify({
             contactTag: { contact: contactId, tag: TAG_ID },
           }),
         }),
-      ),
-    ]);
-    console.log("AC list+tag ok", contactId);
+      ).catch((e) => console.error("contactTags fatal:", e));
 
-    // 3) UTM custom fields — SYNCHRONOUS with retry. MUST overwrite existing values.
-    try {
-      const fieldValues = Object.entries(FIELD_IDS)
-        .map(([key, field]) => {
-          const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-          return value ? { key, field: String(field), value } : null;
-        })
-        .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
+      // 2c) UTM custom fields — overwrite existing values
+      const fieldsP = (async () => {
+        try {
+          const fieldValues = Object.entries(FIELD_IDS)
+            .map(([key, field]) => {
+              const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+              return value ? { key, field: String(field), value } : null;
+            })
+            .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
 
-      if (fieldValues.length > 0) {
-        const existingRes = await ac(
-          baseUrl,
-          apiKey,
-          `/contacts/${contactId}/fieldValues`,
-        ).catch(() => ({ fieldValues: [] }));
-        const existingByField = new Map<string, string>();
-        for (const item of existingRes?.fieldValues ?? []) {
-          if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
+          if (fieldValues.length === 0) {
+            console.log("AC fields: nothing to write", contactId);
+            return;
+          }
+
+          const existingRes = await ac(
+            baseUrl,
+            apiKey,
+            `/contacts/${contactId}/fieldValues`,
+          ).catch(() => ({ fieldValues: [] }));
+          const existingByField = new Map<string, string>();
+          for (const item of existingRes?.fieldValues ?? []) {
+            if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
+          }
+
+          await Promise.all(
+            fieldValues.map(({ key, field, value }) =>
+              withRetry(`fieldValue:${key}`, async () => {
+                const existingId = existingByField.get(field);
+                await ac(
+                  baseUrl,
+                  apiKey,
+                  existingId ? `/fieldValues/${existingId}` : "/fieldValues",
+                  {
+                    method: existingId ? "PUT" : "POST",
+                    body: JSON.stringify({
+                      fieldValue: { contact: String(contactId), field, value, useDefaults: false },
+                    }),
+                  },
+                );
+              }),
+            ),
+          );
+          console.log("AC fields ok", contactId, fieldValues.map((f) => f.key).join(","));
+        } catch (e) {
+          console.error("AC fields error:", e);
         }
+      })();
 
-        await Promise.all(
-          fieldValues.map(({ key, field, value }) =>
-            withRetry(`fieldValue:${key}`, async () => {
-              const existingId = existingByField.get(field);
-              await ac(
-                baseUrl,
-                apiKey,
-                existingId ? `/fieldValues/${existingId}` : "/fieldValues",
-                {
-                  method: existingId ? "PUT" : "POST",
-                  body: JSON.stringify({
-                    fieldValue: { contact: String(contactId), field, value, useDefaults: false },
-                  }),
-                },
-              );
-            }),
-          ),
-        );
-        console.log("AC fields ok", contactId, fieldValues.map((f) => f.key).join(","));
-      } else {
-        console.log("AC fields: nothing to write", contactId);
-      }
-    } catch (e) {
-      console.error("AC fields error (non-blocking):", e);
+      await Promise.all([dbInsert, listP, tagP, fieldsP]);
+      console.log("Background pipeline complete for", contactId);
+    })();
+
+    // Keep the worker alive for background work without blocking the response
+    // @ts-ignore - EdgeRuntime is provided by Deno Deploy / Supabase Edge runtime
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
+      // @ts-ignore
+      EdgeRuntime.waitUntil(background);
+    } else {
+      // Fallback: don't await — best-effort fire and forget
+      background.catch((e) => console.error("background error:", e));
     }
 
     return new Response(

@@ -282,7 +282,7 @@
   isolation: isolate;
   overflow: hidden;
   background: #0a0a0a;
-  min-height: 100svh;
+  min-height: 87svh;
   color: #fff;
 }
 /* Grade arquitetônica decorativa — linhas firmes com halo dourado */
@@ -493,7 +493,7 @@
   position: relative; z-index: 2;
   max-width: 980px; margin-inline: auto;
   padding: 3rem 16px 2.25rem;
-  min-height: 100svh;
+  min-height: 87svh;
   display: flex; flex-direction: column;
   justify-content: flex-end;
   text-align: center;

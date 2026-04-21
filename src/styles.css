@@ -1649,7 +1649,7 @@
 @media (max-width: 768px) {
   .cta-thirds {
     position: relative;
-    min-height: 100svh;
+    min-height: 65svh;
     padding: 4rem 1rem;
     align-items: center;
   }

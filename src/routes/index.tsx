@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import PillButton from "@/components/PillButton";
@@ -7,6 +8,36 @@ import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import HeroPortrait from "@/components/HeroPortrait";
 import logoQuartavia from "@/assets/logo-quartavia.png";
+import heroBg from "@/assets/hero-bg.webp";
+import speakerPortrait from "@/assets/adrian-carvalho.jpg";
+import ctaBg from "@/assets/cta-bg.jpg";
+import dep1 from "@/assets/depoimento-1.jpeg";
+import dep2 from "@/assets/depoimento-2.jpeg";
+import dep3 from "@/assets/depoimento-3.jpeg";
+import dep4 from "@/assets/depoimento-4.jpeg";
+import dep5 from "@/assets/depoimento-5.jpeg";
+import dep6 from "@/assets/depoimento-6.jpeg";
+import dep7 from "@/assets/depoimento-7.jpeg";
+
+const belowFoldImages = [dep1, dep2, dep3, dep4, dep5, dep6, dep7, speakerPortrait, ctaBg];
+
+function warmImageCache(srcs: string[]) {
+  if (typeof window === "undefined") return;
+
+  let index = 0;
+  const loadNext = () => {
+    const src = srcs[index++];
+    if (!src) return;
+    const img = new Image();
+    img.decoding = "async";
+    img.onload = loadNext;
+    img.onerror = loadNext;
+    img.src = src;
+  };
+
+  loadNext();
+  loadNext();
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({

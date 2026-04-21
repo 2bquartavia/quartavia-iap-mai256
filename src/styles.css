@@ -115,19 +115,27 @@
    Pill Button — design system unificado
    ========================================================= */
 .pill-btn {
+  /* Tokens controlam tudo — variantes de tamanho só sobrescrevem essas vars */
+  --pill-h: 3.25rem;            /* altura total do botão */
+  --pill-pad-y: 0.35rem;        /* padding vertical (controla folga do círculo) */
+  --pill-pad-l: 1.5rem;         /* padding esquerdo (texto) */
+  --pill-gap: 0.75rem;          /* espaço entre texto e círculo */
+  --pill-font: 0.95rem;         /* tamanho do texto */
+  --pill-icon: 1.05rem;         /* tamanho do ícone */
+
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  justify-content: space-between;
+  gap: var(--pill-gap);
+  height: var(--pill-h);
+  padding: var(--pill-pad-y) var(--pill-pad-y) var(--pill-pad-y) var(--pill-pad-l);
   border: 0;
   border-radius: 9999px;
   background: var(--ink);
   color: #fff;
   cursor: pointer;
-  padding: 0.45rem 0.5rem 0.45rem 1.75rem;
-  transition:
-    transform .35s cubic-bezier(.2,.8,.2,1),
-    box-shadow .35s cubic-bezier(.2,.8,.2,1);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s cubic-bezier(.2,.8,.2,1);
   box-shadow:
     0 1px 0 rgba(255,255,255,0.06) inset,
     0 12px 28px -10px rgba(0,0,0,0.35);
@@ -135,19 +143,34 @@
   isolation: isolate;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
+  line-height: 1;
 }
+.pill-btn--sm { --pill-h: 2.6rem; --pill-pad-y: 0.3rem; --pill-pad-l: 1.1rem; --pill-gap: 0.55rem; --pill-font: 0.82rem; --pill-icon: 0.95rem; }
+.pill-btn--md { --pill-h: 3.25rem; --pill-pad-y: 0.35rem; --pill-pad-l: 1.5rem; --pill-gap: 0.75rem; --pill-font: 0.95rem; --pill-icon: 1.05rem; }
+.pill-btn--lg { --pill-h: 3.75rem; --pill-pad-y: 0.4rem; --pill-pad-l: 1.85rem; --pill-gap: 0.9rem; --pill-font: 1.05rem; --pill-icon: 1.15rem; }
+.pill-btn--full { width: 100%; }
+
 .pill-btn__label {
-  font-size: 0.98rem;
+  font-size: var(--pill-font);
   font-weight: 600;
   letter-spacing: -0.005em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .pill-btn__circle {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 2.5rem; height: 2.5rem; border-radius: 9999px;
+  width: calc(var(--pill-h) - (var(--pill-pad-y) * 2));
+  height: calc(var(--pill-h) - (var(--pill-pad-y) * 2));
+  border-radius: 9999px;
   background: #fff; color: var(--ink);
-  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1);
   flex-shrink: 0;
+}
+.pill-btn__circle svg {
+  width: var(--pill-icon);
+  height: var(--pill-icon);
 }
 .pill-btn:hover {
   transform: translateY(-2px);
@@ -251,7 +274,25 @@
   box-shadow: 0 8px 20px -10px rgba(0,0,0,0.25);
 }
 
-/* Eyebrow */
+/* Mobile — botões grandes/médios viram tamanho responsivo, ocupam largura total e ficam organizados */
+@media (max-width: 720px) {
+  .pill-btn--lg, .pill-btn--md {
+    --pill-h: 3rem;
+    --pill-pad-y: 0.35rem;
+    --pill-pad-l: 1.15rem;
+    --pill-gap: 0.55rem;
+    --pill-font: 0.88rem;
+    --pill-icon: 1rem;
+    width: 100%;
+    max-width: 24rem;
+  }
+  .pill-btn--sm {
+    --pill-h: 2.5rem;
+    --pill-pad-l: 1rem;
+    --pill-font: 0.8rem;
+  }
+}
+
 .eyebrow {
   display: inline-flex; align-items: center; gap: .55rem;
   font-size: .72rem; font-weight: 600;
@@ -586,11 +627,8 @@
   .hero__marquee-item { font-size: .8rem; }
   .hero__marquee-check { width: 16px; height: 16px; }
   .hero__fineprint { font-size: .7rem; }
-  /* Botão menor no mobile */
-  .hero__actions .pill-btn { padding: 0.35rem 0.4rem 0.35rem 1.1rem; gap: 0.5rem; }
-  .hero__actions .pill-btn__label { font-size: 0.82rem; }
-  .hero__actions .pill-btn__circle { width: 2rem; height: 2rem; }
 }
+
 /* Hero marquee — bullets como tira animada com máscara nas laterais */
 .hero__marquee {
   position: relative;
@@ -1700,27 +1738,8 @@
   .cta-thirds__title { font-size: 1.7rem; line-height: 1.15; margin-bottom: 0.85rem; }
   .cta-thirds__lead { font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem; }
 
-  /* PillButton dentro do CTA final — uma linha, compacto */
-  .cta-thirds__center .pill-btn {
-    padding: 0.4rem 0.45rem 0.4rem 1.05rem;
-    gap: 0.55rem;
-    width: 100%;
-    justify-content: space-between;
-    border-radius: 999px;
-  }
-  .cta-thirds__center .pill-btn__label {
-    font-size: 0.78rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-  .cta-thirds__center .pill-btn__circle {
-    width: 2rem;
-    height: 2rem;
-    flex-shrink: 0;
-  }
+  /* PillButton em mobile já usa size="sm" + fullWidth via prop */
+
 
   .cta-thirds__meta {
     flex-wrap: wrap;

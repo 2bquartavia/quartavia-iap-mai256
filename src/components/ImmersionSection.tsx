@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -219,7 +219,7 @@ export default function ImmersionSection() {
         <PillButton
           label="Entrar no grupo e garantir Lote ZERO"
           variant="gold"
-          icon={<ArrowRight size={18} strokeWidth={2.2} />}
+          size="lg"
         />
       </div>
     </section>

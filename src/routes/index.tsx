@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
@@ -99,7 +99,7 @@ function Index() {
                 <PillButton
                   label="Quero garantir minha vaga no Lote ZERO"
                   variant="gold"
-                  icon={<ArrowRight size={18} strokeWidth={2.2} />}
+                  size="lg"
                 />
               </div>
               <p className="hero__fineprint">

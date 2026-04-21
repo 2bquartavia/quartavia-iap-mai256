@@ -147,7 +147,7 @@ export default function ImmersionSection() {
             <div className="boarding-pass__head">
               <span className="boarding-pass__brand">
                 <span className="boarding-pass__brand-mark" aria-hidden>QV</span>
-                <span className="boarding-pass__brand-text">Seu ingresso · Imersão QuartaVia</span>
+                <span className="boarding-pass__brand-text">Seu ingresso</span>
               </span>
               <span className="boarding-pass__class">Lote&nbsp;ZERO</span>
             </div>

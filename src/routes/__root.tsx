@@ -89,7 +89,7 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "QuartaVia — Imersão Alavanca Patrimonial" },
       { name: "description", content: "5 encontros pra você sair do improviso financeiro e entrar num plano real de construção de patrimônio — usando alavancagem, crédito inteligente e os ativos certos." },
-      { name: "author", content: "Aurum Capital" },
+      { name: "author", content: "QuartaVia" },
       { property: "og:title", content: "QuartaVia — Imersão Alavanca Patrimonial" },
       { property: "og:description", content: "5 encontros pra você sair do improviso financeiro e entrar num plano real de construção de patrimônio — usando alavancagem, crédito inteligente e os ativos certos." },
       { property: "og:type", content: "website" },

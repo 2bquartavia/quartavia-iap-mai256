@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
@@ -41,7 +41,28 @@ const lessons = [
 export default function ImmersionSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
+  const [imageReady, setImageReady] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const heroBgStyle = useMemo(
+    () => ({ ["--hero-bg" as string]: imageReady ? `url(${heroBg})` : "none" }),
+    [imageReady],
+  );
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = heroBg;
+    const onReady = () => setImageReady(true);
+    if (img.complete) {
+      onReady();
+    } else {
+      img.addEventListener("load", onReady, { once: true });
+      img.addEventListener("error", onReady, { once: true });
+    }
+    return () => {
+      img.removeEventListener("load", onReady);
+      img.removeEventListener("error", onReady);
+    };
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -160,17 +181,18 @@ export default function ImmersionSection() {
         <div
           ref={stickyRef}
           className="immersion__sticky"
-          style={{ ["--hero-bg" as string]: `url(${heroBg})` }}
+          style={heroBgStyle}
         >
-          <img
-            src={heroBg}
-            alt=""
+          <div
             aria-hidden
-            decoding="async"
-            loading="eager"
-            // @ts-expect-error fetchpriority é atributo HTML válido
-            fetchpriority="high"
-            style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+            style={{
+              position: "absolute",
+              width: 1,
+              height: 1,
+              opacity: 0,
+              pointerEvents: "none",
+              backgroundImage: `url(${heroBg})`,
+            }}
           />
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">

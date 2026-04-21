@@ -1,1 +1,4 @@
 project_id = "zotpejsjkpixrqwfibaa"
+
+[functions.ac-subscribe]
+verify_jwt = false

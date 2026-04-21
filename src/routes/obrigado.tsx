@@ -225,7 +225,7 @@ function ObrigadoPage() {
             data-tf-iframe-props="title=Desafio Quarto Caminho"
             data-tf-medium="snippet"
             data-tf-hidden={tfHidden}
-            data-tf-full-screen="true"
+            
             className="tf-embed"
           />
         </div>

@@ -100,28 +100,34 @@ Deno.serve(async (req) => {
     const fieldValues = Object.entries(FIELD_IDS)
       .map(([key, field]) => {
         const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-        return value ? { field, value } : null;
+        return value ? { field: String(field), value } : null;
       })
       .filter(Boolean);
 
-    // 1) sync contact (with custom fields inline)
+    // 1) sync contact
     const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
       method: "POST",
       body: JSON.stringify({
-        contact: {
-          email,
-          firstName,
-          lastName,
-          phone: telefone,
-          fieldValues,
-        },
+        contact: { email, firstName, lastName, phone: telefone },
       }),
     });
     const contactId = Number(syncRes?.contact?.id);
     if (!contactId) throw new Error("Falha ao criar contato");
 
-    // 2) add to list + tag in parallel
+    // 2) set custom field values (one call per field), add list + tag — in parallel
+    const fieldCalls = Object.entries(FIELD_IDS).map(([key, field]) => {
+      const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+      if (!value) return null;
+      return ac(baseUrl, apiKey, "/fieldValues", {
+        method: "POST",
+        body: JSON.stringify({
+          fieldValue: { contact: contactId, field, value },
+        }),
+      }).catch((e) => console.warn(`fieldValue ${key} error`, e));
+    }).filter(Boolean) as Promise<unknown>[];
+
     await Promise.all([
+      ...fieldCalls,
       ac(baseUrl, apiKey, "/contactLists", {
         method: "POST",
         body: JSON.stringify({

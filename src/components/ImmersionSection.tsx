@@ -110,29 +110,32 @@ export default function ImmersionSection() {
             trabalho para crescer.
           </p>
 
-          <div className="date-card" role="group" aria-label="Datas da imersão">
-            <div className="date-card__col date-card__col--count">
-              <span className="date-card__big">5</span>
-              <span className="date-card__cap">
-                <span>encontros</span>
-                <span>ao vivo</span>
-              </span>
+          <dl className="date-spec" aria-label="Datas da imersão">
+            <div className="date-spec__row">
+              <dt>Encontros</dt>
+              <dd>
+                <span className="date-spec__num">05</span>
+                <span className="date-spec__cap">ao vivo</span>
+              </dd>
             </div>
-
-            <span className="date-card__divider" aria-hidden />
-
-            <div className="date-card__col date-card__col--when">
-              <span className="date-card__month">Maio · 2025</span>
-              <span className="date-card__range">
-                <span className="date-card__day">25</span>
-                <span className="date-card__dash" aria-hidden>—</span>
-                <span className="date-card__day">29</span>
-              </span>
-              <span className="date-card__weekday">seg a sex · 20h</span>
+            <div className="date-spec__row">
+              <dt>Datas</dt>
+              <dd>
+                <span className="date-spec__num">25 — 29</span>
+                <span className="date-spec__cap">maio · 2025</span>
+              </dd>
             </div>
-          </div>
+            <div className="date-spec__row">
+              <dt>Horário</dt>
+              <dd>
+                <span className="date-spec__num">20<span className="date-spec__h">h</span></span>
+                <span className="date-spec__cap">seg a sex</span>
+              </dd>
+            </div>
+          </dl>
         </div>
       </div>
+
 
       {/* Scroll horizontal sticky */}
       <div

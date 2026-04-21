@@ -31,6 +31,8 @@ interface Payload {
   utm_content?: string;
   utm_term?: string;
   utm_pagina?: string;
+  landing_url?: string;
+  referrer?: string;
 }
 
 async function ac(
@@ -93,6 +95,13 @@ Deno.serve(async (req) => {
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");
 
+    // Capture request metadata for the leads record
+    const userAgent = req.headers.get("user-agent") ?? "";
+    const ipAddress =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("cf-connecting-ip") ??
+      "";
+
     // 1) Create/update contact synchronously
     const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
       method: "POST",
@@ -102,6 +111,49 @@ Deno.serve(async (req) => {
     });
     const contactId = Number(syncRes?.contact?.id);
     if (!contactId) throw new Error("Falha ao criar contato");
+
+    // 1b) Persist the lead in our database (best-effort, non-blocking on failure)
+    try {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL");
+      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+      if (supabaseUrl && serviceKey) {
+        const dbRes = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: serviceKey,
+            Authorization: `Bearer ${serviceKey}`,
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({
+            nome,
+            email,
+            telefone,
+            utm_source: payload.utm_source ?? null,
+            utm_medium: payload.utm_medium ?? null,
+            utm_campaign: payload.utm_campaign ?? null,
+            utm_term: payload.utm_term ?? null,
+            utm_content: payload.utm_content ?? null,
+            utm_pagina: payload.utm_pagina ?? null,
+            landing_url: payload.landing_url ?? null,
+            referrer: payload.referrer ?? null,
+            user_agent: userAgent || null,
+            ip_address: ipAddress || null,
+            ac_contact_id: String(contactId),
+          }),
+        });
+        if (!dbRes.ok) {
+          const txt = await dbRes.text();
+          console.error("DB insert leads failed:", dbRes.status, txt);
+        } else {
+          console.log("Lead persisted", email);
+        }
+      } else {
+        console.warn("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured");
+      }
+    } catch (e) {
+      console.error("DB insert error:", e);
+    }
 
     // 2) Apply LIST + TAG synchronously with retry — these MUST be guaranteed
     const withRetry = async (label: string, fn: () => Promise<unknown>) => {

@@ -3,6 +3,8 @@ import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.jpg";
 
+
+
 const lessons = [
   {
     n: "01",
@@ -39,12 +41,12 @@ const lessons = [
 export default function ImmersionSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    const updateClip = (expand: number) => {
-      const sticky = stickyRef.current;
-      if (!sticky) return;
+    let raf = 0;
+    let lastIdx = -1;
+    const updateClip = (sticky: HTMLElement, expand: number) => {
       const railWrap = sticky.querySelector<HTMLElement>(".immersion__rail-wrap");
       if (!railWrap) return;
       const r = railWrap.getBoundingClientRect();
@@ -65,7 +67,8 @@ export default function ImmersionSection() {
       sticky.style.setProperty("--expand", String(t));
     };
 
-    const onScroll = () => {
+    const update = () => {
+      raf = 0;
       const el = trackRef.current;
       const sticky = stickyRef.current;
       if (!el || !sticky) return;
@@ -73,26 +76,30 @@ export default function ImmersionSection() {
       const total = el.offsetHeight - sticky.offsetHeight;
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
-      setProgress(p);
-      // No mobile, expansão "estoura" quase imediata para o card 01 ficar legível desde o início
       const isMobile = window.innerWidth <= 760;
       const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
-      updateClip(expand);
+      updateClip(sticky, expand);
+      const idx = Math.min(lessons.length - 1, Math.floor(p * lessons.length * 0.999));
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        setActiveIndex(idx);
+      }
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
-
-  const activeIndex = Math.min(
-    lessons.length - 1,
-    Math.floor(progress * lessons.length * 0.999),
-  );
 
   return (
     <section id="imersao" className="immersion">

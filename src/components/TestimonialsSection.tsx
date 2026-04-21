@@ -43,13 +43,7 @@ export default function TestimonialsSection() {
       const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = t;
 
-      let speed = BASE_SPEED;
-      if (centerCardWidth > 0) {
-        const range = centerCardWidth * SLOW_RANGE_RATIO;
-        const proximity = Math.max(0, Math.min(1, 1 - centerDist / range));
-        const eased = proximity * proximity * (3 - 2 * proximity);
-        speed = BASE_SPEED + (SLOW_SPEED - BASE_SPEED) * eased;
-      }
+      const speed = BASE_SPEED;
 
       if (!draggingHorizontally) {
         track.scrollLeft += speed * dt;

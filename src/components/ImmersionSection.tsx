@@ -74,9 +74,9 @@ export default function ImmersionSection() {
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       const p = total > 0 ? scrolled / total : 0;
       setProgress(p);
-      // No mobile, acelera o início da expansão para o card 01 ficar legível rápido
+      // No mobile, expansão "estoura" quase imediata para o card 01 ficar legível desde o início
       const isMobile = window.innerWidth <= 760;
-      const expand = isMobile ? 1 - Math.pow(1 - p, 0.45) : p;
+      const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
       updateClip(expand);
     };
 

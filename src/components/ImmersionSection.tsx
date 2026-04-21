@@ -49,6 +49,22 @@ export default function ImmersionSection() {
   );
 
   useEffect(() => {
+    const img = new Image();
+    img.src = heroBg;
+    const onReady = () => setImageReady(true);
+    if (img.complete) {
+      onReady();
+    } else {
+      img.addEventListener("load", onReady, { once: true });
+      img.addEventListener("error", onReady, { once: true });
+    }
+    return () => {
+      img.removeEventListener("load", onReady);
+      img.removeEventListener("error", onReady);
+    };
+  }, []);
+
+  useEffect(() => {
     let raf = 0;
     let lastIdx = -1;
     const updateClip = (sticky: HTMLElement, expand: number) => {

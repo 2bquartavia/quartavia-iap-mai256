@@ -564,6 +564,50 @@
 .immersion {
   background: var(--cream);
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Orbs decorativos — degradês borrados, delicados */
+.immersion::before,
+.immersion::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  animation: orbDrift 18s ease-in-out infinite alternate;
+}
+.immersion::before {
+  width: 620px;
+  height: 620px;
+  top: -180px;
+  right: -120px;
+  background: radial-gradient(circle at 30% 30%,
+    color-mix(in oklab, var(--gold, #CC7514) 55%, transparent) 0%,
+    color-mix(in oklab, var(--gold, #CC7514) 25%, transparent) 35%,
+    transparent 70%);
+}
+.immersion::after {
+  width: 520px;
+  height: 520px;
+  top: 38%;
+  left: -160px;
+  background: radial-gradient(circle at 60% 40%,
+    color-mix(in oklab, #E8A75A 50%, transparent) 0%,
+    color-mix(in oklab, #F5C883 22%, transparent) 40%,
+    transparent 75%);
+  animation-delay: -9s;
+  animation-duration: 22s;
+}
+@keyframes orbDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(40px, -30px, 0) scale(1.08); }
+  100% { transform: translate3d(-30px, 40px, 0) scale(0.96); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .immersion::before, .immersion::after { animation: none; }
 }
 
 .immersion__intro {
@@ -573,6 +617,8 @@
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: start;
+  position: relative;
+  z-index: 1;
 }
 @media (min-width: 880px) {
   .immersion__intro {

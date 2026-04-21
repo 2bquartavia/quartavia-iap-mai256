@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          ac_contact_id: string | null
+          created_at: string
+          email: string
+          id: string
+          ip_address: string | null
+          landing_url: string | null
+          nome: string
+          referrer: string | null
+          telefone: string
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_pagina: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          ac_contact_id?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: string | null
+          landing_url?: string | null
+          nome: string
+          referrer?: string | null
+          telefone: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_pagina?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          ac_contact_id?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          landing_url?: string | null
+          nome?: string
+          referrer?: string | null
+          telefone?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_pagina?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

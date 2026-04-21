@@ -544,7 +544,7 @@
   position: relative; z-index: 2;
   max-width: 980px; margin-inline: auto;
   padding: 3rem 16px 2.25rem;
-  min-height: 87svh;
+  min-height: 90vh;
   display: flex; flex-direction: column;
   justify-content: flex-end;
   text-align: center;
@@ -662,7 +662,7 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__marquee-track { animation: none; }
 }
-.hero__fineprint { margin-top: .9rem; font-size: .8rem; color: rgba(255,255,255,0.6); }
+.hero__fineprint { margin-top: .35rem; font-size: .8rem; color: rgba(255,255,255,0.6); }
 
 /* Marquee tickers */
 .ticker {

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import PillButton from "@/components/PillButton";
+import FillInText from "@/components/FillInText";
 import logoQuartavia from "@/assets/logo-quartavia.png";
 
 export const Route = createFileRoute("/obrigado")({
@@ -64,7 +65,10 @@ function ObrigadoPage() {
               letterSpacing: "-0.02em",
             }}
           >
-            Falta apenas <em style={{ color: "#E8A554", fontStyle: "italic" }}>um passo</em> para garantir a sua pré-inscrição no Lote ZERO
+            <FillInText
+              text="Falta apenas um passo para garantir a sua pré-inscrição no Lote ZERO"
+              highlight="um passo"
+            />
           </h1>
 
           <p

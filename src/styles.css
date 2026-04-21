@@ -285,6 +285,64 @@
   min-height: 100svh;
   color: #fff;
 }
+/* Grade arquitetônica decorativa — linhas firmes com halo dourado */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero__grid-v,
+.hero__grid-h {
+  position: absolute;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 145, 60, 0.0) 8%,
+    rgba(255, 145, 60, 0.32) 35%,
+    rgba(255, 170, 90, 0.42) 50%,
+    rgba(255, 145, 60, 0.32) 65%,
+    rgba(255, 145, 60, 0.0) 92%,
+    transparent 100%
+  );
+}
+.hero__grid-v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  box-shadow: 0 0 14px rgba(255, 145, 60, 0.18);
+}
+.hero__grid-v--1 { left: 12%; }
+.hero__grid-v--2 { left: 34%; }
+.hero__grid-v--3 { left: 66%; }
+.hero__grid-v--4 { left: 88%; }
+
+.hero__grid-h {
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 145, 60, 0.0) 8%,
+    rgba(255, 145, 60, 0.28) 35%,
+    rgba(255, 170, 90, 0.4) 50%,
+    rgba(255, 145, 60, 0.28) 65%,
+    rgba(255, 145, 60, 0.0) 92%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(255, 145, 60, 0.16);
+}
+.hero__grid-h--1 { top: 28%; }
+.hero__grid-h--2 { top: 72%; }
+
+@media (max-width: 720px) {
+  .hero__grid-v--2 { left: 28%; }
+  .hero__grid-v--3 { left: 72%; }
+  .hero__grid-v--1, .hero__grid-v--4 { display: none; }
+}
+
 /* Logo do hero — médio, discreto */
 .hero__brand {
   position: absolute;

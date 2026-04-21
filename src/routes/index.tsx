@@ -38,6 +38,16 @@ function Index() {
         {/* Foto de fundo (vem do background) */}
         <HeroPortrait />
 
+        {/* Grade arquitetônica decorativa com halo dourado */}
+        <div className="hero__grid" aria-hidden>
+          <span className="hero__grid-v hero__grid-v--1" />
+          <span className="hero__grid-v hero__grid-v--2" />
+          <span className="hero__grid-v hero__grid-v--3" />
+          <span className="hero__grid-v hero__grid-v--4" />
+          <span className="hero__grid-h hero__grid-h--1" />
+          <span className="hero__grid-h hero__grid-h--2" />
+        </div>
+
         {/* Logo no topo do hero */}
         <div className="hero__brand">
           <img

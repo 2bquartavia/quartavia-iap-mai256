@@ -225,11 +225,16 @@ function ObrigadoPage() {
             data-tf-iframe-props="title=Desafio Quarto Caminho"
             data-tf-medium="snippet"
             data-tf-hidden={tfHidden}
+            data-tf-full-screen="true"
             className="tf-embed"
-            style={{ width: "100%", minHeight: "min(80vh, 720px)", display: "block" }}
+            style={{ width: "100%", height: "min(80vh, 720px)", minHeight: "560px", display: "block" }}
           />
         </div>
       </section>
+
+      <style>{`
+        .tf-embed, .tf-embed iframe, .tf-embed > div { width: 100% !important; max-width: 100% !important; height: 100% !important; min-height: 560px; }
+      `}</style>
 
       {/* DIVISOR */}
       <div

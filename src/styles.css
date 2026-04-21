@@ -1275,8 +1275,9 @@
 .boarding-pass__stub-seat span { color: var(--gold, #CC7514); }
 .boarding-pass__barcode {
   margin-top: auto;
-  display: flex; align-items: end; gap: 2px;
-  height: 36px;
+  display: flex; align-items: end; gap: 1.5px;
+  height: 24px;
+  opacity: 0.9;
 }
 .boarding-pass__barcode span {
   display: inline-block; height: 100%;

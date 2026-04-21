@@ -1035,33 +1035,32 @@
 @media (max-width: 520px) {
   .date-spec { margin-top: 1.5rem; }
   .date-spec__row {
-    grid-template-columns: 4.75rem 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto;
-    column-gap: 0.9rem;
+    column-gap: 0.5rem;
     padding: 0.95rem 0;
     align-items: baseline;
   }
   .date-spec dt {
     font-size: 0.6rem;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.22em;
     align-self: center;
+    justify-self: start;
   }
-  .date-spec dd {
-    display: flex;
-    align-items: baseline;
-    gap: 0.55rem;
-    flex-wrap: nowrap;
-  }
+  .date-spec dd { display: contents; }
   .date-spec__num {
     font-size: 1.5rem;
-    justify-self: start;
+    justify-self: center;
+    text-align: center;
   }
   .date-spec__cap {
     font-size: 0.6rem;
     letter-spacing: 0.16em;
     color: var(--ink-4, #6b6b6b);
-    justify-self: start;
+    justify-self: end;
+    text-align: right;
     white-space: nowrap;
+    align-self: center;
   }
 }
 

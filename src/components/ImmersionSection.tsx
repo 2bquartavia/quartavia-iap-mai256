@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.jpg";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const lessons = [
   {
@@ -38,19 +37,11 @@ const lessons = [
 ];
 
 export default function ImmersionSection() {
-  const isMobile = useIsMobile();
   const trackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const mobileCardRefs = useRef<Array<HTMLElement | null>>([]);
   const [progress, setProgress] = useState(0);
-  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (isMobile) {
-      setProgress(0);
-      return;
-    }
-
     const updateClip = (expand: number) => {
       const sticky = stickyRef.current;
       if (!sticky) return;
@@ -93,47 +84,12 @@ export default function ImmersionSection() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [isMobile]);
+  }, []);
 
-  useEffect(() => {
-    if (!isMobile) {
-      setMobileActiveIndex(0);
-      return;
-    }
-
-    const cards = mobileCardRefs.current.filter(
-      (card): card is HTMLElement => card !== null,
-    );
-    if (!cards.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (!visibleEntries.length) return;
-
-        const index = cards.findIndex((card) => card === visibleEntries[0].target);
-        if (index >= 0) {
-          setMobileActiveIndex(index);
-        }
-      },
-      {
-        threshold: [0.3, 0.45, 0.6, 0.75],
-        rootMargin: "-12% 0px -22% 0px",
-      },
-    );
-
-    cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, [isMobile]);
-
-  const desktopActiveIndex = Math.min(
+  const activeIndex = Math.min(
     lessons.length - 1,
     Math.floor(progress * lessons.length * 0.999),
   );
-  const activeIndex = isMobile ? mobileActiveIndex : desktopActiveIndex;
 
   return (
     <section id="imersao" className="immersion">
@@ -144,7 +100,6 @@ export default function ImmersionSection() {
         <span className="orb orb--4" />
         <span className="orb orb--5" />
       </div>
-
       <div className="wrap immersion__intro">
         <div className="immersion__intro-left">
           <span className="immersion__eyebrow">A Imersão</span>
@@ -179,9 +134,7 @@ export default function ImmersionSection() {
             <div className="date-spec__row">
               <dt>Horário</dt>
               <dd>
-                <span className="date-spec__num">
-                  20<span className="date-spec__h">h</span>
-                </span>
+                <span className="date-spec__num">20<span className="date-spec__h">h</span></span>
                 <span className="date-spec__cap">seg a sex</span>
               </dd>
             </div>
@@ -191,12 +144,12 @@ export default function ImmersionSection() {
 
       <div
         ref={trackRef}
-        className={`immersion__scroll ${isMobile ? "immersion__scroll--mobile" : ""}`}
-        style={{ height: isMobile ? "auto" : `${lessons.length * 100}vh` }}
+        className="immersion__scroll"
+        style={{ height: `${lessons.length * 100}vh` }}
       >
         <div
           ref={stickyRef}
-          className={`immersion__sticky ${isMobile ? "immersion__sticky--mobile" : ""}`}
+          className="immersion__sticky"
           style={{ ["--hero-bg" as string]: `url(${heroBg})` }}
         >
           <img
@@ -208,10 +161,9 @@ export default function ImmersionSection() {
             fetchpriority="high"
             style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
           />
-
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">
-              <div className={`immersion__progress ${isMobile ? "immersion__progress--mobile" : ""}`}>
+              <div className="immersion__progress">
                 {lessons.map((l, i) => (
                   <div
                     key={l.n}
@@ -224,15 +176,12 @@ export default function ImmersionSection() {
             </div>
 
             <div className="immersion__rail-wrap">
-              <div className={`immersion__stack ${isMobile ? "immersion__stack--mobile" : ""}`}>
+              <div className="immersion__stack">
                 {lessons.map((l, i) => (
                   <article
                     key={l.n}
-                    ref={(node) => {
-                      mobileCardRefs.current[i] = node;
-                    }}
-                    className={`lesson-card ${i === activeIndex ? "is-active" : ""} ${isMobile ? "lesson-card--mobile" : ""}`}
-                    aria-hidden={!isMobile && i !== activeIndex}
+                    className={`lesson-card ${i === activeIndex ? "is-active" : ""}`}
+                    aria-hidden={i !== activeIndex}
                   >
                     <div className="lesson-card__top">
                       <span className="lesson-card__n">{l.n}</span>

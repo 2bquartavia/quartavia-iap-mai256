@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
+import { LeadModalProvider } from "@/components/LeadModalContext";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -69,5 +70,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <LeadModalProvider>
+      <Outlet />
+    </LeadModalProvider>
+  );
 }

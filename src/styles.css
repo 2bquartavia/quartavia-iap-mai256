@@ -668,117 +668,67 @@
   margin-top: .15rem;
 }
 
-/* Date card — bloco de destaque das datas da imersão */
-.date-card {
-  display: inline-grid;
-  grid-template-columns: auto 1px auto;
-  align-items: stretch;
+/* Date spec — ficha técnica editorial silenciosa */
+.date-spec {
+  margin: 2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid color-mix(in oklab, var(--gold, #CC7514) 55%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--gold, #CC7514) 55%, transparent);
+}
+.date-spec__row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  align-items: baseline;
   gap: 1.5rem;
-  margin: 1.5rem 0 0;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(180deg, #fff 0%, #FBF6EE 100%);
-  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 28%, transparent);
-  border-radius: 18px;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 18px 40px -22px color-mix(in oklab, var(--gold, #CC7514) 55%, transparent),
-    0 6px 14px -10px rgba(40,28,16,0.18);
-  position: relative;
-  overflow: hidden;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--gold, #CC7514) 18%, transparent);
 }
-.date-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(120% 60% at 0% 0%, color-mix(in oklab, var(--gold, #CC7514) 10%, transparent), transparent 60%),
-    radial-gradient(120% 60% at 100% 100%, color-mix(in oklab, var(--gold, #CC7514) 8%, transparent), transparent 60%);
-  pointer-events: none;
+.date-spec__row:last-child { border-bottom: none; }
+
+.date-spec dt {
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
+  font-weight: 600;
+  margin: 0;
 }
-.date-card__col {
-  position: relative;
+.date-spec dd {
+  margin: 0;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.85rem;
+  flex-wrap: wrap;
 }
-.date-card__col--when {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-}
-.date-card__big {
+.date-spec__num {
   font-family: var(--font-display, "Fraunces", serif);
-  font-weight: 700;
-  font-size: clamp(2.8rem, 5vw, 3.6rem);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
   line-height: 1;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--gold, #CC7514) 0%, #E8A75A 60%, #F5C883 100%);
-  -webkit-background-clip: text;
-          background-clip: text;
-  color: transparent;
+  letter-spacing: -0.01em;
+  color: var(--ink, #18140F);
+  font-feature-settings: "lnum", "pnum";
 }
-.date-card__cap {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.7rem;
+.date-spec__h {
+  font-size: 0.62em;
+  margin-left: 0.05em;
+  color: var(--ink-4, #6b6b6b);
+  font-style: italic;
+}
+.date-spec__cap {
+  font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-3);
-  line-height: 1.25;
-  font-weight: 600;
-}
-.date-card__divider {
-  width: 1px;
-  background: linear-gradient(to bottom,
-    transparent,
-    color-mix(in oklab, var(--gold, #CC7514) 35%, transparent) 30%,
-    color-mix(in oklab, var(--gold, #CC7514) 35%, transparent) 70%,
-    transparent);
-}
-.date-card__month {
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold, #CC7514);
-  font-weight: 700;
-}
-.date-card__range {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  font-family: var(--font-display, "Fraunces", serif);
-  font-weight: 700;
-  color: var(--ink, #1a1a1a);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.date-card__day {
-  font-size: clamp(2.2rem, 4vw, 2.8rem);
-}
-.date-card__dash {
-  font-size: 1.6rem;
-  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
-  font-weight: 400;
-}
-.date-card__weekday {
-  font-size: 0.78rem;
   color: var(--ink-4, #6b6b6b);
-  letter-spacing: 0.04em;
+  font-weight: 500;
 }
 @media (max-width: 520px) {
-  .date-card {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1px auto;
+  .date-spec__row {
+    grid-template-columns: 5.5rem 1fr;
     gap: 1rem;
-    padding: 1rem 1.25rem;
-  }
-  .date-card__divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right,
-      transparent,
-      color-mix(in oklab, var(--gold, #CC7514) 35%, transparent),
-      transparent);
+    padding: 0.9rem 0;
   }
 }
 

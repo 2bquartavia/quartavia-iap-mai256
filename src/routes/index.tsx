@@ -63,12 +63,18 @@ export const Route = createFileRoute("/")({
 function Index() {
   useEffect(() => {
     const start = () => warmImageCache(belowFoldImages);
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(start, { timeout: 900 });
-      return () => window.cancelIdleCallback(id);
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (idleWindow.requestIdleCallback && idleWindow.cancelIdleCallback) {
+      const id = idleWindow.requestIdleCallback(start, { timeout: 900 });
+      return () => idleWindow.cancelIdleCallback?.(id);
     }
-    const id = window.setTimeout(start, 250);
-    return () => window.clearTimeout(id);
+
+    const id = globalThis.setTimeout(start, 250);
+    return () => globalThis.clearTimeout(id);
   }, []);
 
   return (

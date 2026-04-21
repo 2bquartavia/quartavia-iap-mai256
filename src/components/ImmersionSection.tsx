@@ -146,29 +146,49 @@ export default function ImmersionSection() {
             certos que se pagam sozinhos.
           </p>
 
-          <dl className="date-spec" aria-label="Datas da imersão">
-            <div className="date-spec__row">
-              <dt>Encontros</dt>
-              <dd>
-                <span className="date-spec__num">05</span>
-                <span className="date-spec__cap">ao vivo</span>
-              </dd>
-            </div>
-            <div className="date-spec__row">
-              <dt>Datas</dt>
-              <dd>
-                <span className="date-spec__num">25 — 29</span>
-                <span className="date-spec__cap">maio · 2025</span>
-              </dd>
-            </div>
-            <div className="date-spec__row">
-              <dt>Horário</dt>
-              <dd>
-                <span className="date-spec__num">20<span className="date-spec__h">h</span></span>
-                <span className="date-spec__cap">seg a sex</span>
-              </dd>
-            </div>
-          </dl>
+          <ul className="info-cards" aria-label="Informações da imersão">
+            <li className="info-card">
+              <span className="info-card__icon" aria-hidden>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="6" width="14" height="11" rx="2" />
+                  <path d="M17 10l4-2v8l-4-2z" />
+                </svg>
+              </span>
+              <div className="info-card__body">
+                <span className="info-card__label">Encontros</span>
+                <span className="info-card__value">5 aulas ao vivo</span>
+                <span className="info-card__hint">100% online · com você ao vivo</span>
+              </div>
+            </li>
+
+            <li className="info-card">
+              <span className="info-card__icon" aria-hidden>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M3 10h18M8 2v4M16 2v4" />
+                </svg>
+              </span>
+              <div className="info-card__body">
+                <span className="info-card__label">Quando</span>
+                <span className="info-card__value">25 a 29 de maio</span>
+                <span className="info-card__hint">segunda a sexta-feira</span>
+              </div>
+            </li>
+
+            <li className="info-card">
+              <span className="info-card__icon" aria-hidden>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 2" />
+                </svg>
+              </span>
+              <div className="info-card__body">
+                <span className="info-card__label">Horário</span>
+                <span className="info-card__value">20h (Brasília)</span>
+                <span className="info-card__hint">aprox. 90 min por aula</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
 

@@ -101,7 +101,9 @@ export default function ImmersionSection() {
       return;
     }
 
-    const cards = mobileCardRefs.current.filter(Boolean);
+    const cards = mobileCardRefs.current.filter(
+      (card): card is HTMLElement => card !== null,
+    );
     if (!cards.length) return;
 
     const observer = new IntersectionObserver(

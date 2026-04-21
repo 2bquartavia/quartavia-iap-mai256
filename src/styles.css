@@ -1387,11 +1387,11 @@
   overflow: hidden;
   background: #0e0e0e;
   box-shadow: 0 10px 30px -15px rgba(0,0,0,0.45);
-  transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s ease, opacity .55s ease;
+  transition: transform .25s ease-out, opacity .25s ease-out;
   opacity: .35;
   transform: scale(0.7);
   transform-origin: center center;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 .testimonial-card.is-center {
   z-index: 2;

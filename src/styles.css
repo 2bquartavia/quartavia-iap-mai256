@@ -1199,33 +1199,49 @@
 }
 
 .boarding-pass__grid {
-  margin: 1.2rem 0 0;
+  margin: 1.4rem 0 0;
   display: grid;
-  grid-template-columns: 1.25fr 1fr 1fr 1.1fr;
-  gap: 1.1rem 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem 1.2rem;
+  align-items: start;
 }
-.boarding-pass__cell { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
+.boarding-pass__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
+}
 .boarding-pass__cell dt {
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 60%, transparent);
   font-weight: 700;
+  margin: 0;
 }
 .boarding-pass__cell dd {
   margin: 0;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.65rem, 2.4vw, 1.95rem);
+  font-size: clamp(1.55rem, 2.2vw, 1.85rem);
   line-height: 1;
   color: #1a1208;
-  display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 .boarding-pass__unit {
   font-family: var(--font-body, "Inter", sans-serif);
-  font-size: 0.88rem; letter-spacing: 0.01em;
-  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: color-mix(in oklab, #1a1208 62%, transparent);
   font-style: normal;
   font-weight: 500;
+  line-height: 1.25;
 }
 
 .boarding-pass__stub {

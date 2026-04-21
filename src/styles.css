@@ -1240,27 +1240,29 @@
   text-align: center;
 }
 .boarding-pass__stub-label {
-  font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__stub-seat {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: 2rem; line-height: 1; color: #1a1208;
+  font-size: 2.4rem; line-height: 1; color: #1a1208;
+  font-weight: 500;
 }
 .boarding-pass__stub-seat span { color: var(--gold, #CC7514); }
 .boarding-pass__barcode {
   margin-top: auto;
   display: flex; align-items: end; gap: 2px;
-  height: 36px;
+  height: 38px;
 }
 .boarding-pass__barcode span {
   display: inline-block; height: 100%;
   background: #1a1208; border-radius: 1px;
 }
 .boarding-pass__stub-foot {
-  font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
-  font-weight: 600;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
+  font-weight: 700;
 }
 
 /* Entry + plane animations */

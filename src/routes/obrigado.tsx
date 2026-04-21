@@ -50,12 +50,49 @@ function ObrigadoPage() {
         backgroundAttachment: "fixed",
       }}
     >
-      {/* TOP BAR */}
+      {/* PROGRESS BAR */}
       <div
-        className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
-        style={{ background: "#CC7514" }}
+        className="fixed top-0 inset-x-0 z-50"
+        role="progressbar"
+        aria-valuenow={83}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Progresso da inscrição"
+        style={{
+          background: "rgba(3,26,40,0.85)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          padding: "0.5rem 1rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75rem",
+          fontSize: "11px",
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "#fff",
+        }}
       >
-        IMERSÃO ALAVANCA PATRIMONIAL
+        <span style={{ flexShrink: 0, color: "rgba(255,255,255,0.7)" }}>83% concluído</span>
+        <div
+          style={{
+            flex: 1,
+            height: "6px",
+            borderRadius: "999px",
+            background: "rgba(255,255,255,0.12)",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: "83%",
+              height: "100%",
+              background: "linear-gradient(90deg, #E8A554 0%, #CC7514 100%)",
+              borderRadius: "999px",
+              transition: "width 0.6s ease",
+            }}
+          />
+        </div>
       </div>
 
       {/* HERO de confirmação */}

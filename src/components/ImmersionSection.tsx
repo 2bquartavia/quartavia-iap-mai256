@@ -167,6 +167,7 @@ export default function ImmersionSection() {
             alt=""
             aria-hidden
             decoding="async"
+            loading="eager"
             // @ts-expect-error fetchpriority é atributo HTML válido
             fetchpriority="high"
             style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}

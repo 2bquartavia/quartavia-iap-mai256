@@ -96,54 +96,60 @@ Deno.serve(async (req) => {
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");
 
-    // Build fieldValues array for inline submission with contact/sync
-    const fieldValues = Object.entries(FIELD_IDS)
-      .map(([key, field]) => {
-        const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-        return value ? { field: String(field), value } : null;
-      })
-      .filter(Boolean);
+    // Process AC calls in background — respond to client immediately
+    const processAc = async () => {
+      try {
+        const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
+          method: "POST",
+          body: JSON.stringify({
+            contact: { email, firstName, lastName, phone: telefone },
+          }),
+        });
+        const contactId = Number(syncRes?.contact?.id);
+        if (!contactId) throw new Error("Falha ao criar contato");
 
-    // 1) sync contact
-    const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
-      method: "POST",
-      body: JSON.stringify({
-        contact: { email, firstName, lastName, phone: telefone },
-      }),
-    });
-    const contactId = Number(syncRes?.contact?.id);
-    if (!contactId) throw new Error("Falha ao criar contato");
+        const fieldCalls = Object.entries(FIELD_IDS).map(([key, field]) => {
+          const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+          if (!value) return null;
+          return ac(baseUrl, apiKey, "/fieldValues", {
+            method: "POST",
+            body: JSON.stringify({
+              fieldValue: { contact: contactId, field, value },
+            }),
+          }).catch((e) => console.warn(`fieldValue ${key} error`, e));
+        }).filter(Boolean) as Promise<unknown>[];
 
-    // 2) set custom field values (one call per field), add list + tag — in parallel
-    const fieldCalls = Object.entries(FIELD_IDS).map(([key, field]) => {
-      const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-      if (!value) return null;
-      return ac(baseUrl, apiKey, "/fieldValues", {
-        method: "POST",
-        body: JSON.stringify({
-          fieldValue: { contact: contactId, field, value },
-        }),
-      }).catch((e) => console.warn(`fieldValue ${key} error`, e));
-    }).filter(Boolean) as Promise<unknown>[];
+        await Promise.all([
+          ...fieldCalls,
+          ac(baseUrl, apiKey, "/contactLists", {
+            method: "POST",
+            body: JSON.stringify({
+              contactList: { list: LIST_ID, contact: contactId, status: 1 },
+            }),
+          }).catch((e) => console.warn("contactLists error", e)),
+          ac(baseUrl, apiKey, "/contactTags", {
+            method: "POST",
+            body: JSON.stringify({
+              contactTag: { contact: contactId, tag: TAG_ID },
+            }),
+          }).catch((e) => console.warn("contactTags error", e)),
+        ]);
+        console.log("AC ok", contactId);
+      } catch (e) {
+        console.error("AC bg error:", e);
+      }
+    };
 
-    await Promise.all([
-      ...fieldCalls,
-      ac(baseUrl, apiKey, "/contactLists", {
-        method: "POST",
-        body: JSON.stringify({
-          contactList: { list: LIST_ID, contact: contactId, status: 1 },
-        }),
-      }).catch((e) => console.warn("contactLists error", e)),
-      ac(baseUrl, apiKey, "/contactTags", {
-        method: "POST",
-        body: JSON.stringify({
-          contactTag: { contact: contactId, tag: TAG_ID },
-        }),
-      }).catch((e) => console.warn("contactTags error", e)),
-    ]);
+    // @ts-ignore EdgeRuntime is available in Supabase Edge Functions
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime.waitUntil) {
+      // @ts-ignore
+      EdgeRuntime.waitUntil(processAc());
+    } else {
+      processAc();
+    }
 
     return new Response(
-      JSON.stringify({ ok: true, contactId }),
+      JSON.stringify({ ok: true }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {

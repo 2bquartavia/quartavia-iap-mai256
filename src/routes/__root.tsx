@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "QuartaVia — Inteligência para o Mercado Financeiro" },
+      { title: "Aurum Capital — Inteligência para o Mercado Financeiro" },
       { name: "description", content: "Estratégias profissionais de renda variável, renda fixa e ativos alternativos." },
-      { name: "author", content: "QuartaVia" },
-      { property: "og:title", content: "QuartaVia — Inteligência para o Mercado Financeiro" },
-      { property: "og:description", content: "Estratégias profissionais para investidores exigentes." },
+      { name: "author", content: "Aurum Capital" },
+      { property: "og:title", content: "Aurum Capital — Inteligência para o Mercado Financeiro" },
+      { property: "og:description", content: "Estratégias profissionais de renda variável, renda fixa e ativos alternativos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Aurum Capital — Inteligência para o Mercado Financeiro" },
+      { name: "twitter:description", content: "Estratégias profissionais de renda variável, renda fixa e ativos alternativos." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4e090813-50f4-47ee-8148-8442949c3e88/id-preview-97fb3713--a07d5729-6853-49b6-99b2-8873d0bc14e0.lovable.app-1776739634797.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4e090813-50f4-47ee-8148-8442949c3e88/id-preview-97fb3713--a07d5729-6853-49b6-99b2-8873d0bc14e0.lovable.app-1776739634797.png" },
     ],
     links: [
       {

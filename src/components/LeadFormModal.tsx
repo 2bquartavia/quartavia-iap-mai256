@@ -49,37 +49,55 @@ const COUNTRIES: CountryEntry[] = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const UTM_KEYS = [
+const ACTIVE_FIELD_PARAM_KEYS = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
   "utm_content",
   "utm_term",
-  "utm_id",
 ] as const;
 
-function getUtms(): Record<string, string> {
+const SESSION_PARAM_PREFIX = "lead_param_";
+
+function persistCurrentSearchParams() {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams(window.location.search);
+  params.forEach((value, key) => {
+    if (!key || !value) return;
+    const safeValue = value.slice(0, 255);
+    try {
+      sessionStorage.setItem(`${SESSION_PARAM_PREFIX}${key}`, safeValue);
+      if (key.startsWith("utm_")) sessionStorage.setItem(key, safeValue);
+    } catch {
+      /* ignore */
+    }
+  });
+}
+
+function getLeadParams(): Record<string, string> {
   if (typeof window === "undefined") return {};
+  persistCurrentSearchParams();
+
   const params = new URLSearchParams(window.location.search);
   const out: Record<string, string> = {};
-  for (const key of UTM_KEYS) {
-    const fromUrl = params.get(key);
+
+  for (const key of ACTIVE_FIELD_PARAM_KEYS) {
+    const fromUrl = params.get(key)?.slice(0, 255);
     if (fromUrl) {
       out[key] = fromUrl;
-      try {
-        sessionStorage.setItem(key, fromUrl);
-      } catch {
-        /* ignore */
-      }
-    } else {
-      try {
-        const stored = sessionStorage.getItem(key);
-        if (stored) out[key] = stored;
-      } catch {
-        /* ignore */
-      }
+      continue;
+    }
+
+    try {
+      const stored =
+        sessionStorage.getItem(`${SESSION_PARAM_PREFIX}${key}`) ??
+        sessionStorage.getItem(key);
+      if (stored) out[key] = stored.slice(0, 255);
+    } catch {
+      /* ignore */
     }
   }
+
   out.utm_pagina =
     (typeof document !== "undefined" ? document.title : "") || "";
   return out;
@@ -94,6 +112,10 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   const [error, setError] = useState<string | null>(null);
 
   const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
+
+  useEffect(() => {
+    persistCurrentSearchParams();
+  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -154,7 +176,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
     setSubmitting(true);
     try {
-      const utms = getUtms();
+      const leadParams = getLeadParams();
       // Lazy-load supabase client only when actually submitting,
       // so the click-to-open path stays instant.
       const { supabase } = await import("@/integrations/supabase/client");
@@ -165,7 +187,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             nome: nomeTrim,
             email: emailTrim,
             telefone: telefoneE164,
-            ...utms,
+            ...leadParams,
           },
         },
       );

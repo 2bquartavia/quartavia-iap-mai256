@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
 
@@ -34,102 +35,94 @@ const lessons = [
   },
 ];
 
-function buildImmersionScript() {
-  return `
-(() => {
-  const HERO_BG = ${JSON.stringify(`url(${heroBg})`)};
-
-  const init = () => {
-    document.querySelectorAll('[data-immersion-root]').forEach((root) => {
-      if (!(root instanceof HTMLElement) || root.dataset.immersionReady === '1') return;
-      root.dataset.immersionReady = '1';
-
-      const track = root.querySelector('[data-immersion-track]');
-      const sticky = root.querySelector('[data-immersion-sticky]');
-      const railWrap = root.querySelector('.immersion__rail-wrap');
-      const cards = Array.from(root.querySelectorAll('[data-immersion-card]'));
-      const dots = Array.from(root.querySelectorAll('[data-immersion-dot]'));
-
-      if (!(track instanceof HTMLElement) || !(sticky instanceof HTMLElement) || !(railWrap instanceof HTMLElement) || !cards.length) {
-        return;
-      }
-
-      sticky.style.setProperty('--hero-bg', HERO_BG);
-      const img = new Image();
-      img.src = ${JSON.stringify(heroBg)};
-
-      let raf = 0;
-      let lastIdx = -1;
-
-      const setActive = (idx) => {
-        cards.forEach((card, i) => {
-          if (!(card instanceof HTMLElement)) return;
-          card.classList.toggle('is-active', i === idx);
-          card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
-        });
-        dots.forEach((dot, i) => {
-          if (!(dot instanceof HTMLElement)) return;
-          dot.classList.toggle('is-active', i === idx);
-          dot.classList.toggle('is-past', i < idx);
-        });
-      };
-
-      const updateClip = (expand) => {
-        const r = railWrap.getBoundingClientRect();
-        const top = Math.max(0, r.top);
-        const left = Math.max(0, r.left);
-        const right = Math.max(0, window.innerWidth - r.right);
-        const bottom = Math.max(0, window.innerHeight - r.bottom);
-        const t = Math.max(0, Math.min(1, expand));
-        const itop = top * (1 - t);
-        const ileft = left * (1 - t);
-        const iright = right * (1 - t);
-        const ibottom = bottom * (1 - t);
-        const radius = 28 * (1 - t);
-        sticky.style.setProperty('--card-clip', 'inset(' + itop + 'px ' + iright + 'px ' + ibottom + 'px ' + ileft + 'px round ' + radius + 'px)');
-      };
-
-      const update = () => {
-        raf = 0;
-        const rect = track.getBoundingClientRect();
-        const total = track.offsetHeight - sticky.offsetHeight;
-        const scrolled = Math.min(Math.max(-rect.top, 0), total);
-        const p = total > 0 ? scrolled / total : 0;
-        const isMobile = window.innerWidth <= 760;
-        const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
-
-        updateClip(expand);
-
-        const idx = Math.min(cards.length - 1, Math.floor(p * cards.length * 0.999));
-        if (idx !== lastIdx) {
-          lastIdx = idx;
-          setActive(idx);
-        }
-      };
-
-      const onScroll = () => {
-        if (raf) return;
-        raf = window.requestAnimationFrame(update);
-      };
-
-      setActive(0);
-      update();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-    });
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-})();`;
-}
-
 export default function ImmersionSection() {
+  const rootRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const track = root.querySelector<HTMLElement>("[data-immersion-track]");
+    const sticky = root.querySelector<HTMLElement>("[data-immersion-sticky]");
+    const railWrap = root.querySelector<HTMLElement>(".immersion__rail-wrap");
+    const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-immersion-card]"));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-immersion-dot]"));
+
+    if (!track || !sticky || !railWrap || !cards.length) return;
+
+    sticky.style.setProperty("--hero-bg", `url(${heroBg})`);
+    const img = new Image();
+    img.src = heroBg;
+
+    let raf = 0;
+    let lastIdx = -1;
+
+    const setActive = (idx: number) => {
+      cards.forEach((card, i) => {
+        card.classList.toggle("is-active", i === idx);
+        card.setAttribute("aria-hidden", i === idx ? "false" : "true");
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("is-active", i === idx);
+        dot.classList.toggle("is-past", i < idx);
+      });
+    };
+
+    const updateClip = (expand: number) => {
+      const r = railWrap.getBoundingClientRect();
+      const top = Math.max(0, r.top);
+      const left = Math.max(0, r.left);
+      const right = Math.max(0, window.innerWidth - r.right);
+      const bottom = Math.max(0, window.innerHeight - r.bottom);
+      const t = Math.max(0, Math.min(1, expand));
+      const itop = top * (1 - t);
+      const ileft = left * (1 - t);
+      const iright = right * (1 - t);
+      const ibottom = bottom * (1 - t);
+      const radius = 28 * (1 - t);
+      sticky.style.setProperty(
+        "--card-clip",
+        `inset(${itop}px ${iright}px ${ibottom}px ${ileft}px round ${radius}px)`,
+      );
+    };
+
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const total = track.offsetHeight - sticky.offsetHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const p = total > 0 ? scrolled / total : 0;
+      const isMobile = window.innerWidth <= 760;
+      const expand = isMobile ? Math.min(1, Math.pow(p, 0.18) * 1.05) : p;
+
+      updateClip(expand);
+
+      const idx = Math.min(cards.length - 1, Math.floor(p * cards.length * 0.999));
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        setActive(idx);
+      }
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+
+    setActive(0);
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <section id="imersao" className="immersion" data-immersion-root>
+    <section id="imersao" className="immersion" data-immersion-root ref={rootRef}>
       <div className="immersion__orbs" aria-hidden>
         <span className="orb orb--1" />
         <span className="orb orb--2" />
@@ -242,8 +235,6 @@ export default function ImmersionSection() {
           size="lg"
         />
       </div>
-
-      <script dangerouslySetInnerHTML={{ __html: buildImmersionScript() }} />
     </section>
   );
 }

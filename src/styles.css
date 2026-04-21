@@ -1004,7 +1004,7 @@
 }
 .immersion__intro--center .immersion__title { max-width: 24ch; margin-inline: auto; }
 .immersion__intro--center .immersion__lead { max-width: 58ch; margin: 0.25rem auto 2rem; }
-.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 720px; margin-inline: auto; }
 
 .immersion__bullets {
   list-style: none;

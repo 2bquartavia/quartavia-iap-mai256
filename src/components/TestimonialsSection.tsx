@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
 
     const tick = (t: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = t;
-      const dt = (t - lastTimeRef.current) / 1000;
+      const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = t;
 
       let speed = BASE_SPEED;

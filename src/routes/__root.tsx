@@ -11,36 +11,19 @@ import { LeadModalProvider } from "@/components/LeadModalContext";
 import appCss from "../styles.css?url";
 
 const GTM_ID = "GTM-N483RZTK";
-// Único bootloader: roda em todo carregamento, é idempotente, prioritário
-// e à prova de falhas (try/catch + retry da UTMify).
+// Tracking é carregado só depois da hidratação/idle para não disputar CPU com o formulário.
 const trackingBootScript = `(function(){
   try {
-    window.dataLayer = window.dataLayer || [];
-    // GTM: inicia o dataLayer imediatamente e injeta o gtm.js (1x por página)
-    if (!window.__gtmLoaded) {
-      window.__gtmLoaded = true;
-      window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-      var gj = document.createElement('script');
-      gj.async = true;
-      gj.src = 'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}';
-      (document.head || document.documentElement).appendChild(gj);
-    }
-    // GTM noscript fallback — injetado APÓS o load (pós-hidratação) para
-    // não inserir nodes no <body> antes do React hidratar a árvore SSR.
-    function injectGtmNoscript(){
-      if (document.getElementById('gtm-noscript-${GTM_ID}')) return;
-      var ns = document.createElement('noscript');
-      ns.id = 'gtm-noscript-${GTM_ID}';
-      ns.innerHTML = '<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
-      (document.body || document.documentElement).appendChild(ns);
-    }
-    if (document.readyState === 'complete') {
-      setTimeout(injectGtmNoscript, 0);
-    } else {
-      window.addEventListener('load', function(){ setTimeout(injectGtmNoscript, 0); }, { once: true });
-    }
-    // UTMify: idempotente + retry automático em caso de erro de rede
-    function loadUtmify(attempt){
+    function loadTracking(){
+      window.dataLayer = window.dataLayer || [];
+      if (!window.__gtmLoaded) {
+        window.__gtmLoaded = true;
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var gj = document.createElement('script');
+        gj.async = true;
+        gj.src = 'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}';
+        (document.head || document.documentElement).appendChild(gj);
+      }
       if (document.getElementById('utmify-script')) return;
       var s = document.createElement('script');
       s.id = 'utmify-script';
@@ -49,14 +32,16 @@ const trackingBootScript = `(function(){
       s.setAttribute('data-utmify-prevent-subids','');
       s.setAttribute('data-utmify-ignore-retry','');
       s.setAttribute('data-utmify-ignore-iframe','');
+      s.setAttribute('data-utmify-ignore-forms','');
       s.setAttribute('data-utmify-ignore-classes','lead-form');
-      s.onerror = function(){
-        try { s.parentNode && s.parentNode.removeChild(s); } catch(e) {}
-        if ((attempt||0) < 3) setTimeout(function(){ loadUtmify((attempt||0)+1); }, 1500 * ((attempt||0)+1));
-      };
       (document.head || document.documentElement).appendChild(s);
     }
-    loadUtmify(0);
+    function schedule(){
+      if ('requestIdleCallback' in window) window.requestIdleCallback(loadTracking, { timeout: 3500 });
+      else setTimeout(loadTracking, 2500);
+    }
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
   } catch(e) {}
 })();`;
 
@@ -118,7 +103,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <ScriptOnce>{trackingBootScript}</ScriptOnce>
         <HeadContent />

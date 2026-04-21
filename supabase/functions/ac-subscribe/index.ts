@@ -31,6 +31,8 @@ interface Payload {
   utm_content?: string;
   utm_term?: string;
   utm_pagina?: string;
+  landing_url?: string;
+  referrer?: string;
 }
 
 async function ac(

@@ -1833,3 +1833,216 @@
 }
 
 
+
+/* ============================================
+   Página /obrigado — Pesquisa de Lead
+   ============================================ */
+.obrigado {
+  position: relative;
+  min-height: 100vh;
+  background: var(--ink);
+  color: #fff;
+  overflow: hidden;
+  padding: 4rem 1.25rem 3rem;
+}
+.obrigado__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% -10%, color-mix(in oklab, #CC7514 22%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 110%, color-mix(in oklab, var(--ink-2) 80%, transparent) 0%, transparent 60%),
+    var(--ink);
+  z-index: 0;
+}
+.obrigado__overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+.obrigado__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.obrigado__logo {
+  height: 38px;
+  margin: 0 auto 2.5rem;
+  display: block;
+}
+.obrigado__eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #E8A554;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.obrigado__h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+}
+.obrigado__h1 em {
+  font-style: italic;
+  color: #E8A554;
+  font-weight: 500;
+  text-transform: none;
+}
+.obrigado__lead {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 2rem;
+}
+.obrigado__card {
+  position: relative;
+  background: color-mix(in oklab, var(--ink) 70%, #000 30%);
+  border: 1px solid color-mix(in oklab, #E8A554 35%, transparent);
+  border-radius: 1.25rem;
+  padding: 2rem 1.5rem;
+  text-align: left;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #E8A554 15%, transparent),
+    0 20px 60px -20px rgba(0,0,0,0.6);
+}
+.obrigado__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 1.25rem;
+}
+.obrigado__progress-bar {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.obrigado__progress-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #CC7514, #E8A554);
+  transition: width 0.3s ease;
+}
+.obrigado__q {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1.25rem;
+  line-height: 1.35;
+}
+.obrigado__options {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.obrigado__option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.obrigado__option:hover {
+  border-color: color-mix(in oklab, #E8A554 50%, transparent);
+  background: rgba(255,255,255,0.02);
+}
+.obrigado__option.is-on {
+  border-color: #E8A554;
+  background: color-mix(in oklab, #CC7514 12%, transparent);
+  color: #fff;
+}
+.obrigado__radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.18s ease;
+}
+.obrigado__option.is-on .obrigado__radio {
+  border-color: #E8A554;
+  background: #E8A554;
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+.obrigado__action {
+  margin-top: 0.5rem;
+}
+.obrigado__done {
+  text-align: center;
+  padding: 1rem 0;
+}
+.obrigado__done-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E8A554;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid color-mix(in oklab, #E8A554 40%, transparent);
+  border-radius: 999px;
+}
+.obrigado__done-text {
+  color: rgba(255,255,255,0.7);
+  margin: 0.5rem 0 0;
+}
+.obrigado__cta-lead {
+  margin: 2.5rem 0 1.25rem;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+.obrigado__cta-lead strong {
+  color: #E8A554;
+  font-weight: 600;
+}
+.obrigado__whatsapp {
+  display: flex;
+  justify-content: center;
+}
+.obrigado__footer {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 4rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .obrigado { padding: 5rem 2rem 3rem; }
+  .obrigado__card { padding: 2.5rem 2rem; }
+  .obrigado__footer { flex-direction: row; justify-content: space-between; }
+}

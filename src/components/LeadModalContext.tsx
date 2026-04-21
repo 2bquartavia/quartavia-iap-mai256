@@ -4,10 +4,12 @@ import {
   useContext,
   useMemo,
   useState,
+  lazy,
+  Suspense,
   type ReactNode,
 } from "react";
 
-import LeadFormModal from "@/components/LeadFormModal";
+const LeadFormModal = lazy(() => import("@/components/LeadFormModal"));
 
 interface LeadModalContextValue {
   open: () => void;
@@ -27,7 +29,11 @@ export function LeadModalProvider({ children }: { children: ReactNode }) {
   return (
     <LeadModalContext.Provider value={value}>
       {children}
-      <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
+      {isOpen && (
+        <Suspense fallback={null}>
+          <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
+        </Suspense>
+      )}
     </LeadModalContext.Provider>
   );
 }

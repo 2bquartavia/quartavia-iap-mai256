@@ -25,12 +25,19 @@ const trackingBootScript = `(function(){
       gj.src = 'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}';
       (document.head || document.documentElement).appendChild(gj);
     }
-    // GTM noscript fallback (1x por página)
-    if (!document.getElementById('gtm-noscript-${GTM_ID}')) {
+    // GTM noscript fallback — injetado APÓS o load (pós-hidratação) para
+    // não inserir nodes no <body> antes do React hidratar a árvore SSR.
+    function injectGtmNoscript(){
+      if (document.getElementById('gtm-noscript-${GTM_ID}')) return;
       var ns = document.createElement('noscript');
       ns.id = 'gtm-noscript-${GTM_ID}';
       ns.innerHTML = '<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
       (document.body || document.documentElement).appendChild(ns);
+    }
+    if (document.readyState === 'complete') {
+      setTimeout(injectGtmNoscript, 0);
+    } else {
+      window.addEventListener('load', function(){ setTimeout(injectGtmNoscript, 0); }, { once: true });
     }
     // UTMify: idempotente + retry automático em caso de erro de rede
     function loadUtmify(attempt){

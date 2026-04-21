@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import PillButton from "@/components/PillButton";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 
 
 

@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import PillButton from "@/components/PillButton";
 import ctaBg from "@/assets/cta-bg.jpg";
 
 export default function CTAFinalSection() {
@@ -30,14 +31,11 @@ export default function CTAFinalSection() {
             condição da história.
           </p>
 
-          <a href="#" className="cta-thirds__cta">
-            <span className="cta-thirds__cta-label">
-              Quero garantir minha vaga no Lote ZERO
-            </span>
-            <span className="cta-thirds__cta-arrow">
-              <ArrowRight size={18} strokeWidth={2.6} />
-            </span>
-          </a>
+          <PillButton
+            label="Quero garantir minha vaga no Lote ZERO"
+            variant="gold"
+            icon={<ArrowRight size={18} strokeWidth={2.2} />}
+          />
 
           <p className="cta-thirds__meta">
             Acesso gratuito ao grupo <span className="cta-thirds__dot" /> Vagas limitadas

@@ -17,8 +17,6 @@ export default function TestimonialsSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
-  const userInteractingRef = useRef<boolean>(false);
-  const interactTimeoutRef = useRef<number | null>(null);
 
   // Auto-scroll com requestAnimationFrame + loop infinito
   useEffect(() => {
@@ -35,31 +33,32 @@ export default function TestimonialsSection() {
 
     let centerDist = Infinity;
     let centerCardWidth = 0;
+    let pointerDown = false;
+    let draggingHorizontally = false;
+    let startX = 0;
+    let startY = 0;
 
     const tick = (t: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = t;
       const dt = (t - lastTimeRef.current) / 1000;
       lastTimeRef.current = t;
 
-      // Velocidade dinâmica: desacelera ao chegar perto do centro
       let speed = BASE_SPEED;
       if (centerCardWidth > 0) {
         const range = centerCardWidth * SLOW_RANGE_RATIO;
         const proximity = Math.max(0, Math.min(1, 1 - centerDist / range));
-        // Easing suave para a desaceleração
         const eased = proximity * proximity * (3 - 2 * proximity);
         speed = BASE_SPEED + (SLOW_SPEED - BASE_SPEED) * eased;
       }
 
-      if (!userInteractingRef.current) {
+      if (!draggingHorizontally) {
         track.scrollLeft += speed * dt;
       }
-      // Loop: ao atravessar o terceiro bloco, volta ao segundo
+
       const c = track.scrollWidth / 3;
       if (track.scrollLeft >= c * 2) track.scrollLeft -= c;
       else if (track.scrollLeft <= 0) track.scrollLeft += c;
 
-      // Atualiza destaque do card central
       updateCenter();
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -88,39 +87,51 @@ export default function TestimonialsSection() {
       if (bestEl) (bestEl as HTMLElement).classList.add("is-center");
     };
 
-    const flagInteract = () => {
-      userInteractingRef.current = true;
-      if (interactTimeoutRef.current) window.clearTimeout(interactTimeoutRef.current);
-      interactTimeoutRef.current = window.setTimeout(() => {
-        userInteractingRef.current = false;
-      }, 1500);
+    const beginGesture = (x: number, y: number) => {
+      pointerDown = true;
+      draggingHorizontally = false;
+      startX = x;
+      startY = y;
     };
 
-    // Detecta gesto horizontal antes de pausar (ignora scroll vertical da página)
-    let touchStartX = 0;
-    let touchStartY = 0;
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      const dx = Math.abs(e.touches[0].clientX - touchStartX);
-      const dy = Math.abs(e.touches[0].clientY - touchStartY);
-      if (dx > dy && dx > 6) flagInteract();
+    const trackGesture = (x: number, y: number) => {
+      if (!pointerDown) return;
+      const dx = Math.abs(x - startX);
+      const dy = Math.abs(y - startY);
+      draggingHorizontally = dx > dy && dx > 8;
     };
 
-    track.addEventListener("wheel", flagInteract, { passive: true });
+    const endGesture = () => {
+      pointerDown = false;
+      draggingHorizontally = false;
+    };
+
+    const onTouchStart = (e: TouchEvent) => beginGesture(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchMove = (e: TouchEvent) => trackGesture(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchEnd = () => endGesture();
+    const onMouseDown = (e: MouseEvent) => beginGesture(e.clientX, e.clientY);
+    const onMouseMove = (e: MouseEvent) => trackGesture(e.clientX, e.clientY);
+    const onMouseUp = () => endGesture();
+
     track.addEventListener("touchstart", onTouchStart, { passive: true });
     track.addEventListener("touchmove", onTouchMove, { passive: true });
+    track.addEventListener("touchend", onTouchEnd, { passive: true });
+    track.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    track.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
     track.addEventListener("scroll", updateCenter, { passive: true });
 
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (interactTimeoutRef.current) window.clearTimeout(interactTimeoutRef.current);
-      track.removeEventListener("wheel", flagInteract);
       track.removeEventListener("touchstart", onTouchStart);
       track.removeEventListener("touchmove", onTouchMove);
+      track.removeEventListener("touchend", onTouchEnd);
+      track.removeEventListener("touchcancel", onTouchEnd);
+      track.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
       track.removeEventListener("scroll", updateCenter);
     };
   }, []);

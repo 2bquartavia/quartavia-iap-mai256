@@ -1879,3 +1879,12 @@
     -webkit-text-stroke-width: 0;
   }
 }
+
+/* Typeform inline embed: garantir largura total do iframe */
+.tf-embed,
+.tf-embed > div,
+.tf-embed iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block;
+}

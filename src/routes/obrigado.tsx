@@ -151,7 +151,7 @@ function ObrigadoPage() {
         id="pesquisa-lead"
         style={{
           padding: "0.5rem 1.25rem 1.5rem",
-          maxWidth: "720px",
+          maxWidth: "960px",
           margin: "0 auto",
         }}
       >
@@ -206,7 +206,8 @@ function ObrigadoPage() {
             data-tf-inline-on-mobile="true"
             data-tf-iframe-props="title=Desafio Quarto Caminho"
             data-tf-medium="snippet"
-            style={{ width: "100%", minHeight: "min(80vh, 720px)" }}
+            className="tf-embed"
+            style={{ width: "100%", minHeight: "min(80vh, 720px)", display: "block" }}
           />
         </div>
       </section>

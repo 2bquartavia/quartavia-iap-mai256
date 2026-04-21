@@ -61,6 +61,16 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  useEffect(() => {
+    const start = () => warmImageCache(belowFoldImages);
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(start, { timeout: 900 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(start, 250);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <main>
       {/* TOP BAR — fixed */}

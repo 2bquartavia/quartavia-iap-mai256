@@ -541,7 +541,7 @@
 .hero__h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.65rem, 4.6vw, 3.9rem);
+  font-size: clamp(2rem, 4.6vw, 3.9rem);
   line-height: 1.06;
   letter-spacing: -0.035em;
   color: #fff;
@@ -564,11 +564,19 @@
 
 @media (max-width: 720px) {
   .hero__pill { font-size: .62rem; padding: .32rem .7rem; }
-  .hero__h1 { max-width: 14ch; }
+  .hero__h1 {
+    font-size: 2.1rem;
+    line-height: 1.08;
+    max-width: 12ch;
+  }
   .hero__logo { height: 38px; }
   .hero__marquee-item { font-size: .8rem; }
   .hero__marquee-check { width: 16px; height: 16px; }
   .hero__fineprint { font-size: .7rem; }
+  /* Botão menor no mobile */
+  .hero__actions .pill-btn { padding: 0.35rem 0.4rem 0.35rem 1.1rem; gap: 0.5rem; }
+  .hero__actions .pill-btn__label { font-size: 0.82rem; }
+  .hero__actions .pill-btn__circle { width: 2rem; height: 2rem; }
 }
 /* Hero marquee — bullets como tira animada com máscara nas laterais */
 .hero__marquee {

@@ -204,6 +204,10 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     setSubmitting(true);
     try {
       const leadParams = getLeadParams();
+      const landing_url =
+        typeof window !== "undefined" ? window.location.href : "";
+      const referrer =
+        typeof document !== "undefined" ? document.referrer : "";
       // Lazy-load supabase client only when actually submitting,
       // so the click-to-open path stays instant.
       const { supabase } = await import("@/integrations/supabase/client");
@@ -214,6 +218,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             nome: nomeTrim,
             email: emailTrim,
             telefone: telefoneE164,
+            landing_url,
+            referrer,
             ...leadParams,
           },
         },

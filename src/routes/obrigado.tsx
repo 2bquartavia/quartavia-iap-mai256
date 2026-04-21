@@ -153,12 +153,19 @@ function ObrigadoPage() {
           Após responder as questões, toque no botão abaixo para entrar no grupo onde as vagas do <strong style={{ color: "#fff" }}>LOTE ZERO</strong> serão liberadas:
         </p>
 
-        <PillButton
-          label="Entrar no grupo de WhatsApp"
-          variant="gold"
-          size="lg"
-          noModal
-        />
+        <a
+          href="https://sndflw.com/i/NnjsMDHLPXMY2sIZDKgo"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none", display: "inline-block" }}
+        >
+          <PillButton
+            label="Entrar no grupo de WhatsApp"
+            variant="gold"
+            size="lg"
+            noModal
+          />
+        </a>
       </section>
 
       {/* FOOTER */}

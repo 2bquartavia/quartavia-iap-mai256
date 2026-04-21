@@ -912,8 +912,8 @@
 .testimonial-card {
   margin: 0;
   flex: 0 0 auto;
-  width: clamp(220px, 22vw, 300px);
-  height: 380px;
+  width: clamp(180px, 18vw, 240px);
+  height: 320px;
   border-radius: 18px;
   overflow: hidden;
   background: #0e0e0e;
@@ -921,15 +921,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s ease, opacity .5s ease;
-  opacity: .55;
-  transform: scale(0.85);
+  transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s ease, opacity .55s ease;
+  opacity: .35;
+  transform: scale(0.7);
   transform-origin: center center;
 }
 .testimonial-card.is-center {
   opacity: 1;
-  transform: scale(1.35);
-  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  transform: scale(1.75);
+  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.65);
   z-index: 2;
 }
 .testimonial-card img {

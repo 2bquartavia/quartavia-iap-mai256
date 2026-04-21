@@ -156,8 +156,9 @@ export default function TestimonialsSection() {
                     fetchPriority={isPrimarySet ? "low" : "auto"}
                   />
                 </div>
-            </figure>
-          ))}
+              </figure>
+            );
+          })}
         </div>
       </div>
 

@@ -1004,7 +1004,7 @@
 }
 .immersion__intro--center .immersion__title { max-width: 24ch; margin-inline: auto; }
 .immersion__intro--center .immersion__lead { max-width: 58ch; margin: 0.25rem auto 2rem; }
-.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 720px; margin-inline: auto; }
 
 .immersion__bullets {
   list-style: none;
@@ -1143,47 +1143,49 @@
 .boarding-pass__brand { display: inline-flex; align-items: center; gap: 0.6rem; }
 .boarding-pass__brand-mark {
   display: inline-grid; place-items: center;
-  width: 28px; height: 28px; border-radius: 8px;
+  width: 34px; height: 34px; border-radius: 9px;
   background: linear-gradient(135deg, var(--gold, #CC7514), #8a4a0d);
   color: #fff;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: 0.78rem; font-weight: 600;
+  font-size: 0.95rem; font-weight: 600;
 }
 .boarding-pass__brand-text {
-  font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 70%, transparent);
+  font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 78%, transparent);
+  font-weight: 600;
 }
 .boarding-pass__class {
-  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
-  padding: 0.3rem 0.6rem; border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 50%, transparent);
-  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
-  background: color-mix(in oklab, var(--gold, #CC7514) 8%, transparent);
+  font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.4rem 0.75rem; border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 55%, transparent);
+  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
+  background: color-mix(in oklab, var(--gold, #CC7514) 10%, transparent);
+  font-weight: 700;
 }
 
 .boarding-pass__route {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1rem;
-  padding: 1.1rem 0 1.15rem;
+  gap: 1.2rem;
+  padding: 1.2rem 0 1.25rem;
   border-bottom: 1px dashed color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
 }
-.boarding-pass__node { display: flex; flex-direction: column; gap: 0.15rem; }
+.boarding-pass__node { display: flex; flex-direction: column; gap: 0.25rem; }
 .boarding-pass__node--dest { text-align: right; }
 .boarding-pass__city {
-  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 50%, transparent);
-  font-weight: 600;
+  font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 60%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__code {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.5rem, 3vw, 1.95rem);
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
   line-height: 1; font-weight: 500; color: #1a1208;
 }
 .boarding-pass__sub {
-  font-size: 0.72rem; letter-spacing: 0.04em;
-  color: color-mix(in oklab, #1a1208 60%, transparent);
+  font-size: 0.92rem; letter-spacing: 0.01em;
+  color: color-mix(in oklab, #1a1208 70%, transparent);
   font-style: italic;
   font-family: var(--font-display, "Fraunces", serif);
 }
@@ -1197,33 +1199,33 @@
 }
 
 .boarding-pass__grid {
-  margin: 1.1rem 0 0;
+  margin: 1.2rem 0 0;
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
-  gap: 0.9rem 1.4rem;
+  grid-template-columns: 1.25fr 1fr 1fr 1.1fr;
+  gap: 1.1rem 1.5rem;
 }
-.boarding-pass__cell { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.boarding-pass__cell { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
 .boarding-pass__cell dt {
-  font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
-  font-weight: 600;
+  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__cell dd {
   margin: 0;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.5rem, 2.6vw, 1.85rem);
+  font-size: clamp(1.65rem, 2.4vw, 1.95rem);
   line-height: 1;
   color: #1a1208;
-  display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 .boarding-pass__unit {
   font-family: var(--font-body, "Inter", sans-serif);
-  font-size: 0.7rem; letter-spacing: 0.04em;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
+  font-size: 0.88rem; letter-spacing: 0.01em;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .boarding-pass__stub {
@@ -1238,27 +1240,29 @@
   text-align: center;
 }
 .boarding-pass__stub-label {
-  font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__stub-seat {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: 2rem; line-height: 1; color: #1a1208;
+  font-size: 2.4rem; line-height: 1; color: #1a1208;
+  font-weight: 500;
 }
 .boarding-pass__stub-seat span { color: var(--gold, #CC7514); }
 .boarding-pass__barcode {
   margin-top: auto;
   display: flex; align-items: end; gap: 2px;
-  height: 36px;
+  height: 38px;
 }
 .boarding-pass__barcode span {
   display: inline-block; height: 100%;
   background: #1a1208; border-radius: 1px;
 }
 .boarding-pass__stub-foot {
-  font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
-  font-weight: 600;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
+  font-weight: 700;
 }
 
 /* Entry + plane animations */

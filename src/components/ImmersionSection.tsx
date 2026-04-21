@@ -125,6 +125,16 @@ export default function ImmersionSection() {
           className="immersion__sticky"
           style={{ ["--hero-bg" as string]: `url(${heroBg})` }}
         >
+          {/* Pré-carrega a imagem de fundo junto da página para evitar atraso */}
+          <img
+            src={heroBg}
+            alt=""
+            aria-hidden
+            decoding="async"
+            // @ts-expect-error fetchpriority é atributo HTML válido
+            fetchpriority="high"
+            style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+          />
           <div className="wrap immersion__stage">
             <div className="immersion__stage-head">
               <div className="immersion__progress">

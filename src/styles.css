@@ -1411,6 +1411,23 @@
 .testimonials__track:active { cursor: grabbing; }
 .testimonials__track::-webkit-scrollbar { display: none; }
 
+.lead-modal-open .hero__grid,
+.lead-modal-open .hero__marquee,
+.lead-modal-open .ticker,
+.lead-modal-open .testimonials__carousel {
+  display: none;
+}
+
+.lead-modal-open .pill-btn--gold,
+.lead-modal-open .pill-btn--gold::before,
+.lead-modal-open .hero__pill-dot,
+.lead-modal-open .vticker__item,
+.lead-modal-open .immersion__stack .lesson-card,
+.lead-modal-open .testimonial-card__media {
+  animation: none !important;
+  transition: none !important;
+}
+
 .testimonial-card {
   margin: 0;
   flex: 0 0 auto;

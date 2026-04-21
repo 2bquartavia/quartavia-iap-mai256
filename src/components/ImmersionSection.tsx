@@ -174,19 +174,23 @@ export default function ImmersionSection() {
             <dl className="boarding-pass__grid">
               <div className="boarding-pass__cell">
                 <dt>Datas</dt>
-                <dd>25–29<span className="boarding-pass__unit">de maio · seg a sex</span></dd>
+                <dd>25–29</dd>
+                <span className="boarding-pass__unit">de maio</span>
               </div>
               <div className="boarding-pass__cell">
                 <dt>Horário</dt>
-                <dd>20h<span className="boarding-pass__unit">Brasília · ~90 min</span></dd>
+                <dd>20h</dd>
+                <span className="boarding-pass__unit">Brasília</span>
               </div>
               <div className="boarding-pass__cell">
                 <dt>Encontros</dt>
-                <dd>5<span className="boarding-pass__unit">aulas ao vivo</span></dd>
+                <dd>5</dd>
+                <span className="boarding-pass__unit">aulas ao vivo</span>
               </div>
               <div className="boarding-pass__cell">
                 <dt>Onde</dt>
-                <dd>Online<span className="boarding-pass__unit">grupo no WhatsApp</span></dd>
+                <dd>Online</dd>
+                <span className="boarding-pass__unit">link no WhatsApp</span>
               </div>
             </dl>
           </div>

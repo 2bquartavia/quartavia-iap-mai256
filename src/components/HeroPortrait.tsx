@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import heroBg from "@/assets/hero-v2-desktop.jpg";
+const heroBg = "/hero-v2-desktop.jpg";
 import heroBgMobile from "@/assets/hero-bg-mobile.webp";
 
 export default function HeroPortrait() {

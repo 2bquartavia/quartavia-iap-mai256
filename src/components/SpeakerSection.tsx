@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
-import portrait from "@/assets/adrian-carvalho.png";
+import portrait from "@/assets/adrian-carvalho.jpg";
 
 export default function SpeakerSection() {
   return (

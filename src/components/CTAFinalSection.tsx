@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import ctaBg from "@/assets/cta-bg.png";
+import ctaBg from "@/assets/cta-bg.jpg";
 
 export default function CTAFinalSection() {
   return (

@@ -108,11 +108,11 @@ function ObrigadoPage() {
         </div>
       </section>
 
-      {/* PLACEHOLDER — Formulário de pesquisa de lead */}
+      {/* PASSO 01 — Formulário de pesquisa */}
       <section
         id="pesquisa-lead"
         style={{
-          padding: "0.5rem 1.25rem 2rem",
+          padding: "0.5rem 1.25rem 1.5rem",
           maxWidth: "720px",
           margin: "0 auto",
         }}
@@ -121,10 +121,47 @@ function ObrigadoPage() {
           style={{
             borderRadius: "1.25rem",
             overflow: "hidden",
-            background: "rgba(255,255,255,0.02)",
-            minHeight: "520px",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(204,117,20,0.35)",
+            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.5)",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              padding: "1rem 1.25rem",
+              background: "linear-gradient(90deg, rgba(204,117,20,0.18), rgba(204,117,20,0.04))",
+              borderBottom: "1px solid rgba(204,117,20,0.25)",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "2.25rem",
+                height: "2.25rem",
+                borderRadius: "999px",
+                background: "#CC7514",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.9rem",
+                flexShrink: 0,
+              }}
+            >
+              01
+            </span>
+            <div style={{ color: "#fff" }}>
+              <div style={{ fontSize: "0.7rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>
+                Passo 01
+              </div>
+              <div style={{ fontSize: "0.95rem", fontWeight: 600 }}>
+                Responda a pesquisa abaixo
+              </div>
+            </div>
+          </div>
           <div
             data-tf-live="01KPQMFQBBR6A8CPF0MV12PA66"
             style={{ width: "100%", minHeight: "520px" }}
@@ -132,40 +169,111 @@ function ObrigadoPage() {
         </div>
       </section>
 
-      {/* CTA WHATSAPP */}
-      <section
+      {/* DIVISOR */}
+      <div
+        aria-hidden
         style={{
-          padding: "1rem 1.25rem 4rem",
-          maxWidth: "620px",
-          margin: "0 auto",
-          textAlign: "center",
-          color: "#fff",
+          maxWidth: "720px",
+          margin: "1.5rem auto",
+          padding: "0 1.25rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75rem",
+          color: "rgba(255,255,255,0.35)",
         }}
       >
-        <p
+        <span style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }} />
+        <span style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>
+          Em seguida
+        </span>
+        <span style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }} />
+      </div>
+
+      {/* PASSO 02 — CTA WHATSAPP */}
+      <section
+        style={{
+          padding: "0 1.25rem 4rem",
+          maxWidth: "720px",
+          margin: "0 auto",
+        }}
+      >
+        <div
           style={{
-            fontSize: "0.95rem",
-            lineHeight: 1.55,
-            color: "rgba(255,255,255,0.72)",
-            margin: "0 0 1.25rem",
+            borderRadius: "1.25rem",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(37,211,102,0.35)",
+            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.5)",
+            padding: "1.5rem 1.25rem 1.75rem",
+            textAlign: "center",
+            color: "#fff",
           }}
         >
-          Após responder as questões, toque no botão abaixo para entrar no grupo onde as vagas do <strong style={{ color: "#fff" }}>LOTE ZERO</strong> serão liberadas:
-        </p>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.6rem",
+              marginBottom: "0.85rem",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "2.25rem",
+                height: "2.25rem",
+                borderRadius: "999px",
+                background: "#25D366",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.9rem",
+              }}
+            >
+              02
+            </span>
+            <span style={{ fontSize: "0.7rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>
+              Passo 02
+            </span>
+          </div>
 
-        <a
-          href="https://sndflw.com/i/NnjsMDHLPXMY2sIZDKgo"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none", display: "inline-block" }}
-        >
-          <PillButton
-            label="Entrar no grupo de WhatsApp"
-            variant="gold"
-            size="lg"
-            noModal
-          />
-        </a>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.1rem, 2.4vw, 1.4rem)",
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              margin: "0 0 0.6rem",
+            }}
+          >
+            Entre no grupo de WhatsApp
+          </h2>
+
+          <p
+            style={{
+              fontSize: "0.95rem",
+              lineHeight: 1.55,
+              color: "rgba(255,255,255,0.72)",
+              margin: "0 0 1.25rem",
+            }}
+          >
+            Após responder a pesquisa, toque no botão abaixo para entrar no grupo onde as vagas do <strong style={{ color: "#fff" }}>LOTE ZERO</strong> serão liberadas:
+          </p>
+
+          <a
+            href="https://sndflw.com/i/NnjsMDHLPXMY2sIZDKgo"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", display: "inline-block" }}
+          >
+            <PillButton
+              label="Entrar no grupo de WhatsApp"
+              variant="gold"
+              size="lg"
+              noModal
+            />
+          </a>
+        </div>
       </section>
 
       {/* FOOTER */}

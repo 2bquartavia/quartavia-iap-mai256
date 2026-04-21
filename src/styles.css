@@ -601,7 +601,7 @@
   letter-spacing: -0.03em;
   color: #fff;
   text-wrap: balance;
-  max-width: 24ch;
+  max-width: 32ch;
   text-shadow: 0 2px 30px rgba(0,0,0,0.5);
 }
 .hero__h1 em {

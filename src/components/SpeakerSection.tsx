@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
+import VerticalTicker from "@/components/VerticalTicker";
 import portrait from "@/assets/adrian-carvalho.jpg";
 
 export default function SpeakerSection() {
@@ -17,10 +18,15 @@ export default function SpeakerSection() {
               Especialista em Engenharia Patrimonial · CFP®
             </p>
 
-            <p className="speaker-v3__credentials">
-              +3.000 famílias atendidas | CFP® | Certificação Internacional | +10 anos
-              no mercado financeiro
-            </p>
+            <VerticalTicker
+              className="speaker-v3__credentials"
+              items={[
+                "+3.000 famílias atendidas",
+                "CFP®",
+                "Certificação Internacional",
+                "+10 anos no mercado financeiro",
+              ]}
+            />
 
             <div className="speaker-v3__bio">
               <p>

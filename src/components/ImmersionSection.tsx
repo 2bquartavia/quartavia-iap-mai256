@@ -93,6 +93,14 @@ export default function ImmersionSection() {
 
   return (
     <section id="imersao" className="immersion">
+      {/* Orbs decorativos — gradient waves */}
+      <div className="immersion__orbs" aria-hidden>
+        <span className="orb orb--1" />
+        <span className="orb orb--2" />
+        <span className="orb orb--3" />
+        <span className="orb orb--4" />
+        <span className="orb orb--5" />
+      </div>
       {/* Intro / hero da seção */}
       <div className="wrap immersion__intro">
         <div className="immersion__intro-left">

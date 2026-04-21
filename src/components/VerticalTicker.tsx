@@ -8,7 +8,7 @@ interface VerticalTickerProps {
 
 export default function VerticalTicker({
   items,
-  intervalMs = 2600,
+  intervalMs = 2800,
   className = "",
 }: VerticalTickerProps) {
   const [index, setIndex] = useState(0);
@@ -23,16 +23,15 @@ export default function VerticalTicker({
 
   return (
     <div className={`vticker ${className}`} aria-live="polite">
-      <div
-        className="vticker__track"
-        style={{ transform: `translateY(-${index * 100}%)` }}
-      >
-        {items.map((text, i) => (
-          <div className="vticker__item" key={i}>
-            {text}
-          </div>
-        ))}
-      </div>
+      {items.map((text, i) => (
+        <span
+          key={i}
+          className={`vticker__item ${i === index ? "is-active" : ""}`}
+          aria-hidden={i !== index}
+        >
+          {text}
+        </span>
+      ))}
     </div>
   );
 }

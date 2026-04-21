@@ -151,15 +151,16 @@ export default function ImmersionSection() {
               <div className="boarding-pass__head">
                 <span className="boarding-pass__brand">
                   <span className="boarding-pass__brand-mark" aria-hidden>QV</span>
-                  <span className="boarding-pass__brand-text">QuartaVia · Boarding Pass</span>
+                  <span className="boarding-pass__brand-text">Seu ingresso · Imersão QuartaVia</span>
                 </span>
-                <span className="boarding-pass__class">Classe&nbsp;A</span>
+                <span className="boarding-pass__class">Lote&nbsp;ZERO</span>
               </div>
 
-              <div className="boarding-pass__route" aria-label="Trajeto: do improviso à liberdade patrimonial">
+              <div className="boarding-pass__route" aria-label="De onde você está para onde você vai">
                 <div className="boarding-pass__node">
-                  <span className="boarding-pass__code">HOJE</span>
-                  <span className="boarding-pass__city">Improviso</span>
+                  <span className="boarding-pass__city">De</span>
+                  <span className="boarding-pass__code">Improviso</span>
+                  <span className="boarding-pass__sub">financeiro</span>
                 </div>
                 <div className="boarding-pass__path" aria-hidden>
                   <span className="boarding-pass__line" />
@@ -168,40 +169,41 @@ export default function ImmersionSection() {
                   </svg>
                 </div>
                 <div className="boarding-pass__node boarding-pass__node--dest">
-                  <span className="boarding-pass__code">QV·5</span>
-                  <span className="boarding-pass__city">Liberdade</span>
+                  <span className="boarding-pass__city">Para</span>
+                  <span className="boarding-pass__code">Liberdade</span>
+                  <span className="boarding-pass__sub">patrimonial</span>
                 </div>
               </div>
 
               <dl className="boarding-pass__grid">
                 <div className="boarding-pass__cell">
-                  <dt>Encontros</dt>
-                  <dd>05<span className="boarding-pass__unit">aulas</span></dd>
+                  <dt>Aulas ao vivo</dt>
+                  <dd>5<span className="boarding-pass__unit">encontros</span></dd>
                 </div>
                 <div className="boarding-pass__cell">
-                  <dt>Embarque</dt>
-                  <dd>25/05<span className="boarding-pass__unit">a 29/05</span></dd>
+                  <dt>Datas</dt>
+                  <dd>25–29 mai<span className="boarding-pass__unit">seg a sex</span></dd>
                 </div>
                 <div className="boarding-pass__cell">
                   <dt>Horário</dt>
-                  <dd>20h<span className="boarding-pass__unit">BRT · 90min</span></dd>
+                  <dd>20h<span className="boarding-pass__unit">Brasília · ~90 min</span></dd>
                 </div>
                 <div className="boarding-pass__cell">
-                  <dt>Formato</dt>
-                  <dd>Live<span className="boarding-pass__unit">100% online</span></dd>
+                  <dt>Onde</dt>
+                  <dd>Online<span className="boarding-pass__unit">grupo no WhatsApp</span></dd>
                 </div>
               </dl>
             </div>
 
-            <div className="boarding-pass__stub" aria-hidden>
-              <div className="boarding-pass__stub-label">Seat</div>
-              <div className="boarding-pass__stub-seat">01A</div>
-              <div className="boarding-pass__barcode">
+            <div className="boarding-pass__stub">
+              <div className="boarding-pass__stub-label">Sua vaga</div>
+              <div className="boarding-pass__stub-seat">01<span>A</span></div>
+              <div className="boarding-pass__barcode" aria-hidden>
                 {Array.from({ length: 28 }).map((_, i) => (
                   <span key={i} style={{ width: `${1 + (i % 4)}px` }} />
                 ))}
               </div>
-              <div className="boarding-pass__stub-foot">LOTE&nbsp;ZERO</div>
+              <div className="boarding-pass__stub-foot">Acesso&nbsp;VIP</div>
             </div>
           </div>
         </div>

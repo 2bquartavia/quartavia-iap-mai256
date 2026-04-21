@@ -893,15 +893,17 @@
 }
 .testimonials__carousel {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
 .testimonials__track {
   display: flex;
   gap: 1.5rem;
-  padding: 4rem 50% 4rem 50%;
+  padding: 9rem 50%;
   overflow-x: auto;
+  overflow-y: visible;
   scrollbar-width: none;
   scroll-behavior: auto;
   cursor: grab;

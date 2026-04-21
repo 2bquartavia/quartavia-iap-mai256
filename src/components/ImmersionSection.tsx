@@ -130,81 +130,76 @@ export default function ImmersionSection() {
         <span className="orb orb--4" />
         <span className="orb orb--5" />
       </div>
-      <div className="wrap immersion__intro">
-        <div className="immersion__intro-left">
-          <span className="immersion__eyebrow">A Imersão</span>
-          <h2 className="display immersion__title">
-            A imersão mais completa da QuartaVia para quem quer fazer o{" "}
-            <em>patrimônio crescer</em> sem trabalhar mais.
-          </h2>
-        </div>
+      <div className="wrap immersion__intro immersion__intro--center">
+        <span className="immersion__eyebrow">A Imersão</span>
+        <h2 className="display immersion__title">
+          A imersão mais completa da QuartaVia para quem quer fazer o{" "}
+          <em>patrimônio crescer</em> sem trabalhar mais.
+        </h2>
+        <p className="immersion__lead">
+          <strong>5 encontros</strong> pra você sair do improviso financeiro e entrar num plano
+          real de construção de patrimônio — usando alavancagem, crédito inteligente e os ativos
+          certos que se pagam sozinhos.
+        </p>
 
-        <div className="immersion__intro-right">
-          <p className="immersion__lead">
-            <strong>5 encontros</strong> pra você sair do improviso financeiro e entrar num plano
-            real de construção de patrimônio — usando alavancagem, crédito inteligente e os ativos
-            certos que se pagam sozinhos.
-          </p>
-
-          <div className="boarding-pass" role="group" aria-label="Bilhete da imersão">
-            <div className="boarding-pass__main">
-              <div className="boarding-pass__head">
-                <span className="boarding-pass__brand">
-                  <span className="boarding-pass__brand-mark" aria-hidden>QV</span>
-                  <span className="boarding-pass__brand-text">Seu ingresso · Imersão QuartaVia</span>
-                </span>
-                <span className="boarding-pass__class">Lote&nbsp;ZERO</span>
-              </div>
-
-              <div className="boarding-pass__route" aria-label="De onde você está para onde você vai">
-                <div className="boarding-pass__node">
-                  <span className="boarding-pass__city">De</span>
-                  <span className="boarding-pass__code">Improviso</span>
-                  <span className="boarding-pass__sub">financeiro</span>
-                </div>
-                <div className="boarding-pass__path" aria-hidden>
-                  <span className="boarding-pass__line" />
-                  <svg className="boarding-pass__plane" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 12h14l-3-7 2-1 7 8-7 8-2-1 3-7H2z" />
-                  </svg>
-                </div>
-                <div className="boarding-pass__node boarding-pass__node--dest">
-                  <span className="boarding-pass__city">Para</span>
-                  <span className="boarding-pass__code">Liberdade</span>
-                  <span className="boarding-pass__sub">patrimonial</span>
-                </div>
-              </div>
-
-              <dl className="boarding-pass__grid">
-                <div className="boarding-pass__cell">
-                  <dt>Aulas ao vivo</dt>
-                  <dd>5<span className="boarding-pass__unit">encontros</span></dd>
-                </div>
-                <div className="boarding-pass__cell">
-                  <dt>Datas</dt>
-                  <dd>25–29 mai<span className="boarding-pass__unit">seg a sex</span></dd>
-                </div>
-                <div className="boarding-pass__cell">
-                  <dt>Horário</dt>
-                  <dd>20h<span className="boarding-pass__unit">Brasília · ~90 min</span></dd>
-                </div>
-                <div className="boarding-pass__cell">
-                  <dt>Onde</dt>
-                  <dd>Online<span className="boarding-pass__unit">grupo no WhatsApp</span></dd>
-                </div>
-              </dl>
+        <div className="boarding-pass" role="group" aria-label="Bilhete da imersão">
+          <div className="boarding-pass__main">
+            <div className="boarding-pass__head">
+              <span className="boarding-pass__brand">
+                <span className="boarding-pass__brand-mark" aria-hidden>QV</span>
+                <span className="boarding-pass__brand-text">Seu ingresso · Imersão QuartaVia</span>
+              </span>
+              <span className="boarding-pass__class">Lote&nbsp;ZERO</span>
             </div>
 
-            <div className="boarding-pass__stub">
-              <div className="boarding-pass__stub-label">Sua vaga</div>
-              <div className="boarding-pass__stub-seat">01<span>A</span></div>
-              <div className="boarding-pass__barcode" aria-hidden>
-                {Array.from({ length: 28 }).map((_, i) => (
-                  <span key={i} style={{ width: `${1 + (i % 4)}px` }} />
-                ))}
+            <div className="boarding-pass__route" aria-label="De onde você está para onde você vai">
+              <div className="boarding-pass__node">
+                <span className="boarding-pass__city">De</span>
+                <span className="boarding-pass__code">Improviso</span>
+                <span className="boarding-pass__sub">financeiro</span>
               </div>
-              <div className="boarding-pass__stub-foot">Acesso&nbsp;VIP</div>
+              <div className="boarding-pass__path" aria-hidden>
+                <span className="boarding-pass__line" />
+                <svg className="boarding-pass__plane" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 12h14l-3-7 2-1 7 8-7 8-2-1 3-7H2z" />
+                </svg>
+              </div>
+              <div className="boarding-pass__node boarding-pass__node--dest">
+                <span className="boarding-pass__city">Para</span>
+                <span className="boarding-pass__code">Liberdade</span>
+                <span className="boarding-pass__sub">patrimonial</span>
+              </div>
             </div>
+
+            <dl className="boarding-pass__grid">
+              <div className="boarding-pass__cell">
+                <dt>Datas</dt>
+                <dd>25–29<span className="boarding-pass__unit">de maio · seg a sex</span></dd>
+              </div>
+              <div className="boarding-pass__cell">
+                <dt>Horário</dt>
+                <dd>20h<span className="boarding-pass__unit">Brasília · ~90 min</span></dd>
+              </div>
+              <div className="boarding-pass__cell">
+                <dt>Encontros</dt>
+                <dd>5<span className="boarding-pass__unit">aulas ao vivo</span></dd>
+              </div>
+              <div className="boarding-pass__cell">
+                <dt>Onde</dt>
+                <dd>Online<span className="boarding-pass__unit">grupo no WhatsApp</span></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="boarding-pass__stub">
+            <div className="boarding-pass__stub-label">Sua vaga</div>
+            <div className="boarding-pass__stub-seat">01<span>A</span></div>
+            <div className="boarding-pass__barcode" aria-hidden>
+              {Array.from({ length: 28 }).map((_, i) => (
+                <span key={i} style={{ width: `${1 + (i % 4)}px` }} />
+              ))}
+            </div>
+            <div className="boarding-pass__stub-foot">Acesso&nbsp;VIP</div>
           </div>
         </div>
       </div>

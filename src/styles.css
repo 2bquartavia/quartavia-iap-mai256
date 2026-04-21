@@ -1151,16 +1151,23 @@
   padding: 1.1rem 0 1.15rem;
   border-bottom: 1px dashed color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
 }
-.boarding-pass__node { display: flex; flex-direction: column; gap: 0.2rem; }
+.boarding-pass__node { display: flex; flex-direction: column; gap: 0.15rem; }
 .boarding-pass__node--dest { text-align: right; }
+.boarding-pass__city {
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 50%, transparent);
+  font-weight: 600;
+}
 .boarding-pass__code {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+  font-size: clamp(1.5rem, 3vw, 1.95rem);
   line-height: 1; font-weight: 500; color: #1a1208;
 }
-.boarding-pass__city {
-  font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+.boarding-pass__sub {
+  font-size: 0.72rem; letter-spacing: 0.04em;
   color: color-mix(in oklab, #1a1208 60%, transparent);
+  font-style: italic;
+  font-family: var(--font-display, "Fraunces", serif);
 }
 .boarding-pass__path {
   display: flex; align-items: center; gap: 0.4rem;

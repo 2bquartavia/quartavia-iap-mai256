@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import PillButton from "@/components/PillButton";
-import portrait from "@/assets/adrian-carvalho.png";
+import portrait from "@/assets/adrian-carvalho.jpg";
 
 export default function SpeakerSection() {
   return (
@@ -49,7 +49,7 @@ export default function SpeakerSection() {
 
           {/* RIGHT — Portrait */}
           <div className="speaker-v3__media">
-            <img src={portrait} alt="Adrian Carvalho" />
+            <img src={portrait} alt="Adrian Carvalho" loading="lazy" decoding="async" />
           </div>
         </div>
 

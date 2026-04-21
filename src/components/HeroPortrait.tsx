@@ -54,6 +54,8 @@ export default function HeroPortrait() {
           src={heroBg}
           alt="Adrian Carvalho no palco da Mansão Davos"
           className="hero__portrait-img"
+          decoding="async"
+          {...({ fetchpriority: "high" } as any)}
         />
         <div className="hero__portrait-glow" ref={glowRef} aria-hidden />
         <div className="hero__portrait-grain" aria-hidden />

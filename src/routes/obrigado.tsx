@@ -119,43 +119,16 @@ function ObrigadoPage() {
       >
         <div
           style={{
-            border: "1px dashed rgba(232,165,84,0.35)",
             borderRadius: "1.25rem",
-            padding: "3rem 1.5rem",
-            textAlign: "center",
+            overflow: "hidden",
             background: "rgba(255,255,255,0.02)",
-            minHeight: "280px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1rem",
+            minHeight: "520px",
           }}
         >
-          <p
-            style={{
-              fontSize: "0.7rem",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.4)",
-              margin: 0,
-              fontWeight: 600,
-            }}
-          >
-            Pesquisa de leads
-          </p>
           <div
-            style={{
-              padding: "0.6rem 1.5rem",
-              border: "1px solid rgba(255,255,255,0.15)",
-              borderRadius: "999px",
-              fontSize: "0.8rem",
-              color: "rgba(255,255,255,0.5)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            [PRÓXIMA]
-          </div>
+            data-tf-live="01KPQMFQBBR6A8CPF0MV12PA66"
+            style={{ width: "100%", minHeight: "520px" }}
+          />
         </div>
       </section>
 

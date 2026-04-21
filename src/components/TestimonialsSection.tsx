@@ -109,7 +109,6 @@ export default function TestimonialsSection() {
       if (dx > dy && dx > 6) flagInteract();
     };
 
-    track.addEventListener("pointerdown", flagInteract);
     track.addEventListener("wheel", flagInteract, { passive: true });
     track.addEventListener("touchstart", onTouchStart, { passive: true });
     track.addEventListener("touchmove", onTouchMove, { passive: true });

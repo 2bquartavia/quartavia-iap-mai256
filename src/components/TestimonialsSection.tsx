@@ -96,9 +96,23 @@ export default function TestimonialsSection() {
       }, 1500);
     };
 
+    // Detecta gesto horizontal antes de pausar (ignora scroll vertical da página)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx > dy && dx > 6) flagInteract();
+    };
+
     track.addEventListener("pointerdown", flagInteract);
     track.addEventListener("wheel", flagInteract, { passive: true });
-    track.addEventListener("touchstart", flagInteract, { passive: true });
+    track.addEventListener("touchstart", onTouchStart, { passive: true });
+    track.addEventListener("touchmove", onTouchMove, { passive: true });
     track.addEventListener("scroll", updateCenter, { passive: true });
 
     rafRef.current = requestAnimationFrame(tick);
@@ -107,7 +121,8 @@ export default function TestimonialsSection() {
       if (interactTimeoutRef.current) window.clearTimeout(interactTimeoutRef.current);
       track.removeEventListener("pointerdown", flagInteract);
       track.removeEventListener("wheel", flagInteract);
-      track.removeEventListener("touchstart", flagInteract);
+      track.removeEventListener("touchstart", onTouchStart);
+      track.removeEventListener("touchmove", onTouchMove);
       track.removeEventListener("scroll", updateCenter);
     };
   }, []);

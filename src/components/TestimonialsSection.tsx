@@ -118,7 +118,6 @@ export default function TestimonialsSection() {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (interactTimeoutRef.current) window.clearTimeout(interactTimeoutRef.current);
-      track.removeEventListener("pointerdown", flagInteract);
       track.removeEventListener("wheel", flagInteract);
       track.removeEventListener("touchstart", onTouchStart);
       track.removeEventListener("touchmove", onTouchMove);

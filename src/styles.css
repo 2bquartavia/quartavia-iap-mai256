@@ -1364,11 +1364,15 @@
 }
 /* Override do padding/border quando aplicado em .speaker-v3__credentials */
 .speaker-v3__credentials.vticker {
-  display: block;
   padding-bottom: 1.1rem;
   margin-bottom: 1.25rem;
   border-bottom: 1px solid rgba(40,28,16,0.12);
-  height: auto;
+  height: 2.4em;
+  line-height: 2.4em;
+}
+.speaker-v3__credentials.vticker .vticker__item {
+  height: 2.4em;
+  line-height: 2.4em;
 }
 .speaker-v3__credentials.vticker .vticker__item {
   color: var(--gold, #CC7514);

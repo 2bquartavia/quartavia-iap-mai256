@@ -27,6 +27,16 @@ export const Route = createFileRoute("/obrigado")({
 });
 
 function ObrigadoPage() {
+  useEffect(() => {
+    const s = document.createElement("script");
+    s.src = "//embed.typeform.com/next/embed.js";
+    s.async = true;
+    document.body.appendChild(s);
+    return () => {
+      s.remove();
+    };
+  }, []);
+
   return (
     <main
       style={{

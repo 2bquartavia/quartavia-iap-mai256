@@ -1199,33 +1199,33 @@
 }
 
 .boarding-pass__grid {
-  margin: 1.1rem 0 0;
+  margin: 1.2rem 0 0;
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
-  gap: 0.9rem 1.4rem;
+  grid-template-columns: 1.25fr 1fr 1fr 1.1fr;
+  gap: 1.1rem 1.5rem;
 }
-.boarding-pass__cell { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.boarding-pass__cell { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
 .boarding-pass__cell dt {
-  font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
-  font-weight: 600;
+  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__cell dd {
   margin: 0;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.5rem, 2.6vw, 1.85rem);
+  font-size: clamp(1.65rem, 2.4vw, 1.95rem);
   line-height: 1;
   color: #1a1208;
-  display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 .boarding-pass__unit {
   font-family: var(--font-body, "Inter", sans-serif);
-  font-size: 0.7rem; letter-spacing: 0.04em;
-  color: color-mix(in oklab, #1a1208 55%, transparent);
+  font-size: 0.88rem; letter-spacing: 0.01em;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .boarding-pass__stub {

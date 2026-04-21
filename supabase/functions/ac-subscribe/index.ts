@@ -140,45 +140,50 @@ Deno.serve(async (req) => {
     ]);
     console.log("AC list+tag ok", contactId);
 
-    // 3) UTM custom fields in background (non-critical)
-    const processFields = async () => {
-      try {
-        const fieldValues = Object.entries(FIELD_IDS)
-          .map(([key, field]) => {
-            const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-            return value ? { key, field: String(field), value } : null;
-          })
-          .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
+    // 3) UTM custom fields — SYNCHRONOUS with retry. MUST overwrite existing values.
+    try {
+      const fieldValues = Object.entries(FIELD_IDS)
+        .map(([key, field]) => {
+          const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+          return value ? { key, field: String(field), value } : null;
+        })
+        .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
 
-        const existingRes = await ac(baseUrl, apiKey, `/contacts/${contactId}/fieldValues`).catch(() => ({ fieldValues: [] }));
+      if (fieldValues.length > 0) {
+        const existingRes = await ac(
+          baseUrl,
+          apiKey,
+          `/contacts/${contactId}/fieldValues`,
+        ).catch(() => ({ fieldValues: [] }));
         const existingByField = new Map<string, string>();
         for (const item of existingRes?.fieldValues ?? []) {
           if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
         }
 
         await Promise.all(
-          fieldValues.map(({ key, field, value }) => {
-            const existingId = existingByField.get(field);
-            return ac(baseUrl, apiKey, existingId ? `/fieldValues/${existingId}` : "/fieldValues", {
-              method: existingId ? "PUT" : "POST",
-              body: JSON.stringify({
-                fieldValue: { contact: String(contactId), field, value },
-              }),
-            }).catch((e) => console.warn(`fieldValue ${key} error`, e));
-          }),
+          fieldValues.map(({ key, field, value }) =>
+            withRetry(`fieldValue:${key}`, async () => {
+              const existingId = existingByField.get(field);
+              await ac(
+                baseUrl,
+                apiKey,
+                existingId ? `/fieldValues/${existingId}` : "/fieldValues",
+                {
+                  method: existingId ? "PUT" : "POST",
+                  body: JSON.stringify({
+                    fieldValue: { contact: String(contactId), field, value, useDefaults: false },
+                  }),
+                },
+              );
+            }),
+          ),
         );
-        console.log("AC fields ok", contactId);
-      } catch (e) {
-        console.error("AC fields bg error:", e);
+        console.log("AC fields ok", contactId, fieldValues.map((f) => f.key).join(","));
+      } else {
+        console.log("AC fields: nothing to write", contactId);
       }
-    };
-
-    // @ts-ignore EdgeRuntime is available in Supabase Edge Functions
-    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime.waitUntil) {
-      // @ts-ignore
-      EdgeRuntime.waitUntil(processFields());
-    } else {
-      processFields();
+    } catch (e) {
+      console.error("AC fields error (non-blocking):", e);
     }
 
     return new Response(

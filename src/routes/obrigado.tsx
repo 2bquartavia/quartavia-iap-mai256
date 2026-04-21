@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import PillButton from "@/components/PillButton";
 import FillInText from "@/components/FillInText";

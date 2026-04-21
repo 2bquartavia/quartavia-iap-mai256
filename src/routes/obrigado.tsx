@@ -37,6 +37,19 @@ function ObrigadoPage() {
     };
   }, []);
 
+  const params =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
+  const nome = params.get("nome") ?? "";
+  const email = params.get("email") ?? "";
+  const telefone = params.get("telefone") ?? "";
+  const tfHidden = [
+    `nome=${encodeURIComponent(nome)}`,
+    `email=${encodeURIComponent(email)}`,
+    `telefone=${encodeURIComponent(telefone)}`,
+  ].join(",");
+
   return (
     <main
       style={{
@@ -206,6 +219,7 @@ function ObrigadoPage() {
             data-tf-inline-on-mobile="true"
             data-tf-iframe-props="title=Desafio Quarto Caminho"
             data-tf-medium="snippet"
+            data-tf-hidden={tfHidden}
             className="tf-embed"
             style={{ width: "100%", minHeight: "min(80vh, 720px)", display: "block" }}
           />

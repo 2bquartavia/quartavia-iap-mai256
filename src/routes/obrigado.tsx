@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import PillButton from "@/components/PillButton";
+import FillInText from "@/components/FillInText";
 import logoQuartavia from "@/assets/logo-quartavia.png";
 
 export const Route = createFileRoute("/obrigado")({

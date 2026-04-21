@@ -20,8 +20,12 @@ const trackingBootScript = `(function(){
         params.forEach(function(value, key){
           if (!value || !key) return;
           var safeValue = String(value).slice(0, 255);
-          sessionStorage.setItem('lead_param_' + key, safeValue);
-          if (key.indexOf('utm_') === 0) sessionStorage.setItem(key, safeValue);
+          try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+          try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+          if (key.indexOf('utm_') === 0) {
+            try { sessionStorage.setItem(key, safeValue); } catch(e){}
+            try { localStorage.setItem(key, safeValue); } catch(e){}
+          }
         });
       }
     } catch(e) {}

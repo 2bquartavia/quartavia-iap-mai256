@@ -1,15 +1,14 @@
 import {
   createContext,
-  lazy,
-  Suspense,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 
-const LeadFormModal = lazy(() => import("@/components/LeadFormModal"));
+import LeadFormModal from "@/components/LeadFormModal";
 
 interface LeadModalContextValue {
   open: () => void;
@@ -20,24 +19,28 @@ const LeadModalContext = createContext<LeadModalContextValue | null>(null);
 
 export function LeadModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasOpened, setHasOpened] = useState(false);
 
-  const open = useCallback(() => {
-    setHasOpened(true);
-    setIsOpen(true);
-  }, []);
+  const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
+
+  // Warm up the form chunk during browser idle so first click is instant
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const idle =
+      (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+        .requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1));
+    idle(() => {
+      // touching the import is enough — module is already in the bundle
+      void LeadFormModal;
+    });
+  }, []);
 
   const value = useMemo(() => ({ open, close }), [open, close]);
 
   return (
     <LeadModalContext.Provider value={value}>
       {children}
-      {hasOpened ? (
-        <Suspense fallback={null}>
-          <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
-        </Suspense>
-      ) : null}
+      <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
     </LeadModalContext.Provider>
   );
 }

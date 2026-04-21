@@ -946,8 +946,8 @@
   margin-top: 2rem;
 }
 @media (max-width: 700px) {
-  .testimonial-card { width: 72vw; height: 420px; }
-  .testimonials__track { animation-duration: 45s; }
+  .testimonial-card { width: 60vw; height: 340px; }
+  .testimonial-card.is-center { transform: scale(1.15); }
 }
 
 /* ===================== SPEAKER V3 — open editorial layout ===================== */

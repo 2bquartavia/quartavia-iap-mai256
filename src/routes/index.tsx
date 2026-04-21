@@ -7,7 +7,7 @@ import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import HeroPortrait from "@/components/HeroPortrait";
 import logoQuartavia from "@/assets/logo-quartavia.png";
-import heroBg from "@/assets/hero-v2-desktop.jpg";
+const heroBg = "/hero-v2-desktop.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({

@@ -110,7 +110,17 @@ export default function ImmersionSection() {
             trabalho para crescer.
           </p>
 
-          <p className="immersion__kicker">5 encontros ao vivo · 25 a 29 de maio</p>
+          <div className="immersion__kicker" role="group" aria-label="Datas da imersão">
+            <span className="immersion__kicker-item">
+              <span className="immersion__kicker-num">5</span>
+              <span className="immersion__kicker-text">encontros<br />ao vivo</span>
+            </span>
+            <span className="immersion__kicker-sep" aria-hidden />
+            <span className="immersion__kicker-item">
+              <span className="immersion__kicker-dates">25 — 29</span>
+              <span className="immersion__kicker-text">de maio<br />2025</span>
+            </span>
+          </div>
         </div>
       </div>
 

@@ -27,9 +27,9 @@ export default function TestimonialsSection() {
     const cycle = track.scrollWidth / 3;
     track.scrollLeft = cycle;
 
-    const BASE_SPEED = 90; // px/segundo
-    const SLOW_SPEED = 22; // px/segundo quando um card está centralizado
-    const SLOW_RANGE_RATIO = 0.55; // fração da largura do card considerada "zona de leitura"
+    const BASE_SPEED = 80; // px/segundo
+    const SLOW_SPEED = 55; // px/segundo quando um card está centralizado (nunca para)
+    const SLOW_RANGE_RATIO = 0.45; // fração da largura do card considerada "zona de leitura"
 
     let centerDist = Infinity;
     let centerCardWidth = 0;
@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
 
     const tick = (t: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = t;
-      const dt = (t - lastTimeRef.current) / 1000;
+      const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = t;
 
       let speed = BASE_SPEED;

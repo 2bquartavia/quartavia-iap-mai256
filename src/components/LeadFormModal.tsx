@@ -1,13 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-
 interface LeadFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -110,6 +102,20 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   }, [open]);
 
+  useEffect(() => {
+    if (!open || typeof document === "undefined") return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onOpenChange(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onOpenChange, open]);
+
   const handlePhoneChange = (value: string) => {
     const digits = value.replace(/\D/g, "").slice(0, country.maxNational);
     setPhoneInput(country.format ? country.format(digits) : digits);
@@ -175,18 +181,49 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        className="w-[calc(100vw-2rem)] max-w-md border-0 p-0 overflow-hidden"
+    <div
+      role="presentation"
+      onClick={() => onOpenChange(false)}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        display: "grid",
+        placeItems: "center",
+        padding: "1rem",
+        background: "rgba(0,0,0,0.78)",
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lead-modal-title"
+        aria-describedby="lead-modal-description"
+        onClick={(event) => event.stopPropagation()}
         style={{
+          position: "relative",
+          width: "min(100%, 28rem)",
+          overflow: "hidden",
+          borderRadius: "1rem",
           background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
           color: "#fff",
         }}
       >
+        <button
+          type="button"
+          aria-label="Fechar"
+          onClick={() => onOpenChange(false)}
+          style={closeButtonStyle}
+        >
+          ×
+        </button>
         <div style={{ padding: "1.5rem 1.25rem 1.25rem" }}>
-          <DialogHeader>
-            <DialogTitle
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <h2
+              id="lead-modal-title"
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(1.15rem, 4vw, 1.35rem)",
@@ -197,19 +234,22 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               }}
             >
               Garanta sua vaga no Lote ZERO
-            </DialogTitle>
-            <DialogDescription
+            </h2>
+            <p
+              id="lead-modal-description"
               style={{
                 color: "rgba(255,255,255,0.65)",
                 fontSize: "0.875rem",
                 textAlign: "left",
+                margin: 0,
               }}
             >
               Preencha seus dados para receber o acesso prioritário.
-            </DialogDescription>
-          </DialogHeader>
+            </p>
+          </div>
 
           <form
+            className="lead-form"
             onSubmit={handleSubmit}
             style={{
               display: "flex",
@@ -342,8 +382,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             </p>
           </form>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }
 
@@ -357,4 +397,20 @@ const inputStyle: React.CSSProperties = {
   fontSize: "16px",
   outline: "none",
   fontFamily: "inherit",
+};
+
+const closeButtonStyle: React.CSSProperties = {
+  position: "absolute",
+  top: "0.8rem",
+  right: "0.9rem",
+  zIndex: 2,
+  width: "2rem",
+  height: "2rem",
+  border: "none",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.08)",
+  color: "rgba(255,255,255,0.78)",
+  cursor: "pointer",
+  fontSize: "1.4rem",
+  lineHeight: 1,
 };

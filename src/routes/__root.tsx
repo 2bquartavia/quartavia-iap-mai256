@@ -29,10 +29,10 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aurum Capital — Inteligência para o Mercado Financeiro" },
+      { title: "QuartaVia — Inteligência para o Mercado Financeiro" },
       { name: "description", content: "Estratégias profissionais de renda variável, renda fixa e ativos alternativos." },
-      { name: "author", content: "Aurum Capital" },
-      { property: "og:title", content: "Aurum Capital — Inteligência para o Mercado Financeiro" },
+      { name: "author", content: "QuartaVia" },
+      { property: "og:title", content: "QuartaVia — Inteligência para o Mercado Financeiro" },
       { property: "og:description", content: "Estratégias profissionais para investidores exigentes." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

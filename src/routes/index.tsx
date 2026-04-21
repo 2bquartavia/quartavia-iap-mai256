@@ -11,7 +11,7 @@ import logoQuartavia from "@/assets/logo-quartavia.png";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aurum Capital — Imersão Alavanca Patrimonial" },
+      { title: "QuartaVia — Imersão Alavanca Patrimonial" },
       {
         name: "description",
         content:
@@ -125,7 +125,7 @@ function Index() {
       {/* FOOTER */}
       <footer className="footer">
         <div className="wrap pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
-          <span>© 2025 Aurum Capital. Todos os direitos reservados.</span>
+          <span>© 2025 QuartaVia. Todos os direitos reservados.</span>
           <span>Investimentos envolvem riscos.</span>
         </div>
       </footer>

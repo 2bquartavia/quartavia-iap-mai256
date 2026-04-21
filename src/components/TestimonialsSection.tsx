@@ -107,7 +107,9 @@ export default function TestimonialsSection() {
         <div ref={trackRef} className="testimonials__track">
           {loop.map((src, i) => (
             <figure key={i} className="testimonial-card">
-              <img src={src} alt={`Depoimento ${(i % images.length) + 1}`} loading="lazy" />
+              <div className="testimonial-card__media">
+                <img src={src} alt={`Depoimento ${(i % images.length) + 1}`} loading="lazy" />
+              </div>
             </figure>
           ))}
         </div>

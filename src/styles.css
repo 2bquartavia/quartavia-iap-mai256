@@ -764,8 +764,6 @@
 .immersion {
   background: var(--cream);
   position: relative;
-  overflow: hidden;
-  isolation: isolate;
 }
 /* Orbs decorativos — gradient waves alaranjados */
 .immersion__orbs {

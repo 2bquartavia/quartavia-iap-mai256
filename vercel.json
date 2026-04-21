@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "VERCEL_FORCE_NO_BUILD_CACHE=1 npx vite build --config vite.config.vercel.ts",
+  "installCommand": "npm install --include=dev --legacy-peer-deps",
+  "buildCommand": "VERCEL_FORCE_NO_BUILD_CACHE=1 ./node_modules/.bin/vite build --config vite.config.vercel.ts",
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [

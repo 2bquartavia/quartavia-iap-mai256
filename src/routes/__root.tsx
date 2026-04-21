@@ -85,6 +85,8 @@ export const Route = createRootRoute({
       },
       { rel: "preconnect", href: "https://www.googletagmanager.com" },
       { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
+      { rel: "preconnect", href: "https://cdn.utmify.com.br" },
+      { rel: "dns-prefetch", href: "https://cdn.utmify.com.br" },
     ],
   }),
   shellComponent: RootShell,
@@ -97,17 +99,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <ScriptOnce>{gtmInlineScript}</ScriptOnce>
+        <ScriptOnce>{thirdPartyBootScript}</ScriptOnce>
         <HeadContent />
       </head>
       <body>
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         {children}
         <Scripts />
       </body>

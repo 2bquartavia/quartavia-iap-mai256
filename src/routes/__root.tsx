@@ -11,30 +11,45 @@ import { LeadModalProvider } from "@/components/LeadModalContext";
 import appCss from "../styles.css?url";
 
 const GTM_ID = "GTM-N483RZTK";
-const gtmInlineScript = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`;
-
-// Injeta noscript do GTM + script da UTMify via DOM (evita hydration mismatch
-// de manter esses nós no JSX do shell). Roda imediatamente no SSR via ScriptOnce.
-const thirdPartyBootScript = `(function(){
+// Único bootloader: roda em todo carregamento, é idempotente, prioritário
+// e à prova de falhas (try/catch + retry da UTMify).
+const trackingBootScript = `(function(){
   try {
+    window.dataLayer = window.dataLayer || [];
+    // GTM: inicia o dataLayer imediatamente e injeta o gtm.js (1x por página)
+    if (!window.__gtmLoaded) {
+      window.__gtmLoaded = true;
+      window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+      var gj = document.createElement('script');
+      gj.async = true;
+      gj.src = 'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}';
+      (document.head || document.documentElement).appendChild(gj);
+    }
+    // GTM noscript fallback (1x por página)
     if (!document.getElementById('gtm-noscript-${GTM_ID}')) {
       var ns = document.createElement('noscript');
       ns.id = 'gtm-noscript-${GTM_ID}';
       ns.innerHTML = '<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
       (document.body || document.documentElement).appendChild(ns);
     }
-    if (!document.getElementById('utmify-script')) {
+    // UTMify: idempotente + retry automático em caso de erro de rede
+    function loadUtmify(attempt){
+      if (document.getElementById('utmify-script')) return;
       var s = document.createElement('script');
       s.id = 'utmify-script';
       s.src = 'https://cdn.utmify.com.br/scripts/utms/latest.js';
-      s.async = true;
-      s.defer = true;
+      s.async = true; s.defer = true;
       s.setAttribute('data-utmify-prevent-subids','');
       s.setAttribute('data-utmify-ignore-retry','');
       s.setAttribute('data-utmify-ignore-iframe','');
       s.setAttribute('data-utmify-fast-start','');
+      s.onerror = function(){
+        try { s.parentNode && s.parentNode.removeChild(s); } catch(e) {}
+        if ((attempt||0) < 3) setTimeout(function(){ loadUtmify((attempt||0)+1); }, 1500 * ((attempt||0)+1));
+      };
       (document.head || document.documentElement).appendChild(s);
     }
+    loadUtmify(0);
   } catch(e) {}
 })();`;
 
@@ -98,8 +113,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <ScriptOnce>{gtmInlineScript}</ScriptOnce>
-        <ScriptOnce>{thirdPartyBootScript}</ScriptOnce>
+        <ScriptOnce>{trackingBootScript}</ScriptOnce>
         <HeadContent />
       </head>
       <body>

@@ -67,13 +67,13 @@ function Index() {
               </span>
 
               <h1 className="hero__h1">
-                Construa a renda que <em>liberta</em> você do trabalho.
+                5 encontros pra você sair do <em>improviso financeiro</em> e entrar num plano real de construção de patrimônio.
               </h1>
 
               <p className="hero__lead">
-                A Imersão <strong style={{ color: "#fff" }}>Alavanca Patrimonial</strong> revela o
-                método usado por investidores de alto padrão para montar uma carteira que paga o
-                custo de vida — sem sorte, sem achismo e sem depender do próximo salário.
+                Usando <strong style={{ color: "#fff" }}>alavancagem, crédito inteligente</strong> e
+                os ativos certos que se pagam sozinhos — sem sorte, sem achismo e sem depender do
+                próximo salário.
               </p>
 
               <div className="hero__marquee" aria-label="Benefícios">

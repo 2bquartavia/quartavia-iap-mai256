@@ -615,8 +615,8 @@
   .hero__pill { font-size: .62rem; padding: .32rem .7rem; }
   .hero__content { max-width: 100%; }
   .hero__h1 {
-    font-size: 1.5rem;
-    line-height: 1.15;
+    font-size: 1.25rem;
+    line-height: 1.2;
     max-width: 100%;
   }
   .hero__lead { max-width: 100%; }

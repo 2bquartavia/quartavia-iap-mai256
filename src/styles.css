@@ -988,6 +988,24 @@
   font-weight: 600;
 }
 
+/* Centered intro variant */
+.immersion__intro--center {
+  grid-template-columns: 1fr;
+  text-align: center;
+  align-items: center;
+  justify-items: center;
+  gap: 1.25rem;
+}
+@media (min-width: 880px) {
+  .immersion__intro--center {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+.immersion__intro--center .immersion__title { max-width: 24ch; margin-inline: auto; }
+.immersion__intro--center .immersion__lead { max-width: 58ch; margin: 0.25rem auto 2rem; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; }
+
 .immersion__bullets {
   list-style: none;
   padding: 1.25rem 0 0;

@@ -154,6 +154,7 @@
   font-size: var(--pill-font);
   font-weight: 600;
   letter-spacing: -0.005em;
+  line-height: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -141,9 +141,9 @@ export default function ImmersionSection() {
 
         <div className="immersion__intro-right">
           <p className="immersion__lead">
-            Serão <strong>5 encontros ao vivo</strong> para desenhar um plano real e personalizado
-            para alavancar o que você já tem, sem precisar aportar mais e sem depender só do seu
-            trabalho para crescer.
+            <strong>5 encontros</strong> pra você sair do improviso financeiro e entrar num plano
+            real de construção de patrimônio — usando alavancagem, crédito inteligente e os ativos
+            certos que se pagam sozinhos.
           </p>
 
           <dl className="date-spec" aria-label="Datas da imersão">

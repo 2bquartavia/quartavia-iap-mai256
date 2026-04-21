@@ -1004,7 +1004,7 @@
 }
 .immersion__intro--center .immersion__title { max-width: 24ch; margin-inline: auto; }
 .immersion__intro--center .immersion__lead { max-width: 58ch; margin: 0.25rem auto 2rem; }
-.immersion__intro--center .boarding-pass { width: 100%; max-width: 720px; margin-inline: auto; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; }
 
 .immersion__bullets {
   list-style: none;
@@ -1143,36 +1143,38 @@
 .boarding-pass__brand { display: inline-flex; align-items: center; gap: 0.6rem; }
 .boarding-pass__brand-mark {
   display: inline-grid; place-items: center;
-  width: 34px; height: 34px; border-radius: 9px;
+  width: 28px; height: 28px; border-radius: 8px;
   background: linear-gradient(135deg, var(--gold, #CC7514), #8a4a0d);
   color: #fff;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: 0.95rem; font-weight: 600;
+  font-size: 0.78rem; font-weight: 600;
 }
 .boarding-pass__brand-text {
-  font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 78%, transparent);
-  font-weight: 600;
+  font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 70%, transparent);
 }
 .boarding-pass__class {
-  font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase;
-  padding: 0.4rem 0.75rem; border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 55%, transparent);
-  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
-  background: color-mix(in oklab, var(--gold, #CC7514) 10%, transparent);
-  font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  padding: 0.3rem 0.6rem; border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 50%, transparent);
+  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
+  background: color-mix(in oklab, var(--gold, #CC7514) 8%, transparent);
 }
 
 .boarding-pass__route {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1.2rem;
   padding: 1.2rem 0 1.25rem;
   border-bottom: 1px dashed color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
+  text-align: center;
 }
-.boarding-pass__node { display: flex; flex-direction: column; gap: 0.25rem; }
-.boarding-pass__node--dest { text-align: right; }
+.boarding-pass__node {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  align-items: center;
+}
+.boarding-pass__node--dest { text-align: center; align-items: center; }
 .boarding-pass__city {
   font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
   color: color-mix(in oklab, #1a1208 60%, transparent);
@@ -1180,11 +1182,11 @@
 }
 .boarding-pass__code {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  font-size: clamp(1.8rem, 3.2vw, 2.25rem);
   line-height: 1; font-weight: 500; color: #1a1208;
 }
 .boarding-pass__sub {
-  font-size: 0.92rem; letter-spacing: 0.01em;
+  font-size: 0.95rem; letter-spacing: 0.01em;
   color: color-mix(in oklab, #1a1208 70%, transparent);
   font-style: italic;
   font-family: var(--font-display, "Fraunces", serif);
@@ -1192,6 +1194,7 @@
 .boarding-pass__path {
   display: flex; align-items: center; gap: 0.4rem;
   color: var(--gold, #CC7514);
+  min-width: 60px;
 }
 .boarding-pass__line {
   flex: 1; height: 0;
@@ -1202,20 +1205,29 @@
   margin: 1.4rem 0 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem 1.2rem;
+  gap: 1rem 1rem;
   align-items: start;
+  text-align: center;
 }
 .boarding-pass__cell {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  align-items: center;
+  gap: 0.5rem;
   min-width: 0;
-  padding-left: 0.85rem;
-  border-left: 2px solid color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
+  padding: 0 0.5rem;
+  position: relative;
+}
+.boarding-pass__cell + .boarding-pass__cell::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 8%; bottom: 8%;
+  width: 1px;
+  background: color-mix(in oklab, var(--gold, #CC7514) 28%, transparent);
 }
 .boarding-pass__cell dt {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: color-mix(in oklab, #1a1208 60%, transparent);
   font-weight: 700;
@@ -1224,24 +1236,21 @@
 .boarding-pass__cell dd {
   margin: 0;
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.55rem, 2.2vw, 1.85rem);
+  font-size: clamp(1.85rem, 2.6vw, 2.25rem);
   line-height: 1;
   color: #1a1208;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
   font-weight: 500;
   letter-spacing: -0.01em;
+  text-align: center;
 }
 .boarding-pass__unit {
   font-family: var(--font-body, "Inter", sans-serif);
-  font-size: 0.82rem;
-  letter-spacing: 0.01em;
-  color: color-mix(in oklab, #1a1208 62%, transparent);
-  font-style: normal;
+  font-size: 0.92rem;
+  letter-spacing: 0.005em;
+  color: color-mix(in oklab, #1a1208 65%, transparent);
   font-weight: 500;
   line-height: 1.25;
+  text-align: center;
 }
 
 .boarding-pass__stub {
@@ -1256,29 +1265,27 @@
   text-align: center;
 }
 .boarding-pass__stub-label {
-  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 65%, transparent);
-  font-weight: 700;
+  font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 55%, transparent);
 }
 .boarding-pass__stub-seat {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: 2.4rem; line-height: 1; color: #1a1208;
-  font-weight: 500;
+  font-size: 2rem; line-height: 1; color: #1a1208;
 }
 .boarding-pass__stub-seat span { color: var(--gold, #CC7514); }
 .boarding-pass__barcode {
   margin-top: auto;
   display: flex; align-items: end; gap: 2px;
-  height: 38px;
+  height: 36px;
 }
 .boarding-pass__barcode span {
   display: inline-block; height: 100%;
   background: #1a1208; border-radius: 1px;
 }
 .boarding-pass__stub-foot {
-  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
-  font-weight: 700;
+  font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
+  font-weight: 600;
 }
 
 /* Entry + plane animations */

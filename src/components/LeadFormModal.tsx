@@ -90,15 +90,35 @@ function persistCurrentSearchParams() {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
   const [local, session] = getStorages();
+
+  // Se a URL atual trouxe QUALQUER UTM, ela é autoritativa: sobrescreve as UTMs
+  // armazenadas e remove as ausentes (evita misturar com visitas anteriores).
+  const hasAnyUtm = ACTIVE_FIELD_PARAM_KEYS.some((k) => !!params.get(k));
+  if (hasAnyUtm) {
+    for (const key of ACTIVE_FIELD_PARAM_KEYS) {
+      const value = params.get(key);
+      if (value) {
+        const safeValue = value.slice(0, 255);
+        safeSet(local, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+        safeSet(session, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+        safeSet(local, key, safeValue);
+        safeSet(session, key, safeValue);
+      } else {
+        try { local?.removeItem(`${STORAGE_PARAM_PREFIX}${key}`); } catch {}
+        try { session?.removeItem(`${STORAGE_PARAM_PREFIX}${key}`); } catch {}
+        try { local?.removeItem(key); } catch {}
+        try { session?.removeItem(key); } catch {}
+      }
+    }
+  }
+
+  // Persiste demais params (não-UTM) sem limpar antigos.
   params.forEach((value, key) => {
     if (!key || !value) return;
+    if (key.startsWith("utm_")) return;
     const safeValue = value.slice(0, 255);
     safeSet(local, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
     safeSet(session, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-    if (key.startsWith("utm_")) {
-      safeSet(local, key, safeValue);
-      safeSet(session, key, safeValue);
-    }
   });
 }
 

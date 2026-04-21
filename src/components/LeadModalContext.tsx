@@ -1,7 +1,5 @@
 import {
   createContext,
-  lazy,
-  Suspense,
   useCallback,
   useContext,
   useMemo,
@@ -9,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 
-const LeadFormModal = lazy(() => import("@/components/LeadFormModal"));
+import LeadFormModal from "@/components/LeadFormModal";
 
 interface LeadModalContextValue {
   open: () => void;
@@ -20,12 +18,8 @@ const LeadModalContext = createContext<LeadModalContextValue | null>(null);
 
 export function LeadModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
 
-  const open = useCallback(() => {
-    setHasMounted(true);
-    setIsOpen(true);
-  }, []);
+  const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
   const value = useMemo(() => ({ open, close }), [open, close]);
@@ -33,11 +27,7 @@ export function LeadModalProvider({ children }: { children: ReactNode }) {
   return (
     <LeadModalContext.Provider value={value}>
       {children}
-      {hasMounted && (
-        <Suspense fallback={null}>
-          <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
-        </Suspense>
-      )}
+      <LeadFormModal open={isOpen} onOpenChange={setIsOpen} />
     </LeadModalContext.Provider>
   );
 }

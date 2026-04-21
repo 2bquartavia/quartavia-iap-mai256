@@ -274,7 +274,25 @@
   box-shadow: 0 8px 20px -10px rgba(0,0,0,0.25);
 }
 
-/* Eyebrow */
+/* Mobile — botões grandes/médios viram tamanho responsivo, ocupam largura total e ficam organizados */
+@media (max-width: 720px) {
+  .pill-btn--lg, .pill-btn--md {
+    --pill-h: 3rem;
+    --pill-pad-y: 0.35rem;
+    --pill-pad-l: 1.15rem;
+    --pill-gap: 0.55rem;
+    --pill-font: 0.88rem;
+    --pill-icon: 1rem;
+    width: 100%;
+    max-width: 24rem;
+  }
+  .pill-btn--sm {
+    --pill-h: 2.5rem;
+    --pill-pad-l: 1rem;
+    --pill-font: 0.8rem;
+  }
+}
+
 .eyebrow {
   display: inline-flex; align-items: center; gap: .55rem;
   font-size: .72rem; font-weight: 600;

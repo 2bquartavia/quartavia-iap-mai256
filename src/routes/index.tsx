@@ -76,20 +76,24 @@ function Index() {
                 custo de vida — sem sorte, sem achismo e sem depender do próximo salário.
               </p>
 
-              <ul className="hero__bullets">
-                {[
-                  "Para qualquer nível de conhecimento",
-                  "Estratégia de baixo risco",
-                  "Sem esforço extra no dia a dia",
-                ].map((b) => (
-                  <li key={b}>
-                    <span className="hero__bullets-check">
-                      <Check size={12} strokeWidth={3} />
-                    </span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
+              <div className="hero__marquee" aria-label="Benefícios">
+                <div className="hero__marquee-track">
+                  {Array.from({ length: 2 }).flatMap((_, dup) =>
+                    [
+                      "Para qualquer nível de conhecimento",
+                      "Estratégia de baixo risco",
+                      "Sem esforço extra no dia a dia",
+                    ].map((b, i) => (
+                      <span key={`${dup}-${i}`} className="hero__marquee-item">
+                        <span className="hero__marquee-check">
+                          <Check size={12} strokeWidth={3} />
+                        </span>
+                        {b}
+                      </span>
+                    )),
+                  )}
+                </div>
+              </div>
 
               <div className="hero__actions">
                 <PillButton

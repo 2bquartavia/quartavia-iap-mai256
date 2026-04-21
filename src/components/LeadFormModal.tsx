@@ -105,12 +105,14 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   useEffect(() => {
     if (!open || typeof document === "undefined") return;
     const previousOverflow = document.body.style.overflow;
+    document.body.classList.add("lead-modal-open");
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onOpenChange(false);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
+      document.body.classList.remove("lead-modal-open");
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
@@ -250,6 +252,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
           <form
             className="lead-form"
+            data-utmify-ignore="true"
             onSubmit={handleSubmit}
             style={{
               display: "flex",

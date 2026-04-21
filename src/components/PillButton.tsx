@@ -40,6 +40,7 @@ export default function PillButton({
 
   return (
     <button
+      type="button"
       className={`pill-btn ${variantClass} ${sizeClass} ${widthClass} ${className}`.trim()}
       onClick={handleClick}
       {...rest}

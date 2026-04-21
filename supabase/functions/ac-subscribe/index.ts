@@ -93,17 +93,56 @@ Deno.serve(async (req) => {
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");
 
-    const processAc = async () => {
-      try {
-        const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
+    // 1) Create/update contact synchronously
+    const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
+      method: "POST",
+      body: JSON.stringify({
+        contact: { email, firstName, lastName, phone: telefone },
+      }),
+    });
+    const contactId = Number(syncRes?.contact?.id);
+    if (!contactId) throw new Error("Falha ao criar contato");
+
+    // 2) Apply LIST + TAG synchronously with retry — these MUST be guaranteed
+    const withRetry = async (label: string, fn: () => Promise<unknown>) => {
+      let lastErr: unknown = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          await fn();
+          return;
+        } catch (e) {
+          lastErr = e;
+          console.warn(`${label} attempt ${attempt} failed`, e);
+          await new Promise((r) => setTimeout(r, 250 * attempt));
+        }
+      }
+      console.error(`${label} FAILED after retries`, lastErr);
+      throw lastErr;
+    };
+
+    await Promise.all([
+      withRetry("contactLists", () =>
+        ac(baseUrl, apiKey, "/contactLists", {
           method: "POST",
           body: JSON.stringify({
-            contact: { email, firstName, lastName, phone: telefone },
+            contactList: { list: LIST_ID, contact: contactId, status: 1 },
           }),
-        });
-        const contactId = Number(syncRes?.contact?.id);
-        if (!contactId) throw new Error("Falha ao criar contato");
+        }),
+      ),
+      withRetry("contactTags", () =>
+        ac(baseUrl, apiKey, "/contactTags", {
+          method: "POST",
+          body: JSON.stringify({
+            contactTag: { contact: contactId, tag: TAG_ID },
+          }),
+        }),
+      ),
+    ]);
+    console.log("AC list+tag ok", contactId);
 
+    // 3) UTM custom fields in background (non-critical)
+    const processFields = async () => {
+      try {
         const fieldValues = Object.entries(FIELD_IDS)
           .map(([key, field]) => {
             const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
@@ -117,47 +156,33 @@ Deno.serve(async (req) => {
           if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
         }
 
-        const fieldCalls = fieldValues.map(({ key, field, value }) => {
-          const existingId = existingByField.get(field);
-          return ac(baseUrl, apiKey, existingId ? `/fieldValues/${existingId}` : "/fieldValues", {
-            method: existingId ? "PUT" : "POST",
-            body: JSON.stringify({
-              fieldValue: { contact: String(contactId), field, value },
-            }),
-          }).catch((e) => console.warn(`fieldValue ${key} error`, e));
-        });
-
-        await Promise.all([
-          ...fieldCalls,
-          ac(baseUrl, apiKey, "/contactLists", {
-            method: "POST",
-            body: JSON.stringify({
-              contactList: { list: LIST_ID, contact: contactId, status: 1 },
-            }),
-          }).catch((e) => console.warn("contactLists error", e)),
-          ac(baseUrl, apiKey, "/contactTags", {
-            method: "POST",
-            body: JSON.stringify({
-              contactTag: { contact: contactId, tag: TAG_ID },
-            }),
-          }).catch((e) => console.warn("contactTags error", e)),
-        ]);
-        console.log("AC ok", contactId, fieldValues.map((f) => f.key).join(","));
+        await Promise.all(
+          fieldValues.map(({ key, field, value }) => {
+            const existingId = existingByField.get(field);
+            return ac(baseUrl, apiKey, existingId ? `/fieldValues/${existingId}` : "/fieldValues", {
+              method: existingId ? "PUT" : "POST",
+              body: JSON.stringify({
+                fieldValue: { contact: String(contactId), field, value },
+              }),
+            }).catch((e) => console.warn(`fieldValue ${key} error`, e));
+          }),
+        );
+        console.log("AC fields ok", contactId);
       } catch (e) {
-        console.error("AC bg error:", e);
+        console.error("AC fields bg error:", e);
       }
     };
 
     // @ts-ignore EdgeRuntime is available in Supabase Edge Functions
     if (typeof EdgeRuntime !== "undefined" && EdgeRuntime.waitUntil) {
       // @ts-ignore
-      EdgeRuntime.waitUntil(processAc());
+      EdgeRuntime.waitUntil(processFields());
     } else {
-      processAc();
+      processFields();
     }
 
     return new Response(
-      JSON.stringify({ ok: true }),
+      JSON.stringify({ ok: true, contactId }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {

@@ -6,6 +6,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import HeroPortrait from "@/components/HeroPortrait";
+import logoQuartavia from "@/assets/logo-quartavia.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,6 +37,16 @@ function Index() {
       <section className="hero" style={{ paddingTop: "2.25rem" }}>
         {/* Foto de fundo (vem do background) */}
         <HeroPortrait />
+
+        {/* Logo no topo do hero */}
+        <div className="hero__brand">
+          <img
+            src={logoQuartavia}
+            alt="QuartaVia"
+            className="hero__logo"
+            decoding="async"
+          />
+        </div>
 
         <div className="hero__inner">
           <div className="hero__layout">

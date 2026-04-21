@@ -1002,9 +1002,9 @@
     gap: 1.5rem;
   }
 }
-.immersion__intro--center .immersion__title { max-width: 24ch; margin-inline: auto; }
-.immersion__intro--center .immersion__lead { max-width: 58ch; margin: 0.25rem auto 2rem; }
-.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; }
+.immersion__intro--center .immersion__title { max-width: 32ch; margin-inline: auto; }
+.immersion__intro--center .immersion__lead { max-width: 62ch; margin: 0.25rem auto 1rem; }
+.immersion__intro--center .boarding-pass { width: 100%; max-width: 880px; margin-inline: auto; margin-top: 0.75rem; }
 
 .immersion__bullets {
   list-style: none;

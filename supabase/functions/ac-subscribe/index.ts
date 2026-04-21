@@ -82,12 +82,16 @@ Deno.serve(async (req) => {
     const payload = (await req.json()) as Payload;
     const nome = (payload.nome ?? "").trim();
     const email = (payload.email ?? "").trim().toLowerCase();
-    const telefone = (payload.telefone ?? "").trim();
+    // Normalize phone to E.164: only "+" and digits, nothing else
+    const rawPhone = (payload.telefone ?? "").trim();
+    const digits = rawPhone.replace(/\D/g, "");
+    const telefone = digits ? `+${digits}` : "";
 
     if (!nome || nome.length > 120) throw new Error("nome inválido");
     if (!email || !/^\S+@\S+\.\S+$/.test(email) || email.length > 255)
       throw new Error("email inválido");
-    if (!telefone || telefone.length > 40) throw new Error("telefone inválido");
+    if (!telefone || !/^\+\d{8,15}$/.test(telefone))
+      throw new Error("telefone inválido");
 
     const [firstName, ...rest] = nome.split(/\s+/);
     const lastName = rest.join(" ");

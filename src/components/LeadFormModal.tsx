@@ -1,5 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
+import {
+  AsYouType,
+  parsePhoneNumberFromString,
+  getCountryCallingCode,
+  type CountryCode,
+} from "libphonenumber-js";
 
 import {
   Dialog,
@@ -15,14 +21,31 @@ interface LeadFormModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Curated list — Brazil first, then common ones
+const COUNTRIES: { code: CountryCode; name: string; flag: string }[] = [
+  { code: "BR", name: "Brasil", flag: "🇧🇷" },
+  { code: "PT", name: "Portugal", flag: "🇵🇹" },
+  { code: "US", name: "Estados Unidos", flag: "🇺🇸" },
+  { code: "AR", name: "Argentina", flag: "🇦🇷" },
+  { code: "CL", name: "Chile", flag: "🇨🇱" },
+  { code: "CO", name: "Colômbia", flag: "🇨🇴" },
+  { code: "MX", name: "México", flag: "🇲🇽" },
+  { code: "PY", name: "Paraguai", flag: "🇵🇾" },
+  { code: "UY", name: "Uruguai", flag: "🇺🇾" },
+  { code: "PE", name: "Peru", flag: "🇵🇪" },
+  { code: "ES", name: "Espanha", flag: "🇪🇸" },
+  { code: "IT", name: "Itália", flag: "🇮🇹" },
+  { code: "FR", name: "França", flag: "🇫🇷" },
+  { code: "DE", name: "Alemanha", flag: "🇩🇪" },
+  { code: "GB", name: "Reino Unido", flag: "🇬🇧" },
+  { code: "CA", name: "Canadá", flag: "🇨🇦" },
+  { code: "JP", name: "Japão", flag: "🇯🇵" },
+  { code: "AU", name: "Austrália", flag: "🇦🇺" },
+];
+
 const schema = z.object({
   nome: z.string().trim().min(2, "Informe seu nome").max(120),
   email: z.string().trim().email("E-mail inválido").max(255),
-  telefone: z
-    .string()
-    .trim()
-    .min(8, "Telefone inválido")
-    .max(40, "Telefone inválido"),
 });
 
 const UTM_KEYS = [
@@ -64,7 +87,8 @@ function getUtms(): Record<string, string> {
 export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
+  const [country, setCountry] = useState<CountryCode>("BR");
+  const [phoneInput, setPhoneInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,15 +99,47 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   }, [open]);
 
+  const callingCode = useMemo(() => {
+    try {
+      return `+${getCountryCallingCode(country)}`;
+    } catch {
+      return "";
+    }
+  }, [country]);
+
+  const handlePhoneChange = (value: string) => {
+    // Strip anything that's not digit (mask is purely visual)
+    const digits = value.replace(/\D/g, "").slice(0, 15);
+    const formatter = new AsYouType(country);
+    const formatted = formatter.input(digits);
+    setPhoneInput(formatted);
+  };
+
+  const handleCountryChange = (code: CountryCode) => {
+    setCountry(code);
+    // Re-format current digits under new country
+    const digits = phoneInput.replace(/\D/g, "");
+    const formatter = new AsYouType(code);
+    setPhoneInput(formatter.input(digits));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const parsed = schema.safeParse({ nome, email, telefone });
+    const parsed = schema.safeParse({ nome, email });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Verifique os dados");
       return;
     }
+
+    // Normalize phone to E.164: "+" + digits only, no spaces or punctuation
+    const phoneNumber = parsePhoneNumberFromString(phoneInput, country);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      setError("Telefone inválido — confira o DDD e o número");
+      return;
+    }
+    const telefoneE164 = phoneNumber.number; // e.g. "+5511999999999"
 
     setSubmitting(true);
     try {
@@ -91,13 +147,16 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       const { data, error: fnError } = await supabase.functions.invoke(
         "ac-subscribe",
         {
-          body: { ...parsed.data, ...utms },
+          body: {
+            ...parsed.data,
+            telefone: telefoneE164,
+            ...utms,
+          },
         },
       );
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
 
-      // success → redirect to thank-you page, preserving UTMs
       const search =
         typeof window !== "undefined" ? window.location.search : "";
       window.location.href = `/obrigado${search}`;
@@ -112,28 +171,32 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-md border-0 p-0 overflow-hidden"
+        className="w-[calc(100vw-2rem)] max-w-md border-0 p-0 overflow-hidden"
         style={{
-          background:
-            "linear-gradient(180deg, #062234 0%, #031a28 100%)",
+          background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
           color: "#fff",
         }}
       >
-        <div style={{ padding: "1.75rem 1.5rem 1.5rem" }}>
+        <div style={{ padding: "1.5rem 1.25rem 1.25rem" }}>
           <DialogHeader>
             <DialogTitle
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "1.35rem",
+                fontSize: "clamp(1.15rem, 4vw, 1.35rem)",
                 fontWeight: 600,
                 letterSpacing: "-0.01em",
                 color: "#fff",
+                textAlign: "left",
               }}
             >
               Garanta sua vaga no Lote ZERO
             </DialogTitle>
             <DialogDescription
-              style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.9rem" }}
+              style={{
+                color: "rgba(255,255,255,0.65)",
+                fontSize: "0.875rem",
+                textAlign: "left",
+              }}
             >
               Preencha seus dados para receber o acesso prioritário.
             </DialogDescription>
@@ -145,7 +208,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               display: "flex",
               flexDirection: "column",
               gap: "0.75rem",
-              marginTop: "1.25rem",
+              marginTop: "1.1rem",
             }}
           >
             <input
@@ -166,18 +229,66 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               autoComplete="email"
               required
               maxLength={255}
+              inputMode="email"
               style={inputStyle}
             />
-            <input
-              type="tel"
-              placeholder="WhatsApp com DDD"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              autoComplete="tel"
-              required
-              maxLength={40}
-              style={inputStyle}
-            />
+
+            {/* Phone with country selector */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "minmax(0, 7.5rem) 1fr",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ position: "relative" }}>
+                <select
+                  value={country}
+                  onChange={(e) => handleCountryChange(e.target.value as CountryCode)}
+                  aria-label="País"
+                  style={{
+                    ...inputStyle,
+                    appearance: "none",
+                    paddingRight: "1.5rem",
+                    cursor: "pointer",
+                  }}
+                >
+                  {COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.code} style={{ color: "#000" }}>
+                      {c.flag} {c.code} {`+${getCountryCallingCode(c.code)}`}
+                    </option>
+                  ))}
+                </select>
+                <span
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    right: "0.6rem",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "rgba(255,255,255,0.5)",
+                    pointerEvents: "none",
+                    fontSize: "0.7rem",
+                  }}
+                >
+                  ▾
+                </span>
+              </div>
+
+              <input
+                type="tel"
+                placeholder={
+                  country === "BR" ? "(11) 99999-9999" : `${callingCode} número`
+                }
+                value={phoneInput}
+                onChange={(e) => handlePhoneChange(e.target.value)}
+                autoComplete="tel"
+                inputMode="tel"
+                required
+                maxLength={32}
+                style={{ ...inputStyle, minWidth: 0 }}
+              />
+            </div>
 
             {error && (
               <p
@@ -232,11 +343,12 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  padding: "0.85rem 1rem",
+  padding: "0.85rem 0.9rem",
   borderRadius: "0.75rem",
   border: "1px solid rgba(255,255,255,0.12)",
   background: "rgba(255,255,255,0.04)",
   color: "#fff",
-  fontSize: "0.95rem",
+  fontSize: "16px", // prevents iOS zoom on focus
   outline: "none",
+  fontFamily: "inherit",
 };

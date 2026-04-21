@@ -34,7 +34,7 @@ export default function CTAFinalSection() {
           <PillButton
             label="Quero garantir minha vaga"
             variant="gold"
-            icon={<ArrowRight size={18} strokeWidth={2.2} />}
+            size="lg"
           />
 
           <p className="cta-thirds__meta">

@@ -200,9 +200,11 @@ function ObrigadoPage() {
         <div
           style={{
             borderRadius: "1.25rem",
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(37,211,102,0.35)",
-            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.5)",
+            background: "rgba(3, 26, 40, 0.55)",
+            backdropFilter: "blur(24px) saturate(140%)",
+            WebkitBackdropFilter: "blur(24px) saturate(140%)",
+            border: "1px solid rgba(37,211,102,0.45)",
+            boxShadow: "0 20px 60px -20px rgba(0,0,0,0.6)",
             padding: "1.5rem 1.25rem 1.75rem",
             textAlign: "center",
             color: "#fff",

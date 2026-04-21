@@ -618,6 +618,7 @@
     font-size: 1.25rem;
     line-height: 1.2;
     max-width: 100%;
+    text-wrap: wrap;
   }
   .hero__lead { max-width: 100%; }
   .hero__logo { height: 38px; }

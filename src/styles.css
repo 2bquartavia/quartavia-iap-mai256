@@ -1379,16 +1379,28 @@
   .boarding-pass__grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.1rem 1rem;
+    position: relative;
   }
   .boarding-pass__cell + .boarding-pass__cell::before { display: none; }
+  /* Vertical divider between the 2 columns */
   .boarding-pass__cell:nth-child(2n)::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 10%;
-    bottom: 10%;
+    top: 8%;
+    bottom: 8%;
     width: 1px;
-    background: color-mix(in oklab, var(--gold, #CC7514) 28%, transparent);
+    background: color-mix(in oklab, var(--gold, #CC7514) 32%, transparent);
+  }
+  /* Horizontal divider above the bottom row (cells 3 & 4) */
+  .boarding-pass__cell:nth-child(n+3)::after {
+    content: "";
+    position: absolute;
+    top: -0.55rem;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: color-mix(in oklab, var(--gold, #CC7514) 32%, transparent);
   }
   .boarding-pass__cell dd { font-size: 1.4rem; }
   .boarding-pass__cell dd .boarding-pass__unit { font-size: 0.65rem; }

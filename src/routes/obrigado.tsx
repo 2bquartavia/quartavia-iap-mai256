@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import PillButton from "@/components/PillButton";
 import FillInText from "@/components/FillInText";
 import logoQuartavia from "@/assets/logo-quartavia.png";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 
 export const Route = createFileRoute("/obrigado")({
   head: () => ({

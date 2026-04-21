@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import heroBg from "@/assets/hero-bg.jpg";
-import heroBgMobile from "@/assets/hero-bg-mobile.jpg";
+import heroBg from "@/assets/hero-bg.webp";
+import heroBgMobile from "@/assets/hero-bg-mobile.webp";
 
 export default function HeroPortrait() {
   const wrapRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";

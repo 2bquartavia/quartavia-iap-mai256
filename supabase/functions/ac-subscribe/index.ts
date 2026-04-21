@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
     const fieldValues = Object.entries(FIELD_IDS)
       .map(([key, field]) => {
         const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
-        return value ? { field, value } : null;
+        return value ? { field: String(field), value } : null;
       })
       .filter(Boolean);
 

@@ -1424,7 +1424,7 @@
 }
 @media (max-width: 420px) {
   .boarding-pass__grid { grid-template-columns: 1fr 1fr; gap: 0.85rem 0.9rem; }
-  .boarding-pass__cell dd { font-size: 1.25rem; }
+  .boarding-pass__cell dd { font-size: 1.65rem; }
   .boarding-pass__head .boarding-pass__class { font-size: 0.55rem; padding: 0.25rem 0.5rem; }
 }
 

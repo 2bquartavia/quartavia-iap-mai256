@@ -1150,40 +1150,42 @@
   font-size: 0.78rem; font-weight: 600;
 }
 .boarding-pass__brand-text {
-  font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 70%, transparent);
+  font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 78%, transparent);
+  font-weight: 600;
 }
 .boarding-pass__class {
-  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
-  padding: 0.3rem 0.6rem; border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 50%, transparent);
-  color: color-mix(in oklab, var(--gold, #CC7514) 80%, #000);
-  background: color-mix(in oklab, var(--gold, #CC7514) 8%, transparent);
+  font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.4rem 0.75rem; border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--gold, #CC7514) 55%, transparent);
+  color: color-mix(in oklab, var(--gold, #CC7514) 85%, #000);
+  background: color-mix(in oklab, var(--gold, #CC7514) 10%, transparent);
+  font-weight: 700;
 }
 
 .boarding-pass__route {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1rem;
-  padding: 1.1rem 0 1.15rem;
+  gap: 1.2rem;
+  padding: 1.2rem 0 1.25rem;
   border-bottom: 1px dashed color-mix(in oklab, var(--gold, #CC7514) 35%, transparent);
 }
-.boarding-pass__node { display: flex; flex-direction: column; gap: 0.15rem; }
+.boarding-pass__node { display: flex; flex-direction: column; gap: 0.25rem; }
 .boarding-pass__node--dest { text-align: right; }
 .boarding-pass__city {
-  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: color-mix(in oklab, #1a1208 50%, transparent);
-  font-weight: 600;
+  font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, #1a1208 60%, transparent);
+  font-weight: 700;
 }
 .boarding-pass__code {
   font-family: var(--font-display, "Fraunces", serif);
-  font-size: clamp(1.5rem, 3vw, 1.95rem);
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
   line-height: 1; font-weight: 500; color: #1a1208;
 }
 .boarding-pass__sub {
-  font-size: 0.72rem; letter-spacing: 0.04em;
-  color: color-mix(in oklab, #1a1208 60%, transparent);
+  font-size: 0.92rem; letter-spacing: 0.01em;
+  color: color-mix(in oklab, #1a1208 70%, transparent);
   font-style: italic;
   font-family: var(--font-display, "Fraunces", serif);
 }

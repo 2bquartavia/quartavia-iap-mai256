@@ -69,13 +69,31 @@ let cachedFieldMap: Record<string, number> | null = null;
 async function ensureCustomFields(baseUrl: string, apiKey: string) {
   if (cachedFieldMap) return cachedFieldMap;
 
-  const data = await ac(baseUrl, apiKey, "/fields?limit=100");
+  // Fetch ALL fields (paginate) — AC default limit is small
   const map: Record<string, number> = {};
-  for (const f of data?.fields ?? []) {
-    map[String(f.perstag ?? "").toLowerCase()] = Number(f.id);
+  let offset = 0;
+  const limit = 100;
+  while (true) {
+    const data = await ac(
+      baseUrl,
+      apiKey,
+      `/fields?limit=${limit}&offset=${offset}`,
+    );
+    const fields = data?.fields ?? [];
+    for (const f of fields) {
+      map[String(f.perstag ?? "").toLowerCase()] = Number(f.id);
+    }
+    if (fields.length < limit) break;
+    offset += limit;
   }
 
+  // Map our keys to AC perstags. Existing fields use "LAST-" prefix (e.g. LAST-UTM_SOURCE).
+  // We look up by that perstag first, then fall back to the bare name.
   for (const key of UTM_FIELD_KEYS) {
+    const lastPerstag = `last-${key}`;
+    if (map[lastPerstag] && !map[key]) {
+      map[key] = map[lastPerstag];
+    }
     const perstag = key.toUpperCase();
     if (!map[key]) {
       try {

@@ -596,12 +596,12 @@
 .hero__h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2rem, 4.6vw, 3.9rem);
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: #fff;
   text-wrap: balance;
-  max-width: 18ch;
+  max-width: 24ch;
   text-shadow: 0 2px 30px rgba(0,0,0,0.5);
 }
 .hero__h1 em {
@@ -620,9 +620,9 @@
 @media (max-width: 720px) {
   .hero__pill { font-size: .62rem; padding: .32rem .7rem; }
   .hero__h1 {
-    font-size: 2.1rem;
-    line-height: 1.08;
-    max-width: 12ch;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    max-width: 20ch;
   }
   .hero__logo { height: 38px; }
   .hero__marquee-item { font-size: .8rem; }

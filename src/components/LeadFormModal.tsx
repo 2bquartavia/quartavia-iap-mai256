@@ -1,11 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { z } from "zod";
-import {
-  AsYouType,
-  parsePhoneNumberFromString,
-  getCountryCallingCode,
-  type CountryCode,
-} from "libphonenumber-js";
+import { useEffect, useState, type FormEvent } from "react";
 
 import {
   Dialog,
@@ -14,39 +7,55 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
 
 interface LeadFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-// Curated list — Brazil first, then common ones
-const COUNTRIES: { code: CountryCode; name: string; flag: string }[] = [
-  { code: "BR", name: "Brasil", flag: "🇧🇷" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  { code: "US", name: "Estados Unidos", flag: "🇺🇸" },
-  { code: "AR", name: "Argentina", flag: "🇦🇷" },
-  { code: "CL", name: "Chile", flag: "🇨🇱" },
-  { code: "CO", name: "Colômbia", flag: "🇨🇴" },
-  { code: "MX", name: "México", flag: "🇲🇽" },
-  { code: "PY", name: "Paraguai", flag: "🇵🇾" },
-  { code: "UY", name: "Uruguai", flag: "🇺🇾" },
-  { code: "PE", name: "Peru", flag: "🇵🇪" },
-  { code: "ES", name: "Espanha", flag: "🇪🇸" },
-  { code: "IT", name: "Itália", flag: "🇮🇹" },
-  { code: "FR", name: "França", flag: "🇫🇷" },
-  { code: "DE", name: "Alemanha", flag: "🇩🇪" },
-  { code: "GB", name: "Reino Unido", flag: "🇬🇧" },
-  { code: "CA", name: "Canadá", flag: "🇨🇦" },
-  { code: "JP", name: "Japão", flag: "🇯🇵" },
-  { code: "AU", name: "Austrália", flag: "🇦🇺" },
+type CountryEntry = {
+  code: string;
+  name: string;
+  flag: string;
+  dial: string;
+  // Max number of national digits (after country code)
+  maxNational: number;
+  // Lightweight format groups for visual mask (BR-style only for BR)
+  format?: (digits: string) => string;
+};
+
+const formatBR = (d: string) => {
+  // (11) 99999-9999
+  const a = d.slice(0, 2);
+  const b = d.slice(2, 7);
+  const c = d.slice(7, 11);
+  if (d.length <= 2) return a ? `(${a}` : "";
+  if (d.length <= 7) return `(${a}) ${b}`;
+  return `(${a}) ${b}-${c}`;
+};
+
+const COUNTRIES: CountryEntry[] = [
+  { code: "BR", name: "Brasil", flag: "🇧🇷", dial: "55", maxNational: 11, format: formatBR },
+  { code: "PT", name: "Portugal", flag: "🇵🇹", dial: "351", maxNational: 9 },
+  { code: "US", name: "EUA", flag: "🇺🇸", dial: "1", maxNational: 10 },
+  { code: "AR", name: "Argentina", flag: "🇦🇷", dial: "54", maxNational: 11 },
+  { code: "CL", name: "Chile", flag: "🇨🇱", dial: "56", maxNational: 9 },
+  { code: "CO", name: "Colômbia", flag: "🇨🇴", dial: "57", maxNational: 10 },
+  { code: "MX", name: "México", flag: "🇲🇽", dial: "52", maxNational: 10 },
+  { code: "PY", name: "Paraguai", flag: "🇵🇾", dial: "595", maxNational: 9 },
+  { code: "UY", name: "Uruguai", flag: "🇺🇾", dial: "598", maxNational: 9 },
+  { code: "PE", name: "Peru", flag: "🇵🇪", dial: "51", maxNational: 9 },
+  { code: "ES", name: "Espanha", flag: "🇪🇸", dial: "34", maxNational: 9 },
+  { code: "IT", name: "Itália", flag: "🇮🇹", dial: "39", maxNational: 11 },
+  { code: "FR", name: "França", flag: "🇫🇷", dial: "33", maxNational: 9 },
+  { code: "DE", name: "Alemanha", flag: "🇩🇪", dial: "49", maxNational: 12 },
+  { code: "GB", name: "Reino Unido", flag: "🇬🇧", dial: "44", maxNational: 10 },
+  { code: "CA", name: "Canadá", flag: "🇨🇦", dial: "1", maxNational: 10 },
+  { code: "JP", name: "Japão", flag: "🇯🇵", dial: "81", maxNational: 11 },
+  { code: "AU", name: "Austrália", flag: "🇦🇺", dial: "61", maxNational: 9 },
 ];
 
-const schema = z.object({
-  nome: z.string().trim().min(2, "Informe seu nome").max(120),
-  email: z.string().trim().email("E-mail inválido").max(255),
-});
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const UTM_KEYS = [
   "utm_source",
@@ -87,10 +96,12 @@ function getUtms(): Record<string, string> {
 export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [country, setCountry] = useState<CountryCode>("BR");
+  const [countryCode, setCountryCode] = useState<string>("BR");
   const [phoneInput, setPhoneInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
 
   useEffect(() => {
     if (!open) {
@@ -99,56 +110,52 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   }, [open]);
 
-  const callingCode = useMemo(() => {
-    try {
-      return `+${getCountryCallingCode(country)}`;
-    } catch {
-      return "";
-    }
-  }, [country]);
-
   const handlePhoneChange = (value: string) => {
-    // Strip anything that's not digit (mask is purely visual)
-    const digits = value.replace(/\D/g, "").slice(0, 15);
-    const formatter = new AsYouType(country);
-    const formatted = formatter.input(digits);
-    setPhoneInput(formatted);
+    const digits = value.replace(/\D/g, "").slice(0, country.maxNational);
+    setPhoneInput(country.format ? country.format(digits) : digits);
   };
 
-  const handleCountryChange = (code: CountryCode) => {
-    setCountry(code);
-    // Re-format current digits under new country
-    const digits = phoneInput.replace(/\D/g, "");
-    const formatter = new AsYouType(code);
-    setPhoneInput(formatter.input(digits));
+  const handleCountryChange = (code: string) => {
+    const next = COUNTRIES.find((c) => c.code === code) ?? COUNTRIES[0];
+    setCountryCode(code);
+    const digits = phoneInput.replace(/\D/g, "").slice(0, next.maxNational);
+    setPhoneInput(next.format ? next.format(digits) : digits);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const parsed = schema.safeParse({ nome, email });
-    if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Verifique os dados");
+    const nomeTrim = nome.trim();
+    const emailTrim = email.trim();
+    if (nomeTrim.length < 2) {
+      setError("Informe seu nome");
+      return;
+    }
+    if (!EMAIL_RE.test(emailTrim) || emailTrim.length > 255) {
+      setError("E-mail inválido");
       return;
     }
 
-    // Normalize phone to E.164: "+" + digits only, no spaces or punctuation
-    const phoneNumber = parsePhoneNumberFromString(phoneInput, country);
-    if (!phoneNumber || !phoneNumber.isValid()) {
+    const digits = phoneInput.replace(/\D/g, "");
+    if (digits.length < 6 || digits.length > country.maxNational) {
       setError("Telefone inválido — confira o DDD e o número");
       return;
     }
-    const telefoneE164 = phoneNumber.number; // e.g. "+5511999999999"
+    const telefoneE164 = `+${country.dial}${digits}`;
 
     setSubmitting(true);
     try {
       const utms = getUtms();
+      // Lazy-load supabase client only when actually submitting,
+      // so the click-to-open path stays instant.
+      const { supabase } = await import("@/integrations/supabase/client");
       const { data, error: fnError } = await supabase.functions.invoke(
         "ac-subscribe",
         {
           body: {
-            ...parsed.data,
+            nome: nomeTrim,
+            email: emailTrim,
             telefone: telefoneE164,
             ...utms,
           },
@@ -233,7 +240,6 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               style={inputStyle}
             />
 
-            {/* Phone with country selector */}
             <div
               style={{
                 display: "grid",
@@ -243,8 +249,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             >
               <div style={{ position: "relative" }}>
                 <select
-                  value={country}
-                  onChange={(e) => handleCountryChange(e.target.value as CountryCode)}
+                  value={countryCode}
+                  onChange={(e) => handleCountryChange(e.target.value)}
                   aria-label="País"
                   style={{
                     ...inputStyle,
@@ -255,7 +261,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
                 >
                   {COUNTRIES.map((c) => (
                     <option key={c.code} value={c.code} style={{ color: "#000" }}>
-                      {c.flag} {c.code} {`+${getCountryCallingCode(c.code)}`}
+                      {c.flag} {c.code} +{c.dial}
                     </option>
                   ))}
                 </select>
@@ -278,7 +284,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               <input
                 type="tel"
                 placeholder={
-                  country === "BR" ? "(11) 99999-9999" : `${callingCode} número`
+                  country.code === "BR" ? "(11) 99999-9999" : `+${country.dial} número`
                 }
                 value={phoneInput}
                 onChange={(e) => handlePhoneChange(e.target.value)}
@@ -348,7 +354,7 @@ const inputStyle: React.CSSProperties = {
   border: "1px solid rgba(255,255,255,0.12)",
   background: "rgba(255,255,255,0.04)",
   color: "#fff",
-  fontSize: "16px", // prevents iOS zoom on focus
+  fontSize: "16px",
   outline: "none",
   fontFamily: "inherit",
 };

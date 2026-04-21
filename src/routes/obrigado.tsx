@@ -31,21 +31,21 @@ function ObrigadoPage() {
         className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
         style={{ background: "#CC7514" }}
       >
-        CADASTRO CONFIRMADO · BEM-VINDO À QUARTAVIA
+        IMERSÃO ALAVANCA PATRIMONIAL
       </div>
 
       {/* HERO de confirmação */}
       <section
         style={{
           paddingTop: "5rem",
-          paddingBottom: "2.5rem",
+          paddingBottom: "2rem",
           paddingLeft: "1.25rem",
           paddingRight: "1.25rem",
           color: "#fff",
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: "560px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "620px", margin: "0 auto" }}>
           <img
             src={logoQuartavia}
             alt="QuartaVia"
@@ -72,14 +72,14 @@ function ObrigadoPage() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
-              lineHeight: 1.15,
+              fontSize: "clamp(1.4rem, 3.2vw, 1.85rem)",
+              lineHeight: 1.2,
               fontWeight: 600,
-              margin: "0 0 0.75rem",
+              margin: "0 0 0.85rem",
               letterSpacing: "-0.02em",
             }}
           >
-            Cadastro <em style={{ color: "#E8A554", fontStyle: "italic" }}>confirmado</em>.
+            Falta apenas <em style={{ color: "#E8A554", fontStyle: "italic" }}>um passo</em> para garantir a sua pré-inscrição no Lote ZERO
           </h1>
 
           <p
@@ -90,7 +90,7 @@ function ObrigadoPage() {
               margin: 0,
             }}
           >
-            Responda a pesquisa abaixo para concluir sua inscrição.
+            Para concluir a sua inscrição, responda:
           </p>
         </div>
       </section>
@@ -99,7 +99,7 @@ function ObrigadoPage() {
       <section
         id="pesquisa-lead"
         style={{
-          padding: "1rem 1.25rem 5rem",
+          padding: "0.5rem 1.25rem 2rem",
           maxWidth: "720px",
           margin: "0 auto",
         }}
@@ -108,13 +108,15 @@ function ObrigadoPage() {
           style={{
             border: "1px dashed rgba(232,165,84,0.35)",
             borderRadius: "1.25rem",
-            padding: "3.5rem 1.5rem",
+            padding: "3rem 1.5rem",
             textAlign: "center",
             background: "rgba(255,255,255,0.02)",
-            minHeight: "320px",
+            minHeight: "280px",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            gap: "1rem",
           }}
         >
           <p
@@ -127,9 +129,49 @@ function ObrigadoPage() {
               fontWeight: 600,
             }}
           >
-            Espaço reservado para o formulário
+            Pesquisa de leads
           </p>
+          <div
+            style={{
+              padding: "0.6rem 1.5rem",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "999px",
+              fontSize: "0.8rem",
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.04em",
+            }}
+          >
+            [PRÓXIMA]
+          </div>
         </div>
+      </section>
+
+      {/* CTA WHATSAPP */}
+      <section
+        style={{
+          padding: "1rem 1.25rem 4rem",
+          maxWidth: "620px",
+          margin: "0 auto",
+          textAlign: "center",
+          color: "#fff",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "0.95rem",
+            lineHeight: 1.55,
+            color: "rgba(255,255,255,0.72)",
+            margin: "0 0 1.25rem",
+          }}
+        >
+          Após responder as questões, toque no botão abaixo para entrar no grupo onde as vagas do <strong style={{ color: "#fff" }}>LOTE ZERO</strong> serão liberadas:
+        </p>
+
+        <PillButton
+          label="Entrar no grupo de WhatsApp"
+          variant="gold"
+          size="lg"
+        />
       </section>
 
       {/* FOOTER */}

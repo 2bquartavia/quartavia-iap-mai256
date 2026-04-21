@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check } from "lucide-react";
+
 import PillButton from "@/components/PillButton";
 import logoQuartavia from "@/assets/logo-quartavia.png";
 
@@ -53,21 +53,6 @@ function ObrigadoPage() {
             decoding="async"
           />
 
-          <div
-            style={{
-              width: "52px",
-              height: "52px",
-              borderRadius: "999px",
-              background: "#CC7514",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "1.25rem",
-              boxShadow: "0 0 0 6px color-mix(in oklab, #CC7514 18%, transparent)",
-            }}
-          >
-            <Check size={26} strokeWidth={3} color="#fff" />
-          </div>
 
           <h1
             style={{

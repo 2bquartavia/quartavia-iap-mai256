@@ -398,3 +398,19 @@ const inputStyle: React.CSSProperties = {
   outline: "none",
   fontFamily: "inherit",
 };
+
+const closeButtonStyle: React.CSSProperties = {
+  position: "absolute",
+  top: "0.8rem",
+  right: "0.9rem",
+  zIndex: 2,
+  width: "2rem",
+  height: "2rem",
+  border: "none",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.08)",
+  color: "rgba(255,255,255,0.78)",
+  cursor: "pointer",
+  fontSize: "1.4rem",
+  lineHeight: 1,
+};

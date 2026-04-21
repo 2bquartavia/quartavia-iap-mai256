@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
+
 import PillButton from "@/components/PillButton";
 import dep1 from "@/assets/depoimento-1.jpeg";
 import dep2 from "@/assets/depoimento-2.jpeg";

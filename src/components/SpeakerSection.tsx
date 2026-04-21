@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+
 import PillButton from "@/components/PillButton";
 import VerticalTicker from "@/components/VerticalTicker";
 import portrait from "@/assets/adrian-carvalho.jpg";

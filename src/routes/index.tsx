@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";

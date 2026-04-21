@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+
 import PillButton from "@/components/PillButton";
 import ctaBg from "@/assets/cta-bg.jpg";
 

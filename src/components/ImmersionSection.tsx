@@ -41,7 +41,12 @@ const lessons = [
 export default function ImmersionSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
+  const [imageReady, setImageReady] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const heroBgStyle = useMemo(
+    () => ({ ["--hero-bg" as string]: imageReady ? `url(${heroBg})` : "none" }),
+    [imageReady],
+  );
 
   useEffect(() => {
     let raf = 0;

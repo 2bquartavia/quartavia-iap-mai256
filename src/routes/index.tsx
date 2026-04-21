@@ -124,7 +124,7 @@ function Index() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <div className="wrap pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
+        <div className="wrap pt-6 text-center text-xs text-white/40">
           <span>© 2026 QuartaVia. Todos os direitos reservados.</span>
         </div>
       </footer>

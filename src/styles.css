@@ -876,9 +876,8 @@
 .testimonials {
   padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(5rem, 8vw, 7rem);
   background: var(--cream);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
+  z-index: 2;
 }
 .testimonials__head {
   max-width: 880px;

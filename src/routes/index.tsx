@@ -59,7 +59,7 @@ function Index() {
         <div className="hero__brand">
           <img
             src={logoQuartavia}
-            alt="QuartaVia"
+            alt="Imersão Alavanca Patrimonial"
             className="hero__logo"
             decoding="async"
           />

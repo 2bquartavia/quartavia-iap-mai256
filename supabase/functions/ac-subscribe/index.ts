@@ -22,6 +22,16 @@ const FIELD_IDS: Record<string, number> = {
   utm_pagina: 303,
 };
 
+const TRACKED_UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "utm_id",
+  "utm_pagina",
+] as const;
+
 interface Payload {
   nome: string;
   email: string;
@@ -66,6 +76,21 @@ async function ac(
   return json;
 }
 
+function getTrackedParamsFromUrl(url?: string | null) {
+  if (!url) return {} as Partial<Record<(typeof TRACKED_UTM_KEYS)[number], string>>;
+  try {
+    const parsed = new URL(url);
+    const out: Partial<Record<(typeof TRACKED_UTM_KEYS)[number], string>> = {};
+    for (const key of TRACKED_UTM_KEYS) {
+      const value = parsed.searchParams.get(key)?.trim();
+      if (value) out[key] = value.slice(0, 255);
+    }
+    return out;
+  } catch {
+    return {} as Partial<Record<(typeof TRACKED_UTM_KEYS)[number], string>>;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -82,9 +107,20 @@ Deno.serve(async (req) => {
     }
 
     const payload = (await req.json()) as Payload;
-    const nome = (payload.nome ?? "").trim();
-    const email = (payload.email ?? "").trim().toLowerCase();
-    const rawPhone = (payload.telefone ?? "").trim();
+    const landingUrlParams = getTrackedParamsFromUrl(payload.landing_url);
+    const effectivePayload = {
+      ...landingUrlParams,
+      ...Object.fromEntries(
+        Object.entries(payload).map(([key, value]) => [
+          key,
+          typeof value === "string" ? value.trim() : value,
+        ]),
+      ),
+    } as Payload;
+
+    const nome = (effectivePayload.nome ?? "").trim();
+    const email = (effectivePayload.email ?? "").trim().toLowerCase();
+    const rawPhone = (effectivePayload.telefone ?? "").trim();
     const digits = rawPhone.replace(/\D/g, "");
     const telefone = digits ? `+${digits}` : "";
 
@@ -157,14 +193,14 @@ Deno.serve(async (req) => {
               nome,
               email,
               telefone,
-              utm_source: payload.utm_source ?? null,
-              utm_medium: payload.utm_medium ?? null,
-              utm_campaign: payload.utm_campaign ?? null,
-              utm_term: payload.utm_term ?? null,
-              utm_content: payload.utm_content ?? null,
-              utm_pagina: payload.utm_pagina ?? null,
-              landing_url: payload.landing_url ?? null,
-              referrer: payload.referrer ?? null,
+              utm_source: effectivePayload.utm_source ?? null,
+              utm_medium: effectivePayload.utm_medium ?? null,
+              utm_campaign: effectivePayload.utm_campaign ?? null,
+              utm_term: effectivePayload.utm_term ?? null,
+              utm_content: effectivePayload.utm_content ?? null,
+              utm_pagina: effectivePayload.utm_pagina ?? null,
+              landing_url: effectivePayload.landing_url ?? null,
+              referrer: effectivePayload.referrer ?? null,
               user_agent: userAgent || null,
               ip_address: ipAddress || null,
               ac_contact_id: String(contactId),
@@ -205,7 +241,7 @@ Deno.serve(async (req) => {
         try {
           const fieldValues = Object.entries(FIELD_IDS)
             .map(([key, field]) => {
-              const value = (payload[key as keyof Payload] ?? "").toString().slice(0, 255);
+              const value = (effectivePayload[key as keyof Payload] ?? "").toString().slice(0, 255);
               return value ? { key, field: String(field), value } : null;
             })
             .filter(Boolean) as Array<{ key: string; field: string; value: string }>;

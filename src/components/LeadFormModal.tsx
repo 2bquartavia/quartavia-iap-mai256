@@ -78,63 +78,81 @@ function safeGet(storage: Storage | null, key: string): string | null {
   }
 }
 
+function safeRemove(storage: Storage | null, key: string) {
+  if (!storage) return;
+  try {
+    storage.removeItem(key);
+  } catch {
+    /* ignore quota / privacy mode */
+  }
+}
+
 function getStorages(): Array<Storage | null> {
   if (typeof window === "undefined") return [];
   let local: Storage | null = null;
   let session: Storage | null = null;
-  try { local = window.localStorage; } catch { local = null; }
-  try { session = window.sessionStorage; } catch { session = null; }
+  try {
+    local = window.localStorage;
+  } catch {
+    local = null;
+  }
+  try {
+    session = window.sessionStorage;
+  } catch {
+    session = null;
+  }
   return [local, session];
 }
 
 function persistCurrentSearchParams() {
   if (typeof window === "undefined") return;
+
   const params = new URLSearchParams(window.location.search);
   const [local, session] = getStorages();
+  const storages = [local, session];
+  const hasAnyTrackedParam = ACTIVE_FIELD_PARAM_KEYS.some((key) => {
+    const value = params.get(key);
+    return typeof value === "string" && value.trim().length > 0;
+  });
 
-  // Se a URL atual trouxe QUALQUER UTM, ela é autoritativa: sobrescreve as UTMs
-  // armazenadas e remove as ausentes (evita misturar com visitas anteriores).
-  const hasAnyUtm = ACTIVE_FIELD_PARAM_KEYS.some((k) => !!params.get(k));
-  if (hasAnyUtm) {
+  if (hasAnyTrackedParam) {
     for (const key of ACTIVE_FIELD_PARAM_KEYS) {
-      const value = params.get(key);
-      if (value) {
-        const safeValue = value.slice(0, 255);
-        safeSet(local, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-        safeSet(session, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-        safeSet(local, key, safeValue);
-        safeSet(session, key, safeValue);
-      } else {
-        try { local?.removeItem(`${STORAGE_PARAM_PREFIX}${key}`); } catch {}
-        try { session?.removeItem(`${STORAGE_PARAM_PREFIX}${key}`); } catch {}
-        try { local?.removeItem(key); } catch {}
-        try { session?.removeItem(key); } catch {}
+      const value = params.get(key)?.trim();
+      for (const storage of storages) {
+        safeRemove(storage, `${STORAGE_PARAM_PREFIX}${key}`);
+        safeRemove(storage, key);
+      }
+      if (!value) continue;
+      const safeValue = value.slice(0, 255);
+      for (const storage of storages) {
+        safeSet(storage, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+        safeSet(storage, key, safeValue);
       }
     }
   }
 
-  // Persiste demais params (não-UTM) sem limpar antigos.
   params.forEach((value, key) => {
-    if (!key || !value) return;
-    if (key.startsWith("utm_")) return;
-    const safeValue = value.slice(0, 255);
-    safeSet(local, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-    safeSet(session, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+    const trimmedValue = value.trim();
+    if (!key || !trimmedValue || key.startsWith("utm_")) return;
+    const safeValue = trimmedValue.slice(0, 255);
+    for (const storage of storages) {
+      safeSet(storage, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
+    }
   });
 }
 
 function getLeadParams(): Record<string, string> {
   if (typeof window === "undefined") return {};
-  persistCurrentSearchParams();
 
+  persistCurrentSearchParams();
   const params = new URLSearchParams(window.location.search);
   const [local, session] = getStorages();
   const out: Record<string, string> = {};
 
   for (const key of ACTIVE_FIELD_PARAM_KEYS) {
-    const fromUrl = params.get(key)?.slice(0, 255);
+    const fromUrl = params.get(key)?.trim();
     if (fromUrl) {
-      out[key] = fromUrl;
+      out[key] = fromUrl.slice(0, 255);
       continue;
     }
 
@@ -143,11 +161,15 @@ function getLeadParams(): Record<string, string> {
       safeGet(session, `${STORAGE_PARAM_PREFIX}${key}`) ??
       safeGet(local, key) ??
       safeGet(session, key);
-    if (stored) out[key] = stored.slice(0, 255);
+
+    if (stored?.trim()) {
+      out[key] = stored.trim().slice(0, 255);
+    }
   }
 
-  out.utm_pagina =
-    (typeof document !== "undefined" ? document.title : "") || "";
+  const currentPageTitle = typeof document !== "undefined" ? document.title.trim() : "";
+  if (currentPageTitle) out.utm_pagina = currentPageTitle.slice(0, 255);
+
   return out;
 }
 
@@ -225,12 +247,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     setSubmitting(true);
     try {
       const leadParams = getLeadParams();
-      const landing_url =
-        typeof window !== "undefined" ? window.location.href : "";
-      const referrer =
-        typeof document !== "undefined" ? document.referrer : "";
-      // Lazy-load supabase client only when actually submitting,
-      // so the click-to-open path stays instant.
+      const landing_url = typeof window !== "undefined" ? window.location.href : "";
+      const referrer = typeof document !== "undefined" ? document.referrer : "";
       const { supabase } = await import("@/integrations/supabase/client");
       const { data, error: fnError } = await supabase.functions.invoke(
         "ac-subscribe",
@@ -248,9 +266,10 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
 
-      const params = new URLSearchParams(
-        typeof window !== "undefined" ? window.location.search : "",
-      );
+      const params = new URLSearchParams();
+      for (const [key, value] of Object.entries(leadParams)) {
+        if (value) params.set(key, value);
+      }
       params.set("nome", nomeTrim);
       params.set("email", emailTrim);
       params.set("telefone", telefoneE164);

@@ -260,56 +260,7 @@ Deno.serve(async (req) => {
         }),
       ).catch((e) => console.error("contactTags fatal:", e));
 
-      // 2c) UTM custom fields — overwrite existing values
-      const fieldsP = (async () => {
-        try {
-          const fieldValues = Object.entries(FIELD_IDS)
-            .map(([key, field]) => {
-              const value = (effectivePayload[key as keyof Payload] ?? "").toString().slice(0, 255);
-              return value ? { key, field: String(field), value } : null;
-            })
-            .filter(Boolean) as Array<{ key: string; field: string; value: string }>;
-
-          if (fieldValues.length === 0) {
-            console.log("AC fields: nothing to write", contactId);
-            return;
-          }
-
-          const existingRes = await ac(
-            baseUrl,
-            apiKey,
-            `/contacts/${contactId}/fieldValues`,
-          ).catch(() => ({ fieldValues: [] }));
-          const existingByField = new Map<string, string>();
-          for (const item of existingRes?.fieldValues ?? []) {
-            if (item?.field && item?.id) existingByField.set(String(item.field), String(item.id));
-          }
-
-          await Promise.all(
-            fieldValues.map(({ key, field, value }) =>
-              withRetry(`fieldValue:${key}`, async () => {
-                const existingId = existingByField.get(field);
-                await ac(
-                  baseUrl,
-                  apiKey,
-                  existingId ? `/fieldValues/${existingId}` : "/fieldValues",
-                  {
-                    method: existingId ? "PUT" : "POST",
-                    body: JSON.stringify({
-                      fieldValue: { contact: String(contactId), field, value, useDefaults: false },
-                    }),
-                  },
-                );
-              }),
-            ),
-          );
-          console.log("AC fields ok", contactId, fieldValues.map((f) => f.key).join(","));
-        } catch (e) {
-          console.error("AC fields error:", e);
-        }
-      })();
-
-      await Promise.all([dbInsert, listP, tagP, fieldsP]);
+      await Promise.all([dbInsert, listP, tagP]);
       console.log("Background pipeline complete for", contactId);
     })();
 

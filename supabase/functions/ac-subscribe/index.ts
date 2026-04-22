@@ -13,12 +13,13 @@ const LIST_ID = 120; // IAP - METEORICO
 
 // ActiveCampaign custom field IDs
 const FIELD_IDS: Record<string, number> = {
-  utm_source: 1,
-  utm_medium: 2,
-  utm_campaign: 3,
-  utm_term: 4,
-  utm_content: 5,
-  utm_pagina: 53,
+  utm_source: 297,
+  utm_medium: 299,
+  utm_campaign: 298,
+  utm_content: 301,
+  utm_term: 300,
+  utm_id: 302,
+  utm_pagina: 303,
 };
 
 interface Payload {
@@ -30,6 +31,7 @@ interface Payload {
   utm_campaign?: string;
   utm_content?: string;
   utm_term?: string;
+  utm_id?: string;
   utm_pagina?: string;
   landing_url?: string;
   referrer?: string;

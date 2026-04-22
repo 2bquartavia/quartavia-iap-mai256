@@ -128,7 +128,7 @@ function ObrigadoPage() {
         <div style={{ maxWidth: "620px", margin: "0 auto" }}>
           <img
             src={logoQuartavia}
-            alt="QuartaVia"
+            alt="Imersão Alavanca Patrimonial"
             style={{ height: "32px", margin: "0 auto 1.5rem", display: "block" }}
             decoding="async"
           />

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import PillButton from "@/components/PillButton";
 import FillInText from "@/components/FillInText";
-import logoQuartavia from "@/assets/logo-quartavia.png";
+import logoQuartavia from "@/assets/logo-alavanca.png";
 import heroBg from "@/assets/hero-bg.webp";
 
 export const Route = createFileRoute("/obrigado")({
@@ -128,7 +128,7 @@ function ObrigadoPage() {
         <div style={{ maxWidth: "620px", margin: "0 auto" }}>
           <img
             src={logoQuartavia}
-            alt="QuartaVia"
+            alt="Imersão Alavanca Patrimonial"
             style={{ height: "32px", margin: "0 auto 1.5rem", display: "block" }}
             decoding="async"
           />

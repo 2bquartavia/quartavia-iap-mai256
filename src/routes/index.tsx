@@ -6,7 +6,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import HeroPortrait from "@/components/HeroPortrait";
-import logoQuartavia from "@/assets/logo-quartavia.png";
+import logoQuartavia from "@/assets/logo-alavanca.png";
 const heroBg = "/hero-v2-desktop.jpg";
 
 export const Route = createFileRoute("/")({
@@ -59,7 +59,7 @@ function Index() {
         <div className="hero__brand">
           <img
             src={logoQuartavia}
-            alt="QuartaVia"
+            alt="Imersão Alavanca Patrimonial"
             className="hero__logo"
             decoding="async"
           />

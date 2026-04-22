@@ -157,15 +157,39 @@ Deno.serve(async (req) => {
       throw lastErr;
     };
 
-    // 1) Create/update contact — REQUIRED to get contactId
+    // 1) Create/update contact WITH all custom fields in a single call.
+    // AC's /contact/sync accepts fieldValues so the contact is created
+    // already with UTMs filled in — no separate granular updates needed.
+    const syncFieldValues = Object.entries(FIELD_IDS)
+      .map(([key, field]) => {
+        const value = (effectivePayload[key as keyof Payload] ?? "")
+          .toString()
+          .trim()
+          .slice(0, 255);
+        return value ? { field: String(field), value } : null;
+      })
+      .filter(Boolean) as Array<{ field: string; value: string }>;
+
     const syncRes = await ac(baseUrl, apiKey, "/contact/sync", {
       method: "POST",
       body: JSON.stringify({
-        contact: { email, firstName, lastName, phone: telefone },
+        contact: {
+          email,
+          firstName,
+          lastName,
+          phone: telefone,
+          fieldValues: syncFieldValues,
+        },
       }),
     });
     const contactId = Number(syncRes?.contact?.id);
     if (!contactId) throw new Error("Falha ao criar contato");
+    console.log(
+      "Contact synced",
+      contactId,
+      "with fields:",
+      syncFieldValues.map((f) => f.field).join(",") || "(none)",
+    );
 
     // 2) Background work — list, tag, custom fields, DB insert.
     // Respond to the client IMMEDIATELY after contact sync; the rest

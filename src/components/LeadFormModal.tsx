@@ -55,6 +55,7 @@ const ACTIVE_FIELD_PARAM_KEYS = [
   "utm_campaign",
   "utm_content",
   "utm_term",
+  "utm_id",
 ] as const;
 
 const STORAGE_PARAM_PREFIX = "lead_param_";

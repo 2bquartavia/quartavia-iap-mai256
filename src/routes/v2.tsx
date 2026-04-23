@@ -39,78 +39,54 @@ function IndexV2() {
         Imersão Alavanca Patrimonial · 25 a 29 de maio · Ao vivo com Adrian Carvalho · Apenas 50 Diagnósticos Individuais
       </div>
 
-      {/* HERO — full-bleed com foto de fundo + degradê + texto na base */}
-      <section className="hero" style={{ paddingTop: "2.25rem" }}>
-        {/* Foto de fundo (vem do background) */}
-        <HeroPortrait />
+      {/* HERO — fundo laranja, texto à esquerda, foto à direita */}
+      <section
+        className="relative w-full overflow-hidden"
+        style={{ background: "#CC7514", paddingTop: "2.25rem" }}
+      >
+        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-10 md:pt-14 pb-12 md:pb-20">
+          {/* Logo */}
+          <div className="flex items-center justify-start mb-10 md:mb-14">
+            <img
+              src={logoQuartavia}
+              alt="Imersão Alavanca Patrimonial"
+              className="h-9 md:h-11 w-auto"
+              decoding="async"
+            />
+          </div>
 
-        {/* Grade arquitetônica decorativa com halo dourado */}
-        <div className="hero__grid" aria-hidden>
-          <span className="hero__grid-v hero__grid-v--1" />
-          <span className="hero__grid-v hero__grid-v--2" />
-          <span className="hero__grid-v hero__grid-v--3" />
-          <span className="hero__grid-v hero__grid-v--4" />
-          <span className="hero__grid-h hero__grid-h--1" />
-          <span className="hero__grid-h hero__grid-h--2" />
-        </div>
-
-        {/* Logo no topo do hero */}
-        <div className="hero__brand">
-          <img
-            src={logoQuartavia}
-            alt="Imersão Alavanca Patrimonial"
-            className="hero__logo"
-            decoding="async"
-          />
-        </div>
-
-        <div className="hero__inner">
-          <div className="hero__layout">
-            <div className="hero__content">
-              <span className="hero__pill">
-                <span className="hero__pill-dot" />
-                Pré-venda Lote ZERO · 26/04
-              </span>
-
-              <h1 className="hero__h1">
-                5 encontros pra você sair do <em>improviso financeiro</em> e entrar num plano real de construção de patrimônio.
-              </h1>
-
-              <p className="hero__lead">
-                Usando <strong style={{ color: "#fff" }}>alavancagem, crédito inteligente</strong> e
-                os ativos certos que se pagam sozinhos — sem sorte, sem achismo e sem depender do
-                próximo salário.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            {/* Coluna esquerda — texto */}
+            <div className="text-white">
+              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em] text-white/90 mb-6">
+                Imersão Alavanca Patrimonial · 25 a 29 de maio · Ao vivo com Adrian Carvalho · Apenas 50 Diagnósticos Individuais
               </p>
 
-              <div className="hero__marquee" aria-label="Benefícios">
-                <div className="hero__marquee-track">
-                  {Array.from({ length: 2 }).flatMap((_, dup) =>
-                    [
-                      "Para qualquer nível de conhecimento",
-                      "Estratégia de baixo risco",
-                      "Sem esforço extra no dia a dia",
-                    ].map((b, i) => (
-                      <span key={`${dup}-${i}`} className="hero__marquee-item">
-                        <span className="hero__marquee-check">
-                          <Check size={12} strokeWidth={3} />
-                        </span>
-                        {b}
-                      </span>
-                    )),
-                  )}
-                </div>
-              </div>
+              <h1 className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,5vw,3.75rem)]">
+                Você ganha mais de R$20 mil por mês. Mas se parar de trabalhar, seu patrimônio não te sustenta.
+              </h1>
 
-              <div className="hero__actions">
+              <div className="mt-8 md:mt-10">
                 <PillButton
                   label="Quero garantir minha vaga no Lote ZERO"
                   variant="gold"
                   size="lg"
                 />
               </div>
-              <p className="hero__fineprint">
-                Acesso exclusivo ao LOTE ZERO para quem entrar no grupo de WhatsApp.
-              </p>
+            </div>
+
+            {/* Coluna direita — foto no retângulo */}
+            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl">
+              <picture>
+                <source media="(max-width: 768px)" srcSet={heroBgMobile} />
+                <img
+                  src={heroBg}
+                  alt="Adrian Carvalho no palco da Mansão Davos"
+                  className="w-full h-full object-cover"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </picture>
             </div>
           </div>
         </div>

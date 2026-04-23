@@ -37,7 +37,7 @@ function IndexV2() {
         className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
         style={{ background: "#CC7514" }}
       >
-        OPORTUNIDADE EXCLUSIVA PARA PROFISSIONAIS COM RENDA ACIMA DE R$ 20 MIL
+        Imersão Alavanca Patrimonial · 25 a 29 de maio · Ao vivo com Adrian Carvalho · Apenas 50 Diagnósticos Individuais
       </div>
 
       {/* HERO — full-bleed com foto de fundo + degradê + texto na base */}

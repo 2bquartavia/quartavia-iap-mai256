@@ -31,26 +31,18 @@ function IndexV2() {
 
   return (
     <main>
-      {/* TOP BAR — fixed */}
-      <div
-        className="fixed top-0 inset-x-0 z-50 text-white text-center py-2 px-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em]"
-        style={{ background: "#CC7514" }}
-      >
-        Imersão Alavanca Patrimonial · 25 a 29 de maio · Ao vivo com Adrian Carvalho · Apenas 50 Diagnósticos Individuais
-      </div>
-
       {/* HERO — fundo laranja, texto à esquerda, foto à direita */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ background: "#CC7514", paddingTop: "2.25rem" }}
+        style={{ background: "#CC7514" }}
       >
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-10 md:pt-14 pb-12 md:pb-20">
+        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-20">
           {/* Logo */}
           <div className="flex items-center justify-start mb-10 md:mb-14">
             <img
               src={logoQuartavia}
               alt="Imersão Alavanca Patrimonial"
-              className="h-9 md:h-11 w-auto"
+              className="h-9 md:h-11 w-auto brightness-0 invert"
               decoding="async"
             />
           </div>
@@ -58,31 +50,45 @@ function IndexV2() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Coluna esquerda — texto */}
             <div className="text-white">
-              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em] text-white/90 mb-6">
-                Imersão Alavanca Patrimonial · 25 a 29 de maio · Ao vivo com Adrian Carvalho · Apenas 50 Diagnósticos Individuais
-              </p>
+              {/* Pílulas com cada informação */}
+              <div className="flex flex-wrap gap-2 mb-7">
+                {[
+                  "Imersão Alavanca Patrimonial",
+                  "25 a 29 de maio",
+                  "Ao vivo com Adrian Carvalho",
+                  "Apenas 50 Diagnósticos Individuais",
+                ].map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
 
-              <h1 className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,5vw,3.75rem)]">
+              <h1 className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,4.6vw,3.5rem)]">
                 Você ganha mais de R$20 mil por mês. Mas se parar de trabalhar, seu patrimônio não te sustenta.
               </h1>
 
               <div className="mt-8 md:mt-10">
                 <PillButton
                   label="Quero garantir minha vaga no Lote ZERO"
-                  variant="gold"
+                  variant="dark"
                   size="lg"
                 />
               </div>
             </div>
 
-            {/* Coluna direita — foto no retângulo */}
-            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl">
+            {/* Coluna direita — foto no retângulo, rosto centralizado em cima */}
+            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15">
               <picture>
                 <source media="(max-width: 768px)" srcSet={heroBgMobile} />
                 <img
                   src={heroBg}
                   alt="Adrian Carvalho no palco da Mansão Davos"
                   className="w-full h-full object-cover"
+                  style={{ objectPosition: "50% 15%" }}
                   decoding="async"
                   fetchPriority="high"
                 />

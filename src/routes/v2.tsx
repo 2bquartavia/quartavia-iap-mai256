@@ -5,6 +5,7 @@ import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
+import DiagnosticoSection from "@/components/DiagnosticoSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -165,6 +166,8 @@ function IndexV2() {
       </section>
 
       {/* IMMERSION — segunda dobra */}
+      <DiagnosticoSection />
+
       <ImmersionSection />
 
       {/* DEPOIMENTOS */}

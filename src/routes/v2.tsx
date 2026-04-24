@@ -121,7 +121,7 @@ function IndexV2() {
             </div>
 
             {/* Coluna direita — slideshow no retângulo, rosto centralizado em cima */}
-            <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15 bg-black/20">
+            <div className="relative w-full aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15 bg-black/20">
               {heroSlides.map((src, i) => (
                 <img
                   key={src}

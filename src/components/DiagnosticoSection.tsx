@@ -1,5 +1,64 @@
 import { Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import renatoOberg from "@/assets/renato-oberg.png";
+
+const PERFIL_ITEMS = [
+  "Renda acima de R$20 mil.",
+  "Patrimônio que não reflete essa renda.",
+  "Investimentos que mal acompanham a inflação real.",
+  "Zero fontes de renda que funcionam sem eles.",
+];
+
+function FerrisWheelList({ items }: { items: string[] }) {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActive((i) => (i + 1) % items.length);
+    }, 2200);
+    return () => clearInterval(id);
+  }, [items.length]);
+
+  const radius = 110; // px
+  const step = (2 * Math.PI) / items.length;
+
+  return (
+    <div
+      className="relative mx-auto my-8 flex items-center justify-center"
+      style={{ height: radius * 2 + 40 }}
+      aria-live="polite"
+    >
+      {items.map((item, i) => {
+        // posição relativa ao topo: 0 = topo
+        const offset = (i - active + items.length) % items.length;
+        const angle = -Math.PI / 2 + offset * step; // começa no topo
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const isTop = offset === 0;
+
+        return (
+          <div
+            key={item}
+            className="absolute left-1/2 top-1/2 text-center transition-all duration-700 ease-out"
+            style={{
+              transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+              opacity: isTop ? 1 : 0,
+              pointerEvents: isTop ? "auto" : "none",
+            }}
+          >
+            <span
+              className={`inline-block px-4 text-[#031a28] font-semibold leading-[1.3] tracking-[-0.01em] text-[clamp(1.15rem,2.2vw,1.6rem)] ${
+                isTop ? "scale-100" : "scale-90"
+              } transition-transform duration-700`}
+            >
+              {item}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function DiagnosticoSection() {
   return (
@@ -88,23 +147,8 @@ export default function DiagnosticoSection() {
           Quase todos tinham o mesmo perfil:
         </p>
 
-        {/* Lista de perfil */}
-        <ul className="mt-5 space-y-3">
-          {[
-            "Renda acima de R$20 mil.",
-            "Patrimônio que não reflete essa renda.",
-            "Investimentos que mal acompanham a inflação real.",
-            "Zero fontes de renda que funcionam sem eles.",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-3 text-[#031a28]/85 text-[16px] md:text-[17px] leading-[1.6]"
-            >
-              <span aria-hidden className="mt-[10px] h-[6px] w-[6px] shrink-0 rounded-full bg-[#031a28]" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+        {/* Lista de perfil — roda-gigante */}
+        <FerrisWheelList items={PERFIL_ITEMS} />
 
         <p className="mt-10 text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">
           E o que pouca gente admite: essa situação não fica só no extrato bancário. Ela entra no casamento. No sono. Na relação com os filhos. Já vi profissional de R$80 mil por mês com vergonha de falar de dinheiro em casa. Já vi empresário que ganha mais do que o pai sonhou ganhar na vida inteira e sente que não construiu nada de verdade.

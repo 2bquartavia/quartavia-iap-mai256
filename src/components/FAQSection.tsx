@@ -113,12 +113,8 @@ export default function FAQSection() {
             Perguntas frequentes
           </span>
           <h2 className="mt-5 font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-[#0b2a3a]">
-            Tudo o que você precisa saber{" "}
-            <span className="italic text-[#0b2a3a]/70">antes de entrar.</span>
+            Perguntas Frequentes
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-[#0b2a3a]/65">
-            Se ainda restar alguma dúvida depois disso, fale com a nossa equipe.
-          </p>
         </div>
 
         {/* accordion */}
@@ -186,17 +182,6 @@ export default function FAQSection() {
           })}
         </ul>
 
-        {/* footer note */}
-        <p className="mt-12 text-center text-[13px] text-[#0b2a3a]/55">
-          Ainda com dúvidas? Escreva pra{" "}
-          <a
-            href="mailto:contato@quartavia.com.br"
-            className="font-medium text-[#0b2a3a] underline underline-offset-4 hover:opacity-70"
-          >
-            contato@quartavia.com.br
-          </a>
-          .
-        </p>
       </div>
     </section>
   );

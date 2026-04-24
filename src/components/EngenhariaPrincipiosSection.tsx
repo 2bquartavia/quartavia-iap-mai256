@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 const BLOCOS = [
   {
+    showHeader: true,
     eyebrow: "Princípio 1",
     title: "Use o dinheiro dos outros.",
     sub: "(Alavancagem)",
@@ -9,6 +10,7 @@ const BLOCOS = [
       "Você compra um imóvel de R$500 mil. Dá R$150 mil de entrada. O banco financia o resto. O inquilino paga R$3.500/mês de aluguel — que paga a parcela. Em 15 anos, o imóvel é seu. Quitado. Quem pagou? O inquilino. Não você.",
   },
   {
+    showHeader: true,
     eyebrow: "Princípio 2",
     title: "Compre na hora certa, do jeito certo.",
     sub: "(Arbitragem)",
@@ -16,25 +18,28 @@ const BLOCOS = [
       "Quando você compra no leilão um imóvel por R$600 mil que vale R$1 milhão, você criou R$400 mil de patrimônio no ato. Sem esperar. Sem sorte. Só por saber onde comprar e como estruturar.",
   },
   {
+    showHeader: false,
     eyebrow: "Combinação",
     title: "Alavancagem + Arbitragem com a engenharia certa.",
     sub: "",
     body:
-      "Você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação. (Grava essa palavra.)",
+      "Quando você combina alavancagem e arbitragem com a engenharia certa, você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação! (Grava essa palavra.)",
   },
   {
+    showHeader: false,
     eyebrow: "Originação",
     title: "A zona onde o dinheiro de verdade é criado.",
     sub: "",
     body:
-      "Não é onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide: quem compra produtos financia quem gera riqueza de verdade.",
+      "Originação é a zona onde o dinheiro de verdade é criado, não só onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide, onde quem compra produtos financia quem gera riqueza de verdade.",
   },
   {
+    showHeader: false,
     eyebrow: "Método",
     title: "Eu sistematizei isso.",
     sub: "",
     body:
-      "Depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
+      "Eu sistematizei isso depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
   },
 ];
 
@@ -104,13 +109,16 @@ export default function EngenhariaPrincipiosSection() {
               </h2>
 
               {/* Lista empilhada — cada bloco surge mas permanece visível */}
-              <div className="mt-8 md:mt-10 flex flex-col gap-5 md:gap-6 max-h-[62vh] overflow-hidden pr-2">
+              <div className="mt-6 md:mt-8 flex flex-col gap-4 md:gap-5 pr-2">
                 {BLOCOS.map((b, i) => {
+                  // Usa apenas 80% do progresso para revelar os blocos —
+                  // garante que TUDO esteja 100% visível antes do fim do scroll.
+                  const reveal = Math.min(1, progress / 0.8);
                   const slice = 1 / BLOCOS.length;
                   const start = i * slice;
                   const local = Math.min(
                     1,
-                    Math.max(0, (progress - start) / slice)
+                    Math.max(0, (reveal - start) / slice)
                   );
                   const translateY = (1 - local) * 24;
                   return (
@@ -123,18 +131,26 @@ export default function EngenhariaPrincipiosSection() {
                           "opacity 0.4s ease-out, transform 0.4s ease-out",
                       }}
                     >
-                      <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold">
-                        {b.eyebrow}
-                      </div>
-                      <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
-                        {b.title}{" "}
-                        {b.sub && (
-                          <span className="text-white/60 font-normal italic">
-                            {b.sub}
-                          </span>
-                        )}
-                      </h3>
-                      <p className="mt-1.5 text-white/70 text-[13px] md:text-[14px] leading-[1.5] max-w-[560px]">
+                      {b.showHeader && (
+                        <>
+                          <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold">
+                            {b.eyebrow}
+                          </div>
+                          <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
+                            {b.title}{" "}
+                            {b.sub && (
+                              <span className="text-white/60 font-normal italic">
+                                {b.sub}
+                              </span>
+                            )}
+                          </h3>
+                        </>
+                      )}
+                      <p
+                        className={`${
+                          b.showHeader ? "mt-1.5" : "mt-0"
+                        } text-white/75 text-[13px] md:text-[14px] leading-[1.55] max-w-[560px]`}
+                      >
                         {b.body}
                       </p>
                     </div>

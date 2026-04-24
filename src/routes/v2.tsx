@@ -100,12 +100,23 @@ function IndexV2() {
                 Você ganha mais de R$20 mil por mês. Mas se parar de trabalhar, seu patrimônio não te sustenta.
               </h1>
 
+              <p className="mt-6 md:mt-7 text-white/80 text-[15px] md:text-[17px] leading-[1.55] max-w-[560px]">
+                Isso não é falta de dinheiro. É falta de Engenharia Patrimonial. Em 5 noites, entenda e implemente a ciência que 1.917 famílias já usam para comprar os ativos que vão sustentá-las pra vida toda — sem pagar por eles, sem mercado financeiro, sem esperar 30 anos.
+              </p>
+
+              <p className="mt-4 text-white/70 text-[14px] md:text-[15px] leading-[1.55] max-w-[560px]">
+                Para médicos, empresários, advogados, engenheiros e profissionais que ganham acima de R$20 mil/mês e sabem que deveriam ter mais patrimônio do que tem.
+              </p>
+
               <div className="mt-8 md:mt-10">
                 <PillButton
-                  label="Quero garantir minha vaga no Lote ZERO"
+                  label="Quero construir meus ativos — R$97"
                   variant="dark"
                   size="lg"
                 />
+                <p className="mt-3 text-white/60 text-[12px] md:text-[13px]">
+                  Garantia de 30 dias. Risco zero. Apenas 50 Diagnósticos Individuais.
+                </p>
               </div>
             </div>
 

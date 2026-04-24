@@ -135,21 +135,24 @@ function IndexV2() {
               ))}
 
               {/* Stats sobrepostos no topo — rosto fica embaixo */}
-              <div className="absolute inset-x-0 top-0 flex flex-col gap-2 md:gap-2.5 p-3 md:p-4 pointer-events-none bg-gradient-to-b from-black/60 via-black/25 to-transparent pb-10 md:pb-14">
+              <div className="absolute inset-x-0 top-0 flex flex-col items-end gap-2 md:gap-2.5 p-3 md:p-4 pointer-events-none bg-gradient-to-b from-black/60 via-black/25 to-transparent pb-10 md:pb-14">
                 {[
-                  { v: "1.917", l: "Famílias atendidas" },
-                  { v: "R$3 bi", l: "Sob aconselhamento" },
-                  { v: "100+", l: "Ativos pessoais do Adrian" },
-                ].map(({ v, l }) => (
+                  { v: "1.917", l: "FAMÍLIAS ATENDIDAS", icon: "👥" },
+                  { v: "R$3 BI", l: "SOB ACONSELHAMENTO", icon: "💼" },
+                  { v: "100+", l: "ATIVOS PESSOAIS DO ADRIAN", icon: "📈" },
+                ].map(({ v, l, icon }) => (
                   <div
                     key={l}
-                    className="rounded-lg border border-white/25 bg-black/55 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
+                    className="w-[260px] md:w-[300px] rounded-lg border border-white/25 bg-black/55 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
                   >
-                    <div className="flex items-baseline gap-2 text-white">
-                      <span className="font-semibold tracking-tight text-[16px] md:text-[19px] leading-none">
+                    <div className="flex items-baseline gap-2 text-white justify-end text-right">
+                      <span className="text-[14px] md:text-[16px] leading-none">
+                        {icon}
+                      </span>
+                      <span className="font-semibold tracking-tight text-[15px] md:text-[17px] leading-none uppercase">
                         {v}
                       </span>
-                      <span className="text-white/85 text-[12px] md:text-[13px] leading-tight">
+                      <span className="text-white/85 text-[11px] md:text-[12px] leading-tight uppercase tracking-wide">
                         {l}
                       </span>
                     </div>

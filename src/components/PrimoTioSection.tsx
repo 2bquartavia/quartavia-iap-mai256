@@ -177,9 +177,9 @@ export default function PrimoTioSection() {
                 </div>
               </div>
               <div className="relative p-6 md:p-7 pt-10 md:pt-12 bg-[#b9352a]/[0.05] border border-[#b9352a]/25 rounded-2xl shadow-lg flex-1">
-                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
-                <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
-                  Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-2">O Primo</p>
+                <p className="text-[#031a28]/85 text-[15px] leading-[1.6]">
+                  Perdeu o sono.
                 </p>
               </div>
             </div>
@@ -212,9 +212,9 @@ export default function PrimoTioSection() {
                 </div>
               </div>
               <div className="p-6 md:p-7 border-t border-white/10 flex-1">
-                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-3">O Tio</p>
-                <p className="text-white/90 text-[15px] leading-[1.7]">
-                  Estava <span className="font-semibold">viajando com a renda dos aluguéis</span>. Recebeu o depósito do aluguel no <span className="font-semibold">dia 5</span>. Como sempre.
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-2">O Tio</p>
+                <p className="text-white/90 text-[15px] leading-[1.6]">
+                  Estava viajando.
                 </p>
               </div>
             </div>

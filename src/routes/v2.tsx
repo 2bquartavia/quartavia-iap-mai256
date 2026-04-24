@@ -58,7 +58,7 @@ function IndexV2() {
       {/* HERO — fundo laranja, texto à esquerda, foto à direita */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ background: "#031a28" }}
+        style={{ background: "#FAEDDD" }}
       >
         <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-20">
           {/* Topbar — logo | data | ao vivo */}
@@ -66,20 +66,21 @@ function IndexV2() {
             <img
               src={logoQuartavia}
               alt="Imersão Alavanca Patrimonial"
-              className="h-9 md:h-11 w-auto brightness-0 invert shrink-0"
+              className="h-9 md:h-11 w-auto shrink-0"
+              style={{ filter: "brightness(0) saturate(100%) invert(8%) sepia(40%) saturate(2000%) hue-rotate(170deg) brightness(95%) contrast(95%)" }}
               decoding="async"
             />
-            <span className="hidden md:inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white">
+            <span className="hidden md:inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]">
               25 a 29 de maio
             </span>
-            <span className="hidden md:inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white shrink-0">
+            <span className="hidden md:inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28] shrink-0">
               Ao vivo com Adrian Carvalho
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Coluna esquerda — texto */}
-            <div className="text-white">
+            <div className="text-[#031a28]">
               {/* Pílulas restantes (mobile mostra todas; desktop só as que não estão no topo) */}
               <div className="flex flex-wrap gap-2 mb-7">
                 {[
@@ -90,39 +91,50 @@ function IndexV2() {
                 ].map(({ t, mobileOnly }) => (
                   <span
                     key={t}
-                    className={`${mobileOnly ? "inline-flex md:hidden" : "inline-flex"} items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white`}
+                    className={`${mobileOnly ? "inline-flex md:hidden" : "inline-flex"} items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]`}
                   >
                     {t}
                   </span>
                 ))}
               </div>
 
-              <h1 className="font-semibold text-white leading-[1.1] tracking-[-0.02em] text-[clamp(1.5rem,3.2vw,2.5rem)]">
+              <h1 className="font-semibold text-[#031a28] leading-[1.1] tracking-[-0.02em] text-[clamp(1.5rem,3.2vw,2.5rem)]">
                 Você ganha mais de R$20 mil por mês. Mas se parar de trabalhar, seu patrimônio não te sustenta.
               </h1>
 
-              <p className="mt-6 md:mt-7 text-white/80 text-[15px] md:text-[17px] leading-[1.55] max-w-[560px]">
+              <p className="mt-6 md:mt-7 text-[#031a28]/80 text-[15px] md:text-[17px] leading-[1.55] max-w-[560px]">
                 Isso não é falta de dinheiro. É falta de Engenharia Patrimonial. Em 5 noites, entenda e implemente a ciência que 1.917 famílias já usam para comprar os ativos que vão sustentá-las pra vida toda — sem pagar por eles, sem mercado financeiro, sem esperar 30 anos.
               </p>
 
-              <p className="mt-4 text-white/70 text-[14px] md:text-[15px] leading-[1.55] max-w-[560px]">
+              <p className="mt-4 text-[#031a28]/70 text-[14px] md:text-[15px] leading-[1.55] max-w-[560px]">
                 Para médicos, empresários, advogados, engenheiros e profissionais que ganham acima de R$20 mil/mês e sabem que deveriam ter mais patrimônio do que tem.
               </p>
 
-              <div className="mt-8 md:mt-10">
+              <div className="mt-8 md:mt-10 relative inline-block">
+                {/* Glow azul no botão */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-3 rounded-full blur-2xl opacity-70"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at center, rgba(3,26,40,0.45), rgba(3,26,40,0.15) 50%, transparent 75%)",
+                  }}
+                />
+                <div className="relative">
                 <PillButton
                   label="Quero construir meus ativos — R$97"
                   variant="dark"
                   size="lg"
                 />
-                <p className="mt-3 text-white/60 text-[12px] md:text-[13px]">
+                </div>
+                <p className="mt-3 text-[#031a28]/60 text-[12px] md:text-[13px] relative">
                   Garantia de 30 dias. Risco zero. Apenas 50 Diagnósticos Individuais.
                 </p>
               </div>
             </div>
 
             {/* Coluna direita — slideshow no retângulo, rosto centralizado em cima */}
-            <div className="relative w-full aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15 bg-black/20">
+            <div className="relative w-full aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
               {heroSlides.map((src, i) => (
                 <img
                   key={src}

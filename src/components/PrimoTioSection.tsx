@@ -1,0 +1,258 @@
+import { Check, X, TrendingDown, KeyRound, Sparkles } from "lucide-react";
+import PillButton from "@/components/PillButton";
+
+const PRIMO = [
+  "Sabe tudo sobre investimentos",
+  "Lê relatório de analista",
+  "Tem app de 3 corretoras",
+  "Diversificou em 12 produtos",
+  "R$500 mil em 8 investimentos",
+  "Confia no assessor",
+  "Depende do próximo salário.",
+];
+
+const TIO = [
+  "Não sabe o que é CDI",
+  "Não olha noticiário econômico",
+  "Não perde sono quando o mercado cai",
+  "Tem 4 imóveis e R$18 mil/mês de aluguel",
+  "R$500 mil em 3 imóveis que se pagam",
+  "Confia na escritura",
+  "É livre.",
+];
+
+export default function PrimoTioSection() {
+  return (
+    <section className="relative w-full overflow-hidden" style={{ background: "#FAEDDD" }}>
+      {/* Glow sutil de transição */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-50"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(3,26,40,0.10), transparent 60%)",
+        }}
+      />
+
+      <div className="relative mx-auto w-full max-w-[1080px] px-5 md:px-8 py-16 md:py-24">
+        {/* Eyebrow + headline */}
+        <div className="text-center max-w-[760px] mx-auto">
+          <span className="inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]">
+            Duas pessoas. Dois caminhos.
+          </span>
+          <h2 className="mt-5 text-[#031a28] font-semibold leading-[1.15] tracking-[-0.02em] text-[clamp(1.7rem,3.6vw,2.75rem)]">
+            Todo mundo conhece essas duas pessoas.
+          </h2>
+        </div>
+
+        {/* Cards comparativos */}
+        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 relative">
+          {/* Divisor central com VS (desktop) */}
+          <div
+            aria-hidden
+            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 items-center justify-center"
+          >
+            <div className="h-14 w-14 rounded-full bg-[#031a28] text-[#FAEDDD] flex items-center justify-center font-bold text-[13px] tracking-[0.15em] shadow-xl ring-4 ring-[#FAEDDD]">
+              VS
+            </div>
+          </div>
+
+          {/* PRIMO — card claro com X vermelhos */}
+          <article className="relative rounded-2xl border border-[#031a28]/15 bg-white/70 backdrop-blur-sm p-7 md:p-8 shadow-lg">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-11 w-11 rounded-xl bg-[#031a28]/[0.06] flex items-center justify-center">
+                <TrendingDown className="h-5 w-5 text-[#031a28]/70" strokeWidth={2.2} />
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.14em] text-[#031a28]/55 font-semibold">
+                  Caminho 1
+                </p>
+                <h3 className="text-[#031a28] text-[20px] md:text-[22px] font-semibold leading-tight">
+                  O Primo dos Investimentos
+                </h3>
+              </div>
+            </div>
+            <ul className="space-y-3">
+              {PRIMO.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#b9352a]/12 text-[#b9352a]">
+                    <X className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
+                  <span className="text-[#031a28]/85 text-[15px] md:text-[16px] leading-[1.55]">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          {/* TIO — card escuro com checks dourados, em destaque */}
+          <article
+            className="relative rounded-2xl p-7 md:p-8 shadow-2xl ring-1 ring-[#031a28]/30"
+            style={{
+              background:
+                "linear-gradient(180deg, #042234 0%, #021b28 100%)",
+            }}
+          >
+            {/* Badge "vencedor" */}
+            <span className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-[#FAEDDD] text-[#031a28] px-3 py-1 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.14em] shadow-md">
+              <Sparkles className="h-3 w-3" /> O caminho do ativo
+            </span>
+
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-11 w-11 rounded-xl bg-white/10 flex items-center justify-center">
+                <KeyRound className="h-5 w-5 text-[#FAEDDD]" strokeWidth={2.2} />
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.14em] text-white/55 font-semibold">
+                  Caminho 2
+                </p>
+                <h3 className="text-white text-[20px] md:text-[22px] font-semibold leading-tight">
+                  O Tio dos Imóveis
+                </h3>
+              </div>
+            </div>
+            <ul className="space-y-3">
+              {TIO.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FAEDDD]/15 text-[#FAEDDD]">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
+                  <span className="text-white/90 text-[15px] md:text-[16px] leading-[1.55]">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </div>
+
+        {/* Bloco analítico — diferença */}
+        <div className="mt-14 md:mt-20 max-w-[780px] mx-auto">
+          <p className="text-[#031a28]/85 text-[17px] md:text-[19px] leading-[1.6]">
+            <span className="text-[#031a28] font-semibold">O primo tem informação. O tio tem patrimônio.</span> Um estuda riqueza. O outro constrói. E o mais importante: o tio não pagou pelos imóveis dele. Os inquilinos pagaram. O banco financiou. O mercado valorizou. <span className="text-[#031a28] font-semibold">O tio entrou com a engenharia — e saiu com os ativos.</span>
+          </p>
+
+          {/* Frase-âncora */}
+          <p className="mt-10 text-[#031a28] text-[clamp(1.25rem,2.4vw,1.75rem)] font-semibold leading-[1.3] tracking-[-0.01em]">
+            A diferença entre o primo e o tio não é sorte. Não é capital inicial. Não é conhecimento técnico. É{" "}
+            <span className="relative inline-block px-1">
+              <span className="relative z-10">Engenharia Patrimonial</span>
+              <span aria-hidden className="absolute inset-x-0 bottom-1 h-[6px] bg-[#031a28]/15 -z-0" />
+            </span>.
+          </p>
+        </div>
+
+        {/* Bloco contraste — Quando o mercado despenca */}
+        <div className="mt-14 md:mt-20 max-w-[860px] mx-auto rounded-2xl border border-[#031a28]/20 bg-white/60 backdrop-blur-sm p-7 md:p-9 shadow-lg">
+          <p className="text-[#031a28] text-[clamp(1.15rem,2vw,1.4rem)] font-semibold leading-[1.35] tracking-[-0.01em]">
+            Quando o mercado despenca, o primo perde o sono. <span className="text-[#031a28]/60">O tio nem fica sabendo.</span>
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="rounded-xl border border-[#b9352a]/25 bg-[#b9352a]/[0.06] p-5">
+              <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-2">O Primo</p>
+              <p className="text-[#031a28]/85 text-[15px] leading-[1.6]">
+                Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-5 ring-1 ring-[#031a28]/30"
+              style={{ background: "linear-gradient(180deg, #042234 0%, #021b28 100%)" }}
+            >
+              <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-2">O Tio</p>
+              <p className="text-white/90 text-[15px] leading-[1.6]">
+                Estava <span className="font-semibold">viajando com a renda dos aluguéis</span>. Recebeu o depósito do aluguel no <span className="font-semibold">dia 5</span>. Como sempre.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-6 text-[#031a28]/80 text-[15px] md:text-[16px] leading-[1.6] border-l-2 border-[#031a28]/40 pl-4">
+            Investidores que compraram <span className="font-semibold text-[#031a28]">COEs de Ambipar</span> receberam de volta <span className="font-semibold text-[#b9352a]">6,88%</span> do que investiram. Seis reais e oitenta e oito centavos a cada cem. O tio nunca precisou de assessor. <span className="text-[#031a28] font-semibold">O tio tem escritura.</span>
+          </p>
+        </div>
+
+        {/* Visualização — extrato de aluguéis */}
+        <div className="mt-14 md:mt-20 max-w-[760px] mx-auto">
+          <p className="text-[#031a28]/80 text-[16px] md:text-[17px] leading-[1.65] text-center">
+            Agora imagina receber uma notificação de depósito no <span className="text-[#031a28] font-semibold">dia 5 de cada mês</span>:
+          </p>
+
+          <div className="mt-6 rounded-2xl border border-[#031a28]/20 bg-white/70 backdrop-blur-sm overflow-hidden shadow-xl">
+            <div className="px-5 md:px-6 py-3 border-b border-[#031a28]/10 flex items-center justify-between">
+              <span className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#031a28]/60">
+                Extrato — dia 5
+              </span>
+              <span className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#031a28]/60">
+                Sem trabalho. Sem assessor.
+              </span>
+            </div>
+            {[
+              { label: "Aluguel — Imóvel 1", v: "R$ 3.500" },
+              { label: "Aluguel — Imóvel 2", v: "R$ 2.800" },
+              { label: "Usina solar", v: "R$ 4.200" },
+              { label: "Imóvel no Texas (USD)", v: "$ 2.000" },
+            ].map((row, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between px-5 md:px-6 py-3.5 border-b border-[#031a28]/8 last:border-b-0"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="h-7 w-7 rounded-full bg-[#031a28]/[0.06] text-[#031a28] flex items-center justify-center text-[12px] font-bold">
+                    +
+                  </span>
+                  <span className="text-[#031a28]/85 text-[15px]">{row.label}</span>
+                </div>
+                <span className="text-[#031a28] font-semibold tabular-nums text-[15px] md:text-[16px]">
+                  {row.v}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-[#031a28]/60 text-[13px] text-center">
+            Tudo caindo na conta sem você ter trabalhado por esse dinheiro naquele mês. Sem home broker. Sem assessor.
+          </p>
+        </div>
+
+        {/* Cena de vida */}
+        <div className="mt-14 md:mt-20 max-w-[780px] mx-auto space-y-5">
+          <p className="text-[#031a28]/85 text-[17px] md:text-[19px] leading-[1.6]">
+            <span className="text-[#031a28] font-semibold">Quinta-feira, 15h.</span> Você está no consultório, no escritório, na empresa — porque <em className="not-italic text-[#031a28] font-medium">quer</em>, não porque <em className="not-italic text-[#031a28] font-medium">precisa</em>.
+          </p>
+          <p className="text-[#031a28]/85 text-[17px] md:text-[19px] leading-[1.6]">
+            <span className="text-[#031a28] font-semibold">Sábado de manhã</span>, seus filhos estão brincando e você sabe que a escola deles está paga até o final do contrato — pelos ativos, não pelo seu suor ou pelo seu heroísmo.
+          </p>
+          <p className="text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">
+            Isso não é fantasia. É a rotina de centenas de famílias que aplicaram <span className="text-[#031a28] font-semibold">Engenharia Patrimonial</span>.
+          </p>
+        </div>
+
+        {/* Pergunta-âncora + CTA */}
+        <div className="mt-14 md:mt-20 max-w-[820px] mx-auto rounded-2xl px-7 md:px-10 py-9 md:py-11 text-center shadow-2xl"
+          style={{ background: "linear-gradient(180deg, #042234 0%, #021b28 100%)" }}
+        >
+          <p className="text-white text-[clamp(1.25rem,2.4vw,1.7rem)] font-semibold leading-[1.35] tracking-[-0.01em]">
+            A pergunta é: você está no caminho do <span className="text-white/60 line-through decoration-[#b9352a]/70">primo</span> — ou no caminho do <span className="text-[#FAEDDD] underline decoration-[#FAEDDD]/40 underline-offset-4">tio</span>?
+          </p>
+
+          <div className="mt-8 inline-block relative">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-3 rounded-full blur-2xl opacity-70"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, rgba(250,237,221,0.45), rgba(250,237,221,0.15) 50%, transparent 75%)",
+              }}
+            />
+            <div className="relative">
+              <PillButton label="Quero sair do caminho do primo — R$97" variant="gold" size="lg" />
+            </div>
+          </div>
+          <p className="mt-4 text-white/65 text-[13px] md:text-[14px]">
+            5 noites ao vivo. Garantia de 30 dias. Risco zero.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

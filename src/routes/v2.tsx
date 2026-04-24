@@ -1,12 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import PillButton from "@/components/PillButton";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
-const heroBg = "/hero-v2-desktop.jpg";
-const heroBgMobile = "/hero-v2-mobile.jpg";
+
+const heroSlides = [
+  "/hero-v2-1.png",
+  "/hero-v2-2.png",
+  "/hero-v2-3.png",
+  "/hero-v2-4.png",
+];
+const heroBg = heroSlides[0];
 
 export const Route = createFileRoute("/v2")({
   head: () => ({
@@ -28,6 +35,22 @@ export const Route = createFileRoute("/v2")({
 });
 
 function IndexV2() {
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlide((s) => (s + 1) % heroSlides.length);
+    }, 1500);
+    return () => clearInterval(id);
+  }, []);
+
+  // Preload all slides
+  useEffect(() => {
+    heroSlides.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <main>
@@ -86,19 +109,19 @@ function IndexV2() {
               </div>
             </div>
 
-            {/* Coluna direita — foto no retângulo, rosto centralizado em cima */}
-            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15">
-              <picture>
-                <source media="(max-width: 768px)" srcSet={heroBgMobile} />
+            {/* Coluna direita — slideshow no retângulo, rosto centralizado em cima */}
+            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15 bg-black/20">
+              {heroSlides.map((src, i) => (
                 <img
-                  src={heroBg}
-                  alt="Adrian Carvalho no palco da Mansão Davos"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: "50% 15%" }}
+                  key={src}
+                  src={src}
+                  alt="Adrian Carvalho"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+                  style={{ objectPosition: "50% 15%", opacity: slide === i ? 1 : 0 }}
                   decoding="async"
-                  fetchPriority="high"
+                  fetchPriority={i === 0 ? "high" : "low"}
                 />
-              </picture>
+              ))}
             </div>
           </div>
         </div>

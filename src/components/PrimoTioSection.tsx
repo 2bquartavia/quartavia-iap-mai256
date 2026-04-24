@@ -1,5 +1,7 @@
 import { Check, X, TrendingDown, KeyRound, Sparkles } from "lucide-react";
 import PillButton from "@/components/PillButton";
+import bancoMasterNews from "@/assets/banco-master-news.png";
+import predioAlugueis from "@/assets/predio-alugueis.png";
 
 const PRIMO = [
   "Sabe tudo sobre investimentos",
@@ -146,8 +148,8 @@ export default function PrimoTioSection() {
         </div>
 
         {/* Bloco contraste — Quando o mercado despenca */}
-        <div className="max-w-[860px] mx-auto rounded-2xl border border-[#031a28]/20 bg-white/60 backdrop-blur-sm p-8 md:p-12 shadow-lg space-y-8 md:space-y-10">
-          <header>
+        <div className="max-w-[1040px] mx-auto space-y-10 md:space-y-12">
+          <header className="max-w-[820px]">
             <span className="inline-block text-[11px] uppercase tracking-[0.14em] font-semibold text-[#031a28]/55 mb-3">
               Cenário real
             </span>
@@ -156,25 +158,66 @@ export default function PrimoTioSection() {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-            <div className="rounded-xl border border-[#b9352a]/25 bg-[#b9352a]/[0.06] p-6 md:p-7">
-              <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
-              <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
-                Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>
-              </p>
+          {/* Grid com imagens reais */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
+            {/* PRIMO — manchete real */}
+            <div className="group relative rounded-2xl overflow-hidden border border-[#b9352a]/25 bg-white shadow-lg flex flex-col">
+              <div className="relative aspect-[16/10] overflow-hidden bg-[#031a28]/[0.04]">
+                <img
+                  src={bancoMasterNews}
+                  alt="Manchete G1: STF avalia prisões no caso do Banco Master"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                  loading="lazy"
+                />
+                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> Notícia real
+                </span>
+              </div>
+              <div className="p-6 md:p-7 bg-[#b9352a]/[0.05] border-t border-[#b9352a]/15 flex-1">
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
+                <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
+                  Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>
+                </p>
+              </div>
             </div>
-            <div
-              className="rounded-xl p-6 md:p-7 ring-1 ring-[#031a28]/30"
+
+            {/* TIO — prédio de aluguéis */}
+            <div className="group relative rounded-2xl overflow-hidden ring-1 ring-[#031a28]/30 shadow-2xl flex flex-col"
               style={{ background: "linear-gradient(180deg, #042234 0%, #021b28 100%)" }}
             >
-              <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-3">O Tio</p>
-              <p className="text-white/90 text-[15px] leading-[1.7]">
-                Estava <span className="font-semibold">viajando com a renda dos aluguéis</span>. Recebeu o depósito do aluguel no <span className="font-semibold">dia 5</span>. Como sempre.
-              </p>
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                  src={predioAlugueis}
+                  alt="Prédio residencial gerador de aluguéis"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(2,27,40,0) 40%, rgba(2,27,40,0.55) 100%)",
+                  }}
+                />
+                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#FAEDDD] text-[#031a28] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
+                  <KeyRound className="h-3 w-3" /> Ativo real
+                </span>
+                <div className="absolute bottom-3 right-3 rounded-lg bg-[#031a28]/85 backdrop-blur-sm border border-white/10 px-3 py-2 text-right">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-white/60 font-semibold">Aluguel / mês</p>
+                  <p className="text-[#FAEDDD] font-semibold tabular-nums text-[15px]">R$ 18.000</p>
+                </div>
+              </div>
+              <div className="p-6 md:p-7 border-t border-white/10 flex-1">
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-3">O Tio</p>
+                <p className="text-white/90 text-[15px] leading-[1.7]">
+                  Estava <span className="font-semibold">viajando com a renda dos aluguéis</span>. Recebeu o depósito do aluguel no <span className="font-semibold">dia 5</span>. Como sempre.
+                </p>
+              </div>
             </div>
           </div>
 
-          <p className="text-[#031a28]/80 text-[15px] md:text-[16px] leading-[1.75] border-l-2 border-[#031a28]/40 pl-5">
+          <p className="max-w-[820px] text-[#031a28]/80 text-[15px] md:text-[16px] leading-[1.75] border-l-2 border-[#031a28]/40 pl-5">
             Investidores que compraram <span className="font-semibold text-[#031a28]">COEs de Ambipar</span> receberam de volta <span className="font-semibold text-[#b9352a]">6,88%</span> do que investiram. Seis reais e oitenta e oito centavos a cada cem. O tio nunca precisou de assessor. <span className="text-[#031a28] font-semibold">O tio tem escritura.</span>
           </p>
         </div>

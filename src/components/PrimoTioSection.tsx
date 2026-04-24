@@ -220,6 +220,13 @@ export default function PrimoTioSection() {
             </div>
           </div>
 
+          {/* Texto integral do cenário — sem cortes */}
+          <div className="max-w-[820px] space-y-5 text-[#031a28]/85 text-[15px] md:text-[16px] leading-[1.75]">
+            <p>
+              Quando o <span className="font-semibold text-[#031a28]">Banco Master quebrou com R$47 bilhões em CDBs</span>, o primo perdeu o sono. O tio estava viajando com a renda dos aluguéis. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, o primo se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em> O tio recebeu o depósito do aluguel no <span className="font-semibold text-[#031a28]">dia 5</span>. Como sempre.
+            </p>
+          </div>
+
           <p className="max-w-[820px] text-[#031a28]/80 text-[15px] md:text-[16px] leading-[1.75] border-l-2 border-[#031a28]/40 pl-5">
             Investidores que compraram <span className="font-semibold text-[#031a28]">COEs de Ambipar</span> receberam de volta <span className="font-semibold text-[#b9352a]">6,88%</span> do que investiram. Seis reais e oitenta e oito centavos a cada cem. O tio nunca precisou de assessor. <span className="text-[#031a28] font-semibold">O tio tem escritura.</span>
           </p>

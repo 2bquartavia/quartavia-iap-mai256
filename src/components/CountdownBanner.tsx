@@ -15,9 +15,12 @@ function getRemaining() {
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function CountdownBanner() {
-  const [t, setT] = useState(getRemaining);
+  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setT(getRemaining());
     const id = setInterval(() => setT(getRemaining()), 1000);
     return () => clearInterval(id);
   }, []);
@@ -35,7 +38,7 @@ export default function CountdownBanner() {
       className="relative px-4 py-5 md:py-6"
       style={{
         background:
-          "linear-gradient(90deg, #000 0%, #000 50%, #f4ede0 50%, #f4ede0 100%)",
+          "linear-gradient(90deg, #000 0%, #1a1208 35%, #4a3416 55%, #b88a3a 78%, #f4ede0 100%)",
       }}
     >
       <div
@@ -79,7 +82,7 @@ export default function CountdownBanner() {
                     className="font-semibold tabular-nums text-white leading-none"
                     style={{ fontSize: "clamp(1.1rem, 2.6vw, 1.6rem)" }}
                   >
-                    {it.value}
+                    {mounted ? it.value : "--"}
                   </span>
                   <span className="text-[9px] md:text-[10px] uppercase tracking-[0.14em] text-white/70">
                     {it.label}

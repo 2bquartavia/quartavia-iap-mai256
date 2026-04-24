@@ -70,7 +70,7 @@ function Index() {
             <div className="hero__content">
               <span className="hero__pill">
                 <span className="hero__pill-dot" />
-                Pré-venda Lote ZERO · 26/04
+                🔴 ÚLTIMOS DIAS PRA FAZER SUA PRÉ-INSCRIÇÃO NO LOTE ZERO 🔴
               </span>
 
               <h1 className="hero__h1">

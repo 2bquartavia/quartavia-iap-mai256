@@ -105,7 +105,7 @@ export default function FAQSection() {
         style={{ background: "radial-gradient(circle, #e8c89c 0%, transparent 70%)" }}
       />
 
-      <div className="relative wrap mx-auto max-w-[1100px] px-5">
+      <div className="relative wrap mx-auto max-w-[820px] px-5">
         {/* header */}
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-[#0b2a3a]/15 bg-white/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0b2a3a]/70 backdrop-blur-sm">
@@ -118,7 +118,7 @@ export default function FAQSection() {
         </div>
 
         {/* accordion */}
-        <ul className="space-y-3">
+        <ul className="mx-auto max-w-[760px] space-y-2.5">
           {FAQS.map((item, i) => {
             const isOpen = open === i;
             return (
@@ -135,11 +135,11 @@ export default function FAQSection() {
                   type="button"
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center gap-5 px-6 py-5 text-left md:px-8 md:py-6"
+                  className="flex w-full items-center gap-4 px-5 py-4 text-left md:px-6 md:py-4"
                 >
                   <span
                     className={[
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-[14px] font-semibold transition-colors",
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-serif text-[12px] font-semibold transition-colors",
                       isOpen
                         ? "bg-[#0b2a3a] text-[#FAEDDD]"
                         : "bg-[#0b2a3a]/8 text-[#0b2a3a]/70 group-hover:bg-[#0b2a3a]/15",
@@ -147,18 +147,18 @@ export default function FAQSection() {
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="flex-1 font-serif text-[17px] leading-snug text-[#0b2a3a] md:text-[19px]">
+                  <span className="flex-1 font-serif text-[15px] leading-snug text-[#0b2a3a] md:text-[16px]">
                     {item.q}
                   </span>
                   <span
                     className={[
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-300",
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all duration-300",
                       isOpen
                         ? "rotate-45 border-[#0b2a3a] bg-[#0b2a3a] text-[#FAEDDD]"
                         : "border-[#0b2a3a]/25 text-[#0b2a3a]/70",
                     ].join(" ")}
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-3.5 w-3.5" />
                   </span>
                 </button>
 
@@ -167,9 +167,9 @@ export default function FAQSection() {
                   style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-6 pb-6 pl-[4.25rem] md:px-8 md:pb-7 md:pl-[5.25rem]">
-                      <div className="mb-4 h-px w-12 bg-[#0b2a3a]/20" />
-                      <div className="space-y-3 text-[15px] leading-relaxed text-[#0b2a3a]/75">
+                    <div className="px-5 pb-5 pl-[3.5rem] md:px-6 md:pb-6 md:pl-[3.75rem]">
+                      <div className="mb-3 h-px w-10 bg-[#0b2a3a]/20" />
+                      <div className="space-y-2.5 text-[14px] leading-relaxed text-[#0b2a3a]/75">
                         {item.a.map((p, j) => (
                           <p key={j}>{p}</p>
                         ))}

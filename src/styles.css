@@ -799,9 +799,7 @@
 
 /* Footer */
 .footer {
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  position: relative;
   background: var(--ink);
   color: rgba(255,255,255,0.7);
   padding: 5rem 0 2rem;

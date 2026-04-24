@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import PillButton from "@/components/PillButton";
-import ImmersionSection from "@/components/ImmersionSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
@@ -219,11 +217,6 @@ function IndexV2() {
 
       {/* FAQ */}
       <FAQSection />
-
-      <ImmersionSection />
-
-      {/* DEPOIMENTOS */}
-      <TestimonialsSection />
 
       {/* SPEAKER */}
       <SpeakerSection />

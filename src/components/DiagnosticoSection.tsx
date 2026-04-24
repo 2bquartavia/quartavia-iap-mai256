@@ -85,8 +85,31 @@ export default function DiagnosticoSection() {
           Eu sei disso porque já sentei com mais de <span className="text-[#031a28] font-semibold">3.000 profissionais</span> nessa situação. Médicos, empresários, advogados, engenheiros. Gente que acorda cedo, dorme tarde e faz mais do que a maioria. Quase todos tinham o mesmo perfil:
         </p>
 
-        {/* Lista de perfil — roda-gigante */}
-        <FerrisWheelList items={PERFIL_ITEMS} />
+        {/* Imagem do profissional com degradês */}
+        <div className="relative mx-auto my-10 w-full max-w-[520px]">
+          <img
+            src={profissionalDiagnostico}
+            alt="Profissional concentrado diante do computador"
+            className="w-full h-auto rounded-xl"
+            loading="lazy"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-24 rounded-t-xl"
+            style={{
+              background:
+                "linear-gradient(to bottom, #FAEDDD 0%, rgba(250,237,221,0) 100%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 rounded-b-xl"
+            style={{
+              background:
+                "linear-gradient(to top, #FAEDDD 0%, rgba(250,237,221,0) 100%)",
+            }}
+          />
+        </div>
 
         <p className="mt-10 text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">
           E o que pouca gente admite: essa situação não fica só no extrato bancário. Ela entra no casamento. No sono. Na relação com os filhos. Já vi profissional de R$80 mil por mês com vergonha de falar de dinheiro em casa. Já vi empresário que ganha mais do que o pai sonhou ganhar na vida inteira e sente que não construiu nada de verdade.

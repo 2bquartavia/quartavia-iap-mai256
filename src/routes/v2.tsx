@@ -7,6 +7,7 @@ import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
 import PrimoTioSection from "@/components/PrimoTioSection";
+import PrimosViraramTiosSection from "@/components/PrimosViraramTiosSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [

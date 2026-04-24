@@ -36,19 +36,7 @@ export default function CountdownBanner() {
     <section
       aria-label="Contagem regressiva para abertura do Lote ZERO"
       className="relative px-4 py-5 md:py-6"
-      style={{
-        background:
-          "linear-gradient(90deg, #000 0%, #1a1208 35%, #4a3416 55%, #b88a3a 78%, #f4ede0 100%)",
-      }}
     >
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(60% 120% at 50% 50%, rgba(204,117,20,0.28), transparent 70%)",
-        }}
-      />
       <div className="relative max-w-6xl mx-auto">
         <div
           className="mx-auto flex flex-nowrap items-center justify-center gap-3 md:gap-6 rounded-full px-4 md:px-8 py-2.5 md:py-3 w-fit max-w-full overflow-x-auto"

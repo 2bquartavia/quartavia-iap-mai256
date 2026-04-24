@@ -32,62 +32,71 @@ export default function CountdownBanner() {
   return (
     <section
       aria-label="Contagem regressiva para abertura do Lote ZERO"
-      style={{ background: "#000" }}
-      className="relative py-10 md:py-14 px-4"
+      className="relative px-4 py-5 md:py-6"
+      style={{
+        background:
+          "linear-gradient(90deg, #000 0%, #000 50%, #f4ede0 50%, #f4ede0 100%)",
+      }}
     >
       <div
         aria-hidden
-        className="absolute inset-0 pointer-events-none opacity-60"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(60% 80% at 50% 50%, rgba(204,117,20,0.18), transparent 70%)",
+            "radial-gradient(60% 120% at 50% 50%, rgba(204,117,20,0.28), transparent 70%)",
         }}
       />
-      <div className="relative max-w-3xl mx-auto text-center">
-        <p
-          className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em]"
-          style={{ color: "#CC7514" }}
+      <div className="relative max-w-6xl mx-auto">
+        <div
+          className="mx-auto flex flex-nowrap items-center justify-center gap-3 md:gap-6 rounded-full px-4 md:px-8 py-2.5 md:py-3 w-fit max-w-full overflow-x-auto"
+          style={{
+            background: "rgba(20,14,6,0.45)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            border: "1px solid rgba(230,198,116,0.35)",
+            boxShadow:
+              "0 10px 40px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
+          }}
         >
-          O LOTE ZERO ABRE EM
-        </p>
+          <span
+            className="shrink-0 font-semibold uppercase tracking-[0.18em] text-[10px] md:text-xs whitespace-nowrap"
+            style={{ color: "#E6C674" }}
+          >
+            O LOTE ZERO ABRE EM
+          </span>
 
-        <div className="mt-5 flex items-stretch justify-center gap-2 md:gap-4">
-          {items.map((it, i) => (
-            <div key={it.label} className="flex items-stretch">
-              <div
-                className="flex flex-col items-center justify-center rounded-xl px-3 md:px-5 py-3 md:py-4 min-w-[64px] md:min-w-[92px]"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(230,198,116,0.25)",
-                  boxShadow:
-                    "inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px -18px rgba(204,117,20,0.6)",
-                }}
-              >
-                <span
-                  className="font-semibold tabular-nums text-white leading-none"
-                  style={{ fontSize: "clamp(1.75rem, 5vw, 2.75rem)" }}
-                >
-                  {it.value}
-                </span>
-                <span className="mt-1 text-[10px] md:text-xs uppercase tracking-[0.18em] text-white/55">
-                  {it.label}
-                </span>
+          <span
+            aria-hidden
+            className="hidden md:inline-block h-6 w-px"
+            style={{ background: "rgba(230,198,116,0.35)" }}
+          />
+
+          <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
+            {items.map((it, i) => (
+              <div key={it.label} className="flex items-center">
+                <div className="flex items-baseline gap-1">
+                  <span
+                    className="font-semibold tabular-nums text-white leading-none"
+                    style={{ fontSize: "clamp(1.1rem, 2.6vw, 1.6rem)" }}
+                  >
+                    {it.value}
+                  </span>
+                  <span className="text-[9px] md:text-[10px] uppercase tracking-[0.14em] text-white/70">
+                    {it.label}
+                  </span>
+                </div>
+                {i < items.length - 1 && (
+                  <span
+                    className="mx-1 md:mx-2 font-light text-white/40"
+                    style={{ fontSize: "clamp(1rem, 2.2vw, 1.4rem)" }}
+                  >
+                    :
+                  </span>
+                )}
               </div>
-              {i < items.length - 1 && (
-                <span
-                  className="self-center mx-1 md:mx-2 font-light text-white/30"
-                  style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}
-                >
-                  :
-                </span>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-
-        <p className="mt-5 text-xs md:text-sm text-white/55">
-          Domingo, 26/04 — 9h (horário de Brasília)
-        </p>
       </div>
     </section>
   );

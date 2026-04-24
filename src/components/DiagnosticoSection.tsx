@@ -1,8 +1,93 @@
 import { Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import renatoOberg from "@/assets/renato-oberg.png";
 import profissionalDiagnostico from "@/assets/profissional-diagnostico.png";
 
+const PERFIL_FRASES = [
+  "Renda acima de R$20 mil.",
+  "Patrimônio que não reflete essa renda.",
+  "Investimentos que mal acompanham a inflação real.",
+  "Zero fontes de renda que funcionam sem eles.",
+];
+
+function FloatingPhrase({
+  text,
+  side,
+  index,
+  total,
+  progress,
+}: {
+  text: string;
+  side: "left" | "right";
+  index: number;
+  total: number;
+  progress: number;
+}) {
+  // Cada frase ocupa uma fatia do progresso (0..1)
+  const slice = 1 / total;
+  const start = index * slice;
+  const end = start + slice;
+  const local = Math.min(1, Math.max(0, (progress - start) / (end - start)));
+
+  // Animação: vem de cima (-40px) para a posição final
+  const translateY = (1 - local) * -40;
+  const opacity = local;
+
+  return (
+    <div
+      className={`pointer-events-none absolute z-20 hidden md:block ${
+        side === "left" ? "left-0 -translate-x-[55%]" : "right-0 translate-x-[55%]"
+      }`}
+      style={{
+        // distribui verticalmente entre 10% e 85% da altura da imagem
+        top: `${10 + (75 * index) / (total - 1)}%`,
+      }}
+    >
+      <div
+        className="rounded-xl px-4 py-3 border backdrop-blur-md shadow-lg whitespace-nowrap"
+        style={{
+          transform: `translateY(${translateY}px)`,
+          opacity,
+          transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
+          background: "rgba(2,27,40,0.55)",
+          borderColor: "rgba(2,27,40,0.35)",
+          boxShadow: "0 10px 30px -10px rgba(2,27,40,0.45)",
+        }}
+      >
+        <span className="text-white text-[14px] md:text-[15px] font-medium">
+          → {text}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function DiagnosticoSection() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // progresso: 0 quando topo da img toca a base da viewport,
+      // 1 quando base da img toca o topo da viewport
+      const total = rect.height + vh;
+      const passed = vh - rect.top;
+      const p = Math.min(1, Math.max(0, passed / total));
+      setProgress(p);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   return (
     <section
       className="relative w-full overflow-hidden"
@@ -85,8 +170,8 @@ export default function DiagnosticoSection() {
           Eu sei disso porque já sentei com mais de <span className="text-[#031a28] font-semibold">3.000 profissionais</span> nessa situação. Médicos, empresários, advogados, engenheiros. Gente que acorda cedo, dorme tarde e faz mais do que a maioria. Quase todos tinham o mesmo perfil:
         </p>
 
-        {/* Imagem do profissional com degradês */}
-        <div className="relative mx-auto my-10 w-full max-w-[520px]">
+        {/* Imagem do profissional com degradês + frases flutuantes */}
+        <div ref={wrapperRef} className="relative mx-auto my-10 w-full max-w-[520px]">
           <img
             src={profissionalDiagnostico}
             alt="Profissional concentrado diante do computador"
@@ -109,6 +194,18 @@ export default function DiagnosticoSection() {
                 "linear-gradient(to top, #FAEDDD 0%, rgba(250,237,221,0) 100%)",
             }}
           />
+
+          {/* Frases flutuantes alternando lados, ativadas pela rolagem */}
+          {PERFIL_FRASES.map((frase, i) => (
+            <FloatingPhrase
+              key={i}
+              text={frase}
+              side={i % 2 === 0 ? "left" : "right"}
+              index={i}
+              total={PERFIL_FRASES.length}
+              progress={progress}
+            />
+          ))}
         </div>
 
         <p className="mt-10 text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">

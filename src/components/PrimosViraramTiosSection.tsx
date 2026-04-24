@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Quote, TrendingUp, Sparkles, KeyRound } from "lucide-react";
 import PillButton from "@/components/PillButton";
 
@@ -51,6 +52,107 @@ const DEPOIMENTOS: Depo[] = [
 ];
 
 export default function PrimosViraramTiosSection() {
+  // Carrossel infinito com auto-scroll (mesma mecânica de TestimonialsSection)
+  const loop = [...DEPOIMENTOS, ...DEPOIMENTOS, ...DEPOIMENTOS];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const cycle = track.scrollWidth / 3;
+    track.scrollLeft = cycle;
+
+    const BASE_SPEED = 70;
+    let pointerDown = false;
+    let draggingHorizontally = false;
+    let startX = 0;
+    let startY = 0;
+
+    const updateCenter = () => {
+      const rect = track.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      let bestEl: HTMLElement | null = null;
+      let bestDist = Infinity;
+      track.querySelectorAll<HTMLElement>(".tcard-text").forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const c = r.left + r.width / 2;
+        const d = Math.abs(c - centerX);
+        if (d < bestDist) {
+          bestDist = d;
+          bestEl = el;
+        }
+      });
+      track.querySelectorAll(".tcard-text.is-center").forEach((el) => {
+        if (el !== bestEl) el.classList.remove("is-center");
+      });
+      if (bestEl) (bestEl as HTMLElement).classList.add("is-center");
+    };
+
+    const tick = (t: number) => {
+      if (document.body.classList.contains("lead-modal-open")) {
+        lastTimeRef.current = t;
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      if (!lastTimeRef.current) lastTimeRef.current = t;
+      const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
+      lastTimeRef.current = t;
+
+      if (!draggingHorizontally) {
+        track.scrollLeft += BASE_SPEED * dt;
+      }
+      const c = track.scrollWidth / 3;
+      if (track.scrollLeft >= c * 2) track.scrollLeft -= c;
+      else if (track.scrollLeft <= 0) track.scrollLeft += c;
+
+      updateCenter();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const beginGesture = (x: number, y: number) => {
+      pointerDown = true; draggingHorizontally = false; startX = x; startY = y;
+    };
+    const trackGesture = (x: number, y: number) => {
+      if (!pointerDown) return;
+      const dx = Math.abs(x - startX);
+      const dy = Math.abs(y - startY);
+      draggingHorizontally = dx > dy && dx > 8;
+    };
+    const endGesture = () => { pointerDown = false; draggingHorizontally = false; };
+
+    const onTouchStart = (e: TouchEvent) => beginGesture(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchMove = (e: TouchEvent) => trackGesture(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchEnd = () => endGesture();
+    const onMouseDown = (e: MouseEvent) => beginGesture(e.clientX, e.clientY);
+    const onMouseMove = (e: MouseEvent) => trackGesture(e.clientX, e.clientY);
+    const onMouseUp = () => endGesture();
+
+    track.addEventListener("touchstart", onTouchStart, { passive: true });
+    track.addEventListener("touchmove", onTouchMove, { passive: true });
+    track.addEventListener("touchend", onTouchEnd, { passive: true });
+    track.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    track.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    track.addEventListener("scroll", updateCenter, { passive: true });
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      track.removeEventListener("touchstart", onTouchStart);
+      track.removeEventListener("touchmove", onTouchMove);
+      track.removeEventListener("touchend", onTouchEnd);
+      track.removeEventListener("touchcancel", onTouchEnd);
+      track.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      track.removeEventListener("scroll", updateCenter);
+    };
+  }, [loop.length]);
+
   return (
     <section
       className="relative w-full overflow-hidden"
@@ -169,36 +271,23 @@ export default function PrimosViraramTiosSection() {
           </div>
         </article>
 
-        {/* GRID de depoimentos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
-          {DEPOIMENTOS.map((d, i) => (
-            <article
-              key={i}
-              className="group relative rounded-2xl bg-white/70 backdrop-blur-sm border border-[#031a28]/15 p-7 md:p-8 shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
-            >
-              {d.badge && (
-                <span className="absolute -top-2.5 right-6 inline-flex items-center rounded-full bg-[#031a28] text-[#FAEDDD] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] shadow-md">
-                  {d.badge}
-                </span>
-              )}
-              <Quote
-                aria-hidden
-                className="h-6 w-6 text-[#031a28]/25 mb-4"
-                strokeWidth={2}
-              />
-              <p className="text-[#031a28]/85 text-[15px] md:text-[15.5px] leading-[1.7] flex-1">
-                {d.quote}
-              </p>
-              <div className="mt-6 pt-5 border-t border-[#031a28]/10">
-                <p className="text-[#031a28] font-semibold text-[14.5px]">
-                  {d.name}
-                </p>
-                <p className="text-[#031a28]/55 text-[12.5px] mt-0.5">
-                  {d.role}
-                </p>
-              </div>
-            </article>
-          ))}
+        {/* Carrossel de depoimentos — vidro azulado, mesmo movimento da seção Imersão */}
+        <div className="tcarousel-text -mx-5 md:-mx-8">
+          <div ref={trackRef} className="tcarousel-text__track">
+            {loop.map((d, i) => (
+              <figure key={i} className="tcard-text">
+                <div className="tcard-text__inner relative">
+                  {d.badge && <span className="tcard-text__badge">{d.badge}</span>}
+                  <Quote className="tcard-text__quoteicon" strokeWidth={2} />
+                  <p className="tcard-text__quote">{d.quote}</p>
+                  <div className="tcard-text__foot">
+                    <p className="tcard-text__name">{d.name}</p>
+                    <p className="tcard-text__role">{d.role}</p>
+                  </div>
+                </div>
+              </figure>
+            ))}
+          </div>
         </div>
 
         {/* CTA */}

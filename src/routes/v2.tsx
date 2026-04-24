@@ -15,6 +15,7 @@ import DezHorasSection from "@/components/DezHorasSection";
 import InvestimentoSection from "@/components/InvestimentoSection";
 import GarantiasSection from "@/components/GarantiasSection";
 import ParaQuemSection from "@/components/ParaQuemSection";
+import FAQSection from "@/components/FAQSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -215,6 +216,9 @@ function IndexV2() {
 
       {/* PRA QUEM É / NÃO É */}
       <ParaQuemSection />
+
+      {/* FAQ */}
+      <FAQSection />
 
       <ImmersionSection />
 

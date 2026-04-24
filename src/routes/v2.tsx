@@ -96,7 +96,7 @@ function IndexV2() {
                 ))}
               </div>
 
-              <h1 className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,4.6vw,3.5rem)]">
+              <h1 className="font-semibold text-white leading-[1.1] tracking-[-0.02em] text-[clamp(1.5rem,3.2vw,2.5rem)]">
                 Você ganha mais de R$20 mil por mês. Mas se parar de trabalhar, seu patrimônio não te sustenta.
               </h1>
 

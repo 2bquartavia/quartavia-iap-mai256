@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 const BLOCOS = [
   {
+    showHeader: true,
     eyebrow: "Princípio 1",
     title: "Use o dinheiro dos outros.",
     sub: "(Alavancagem)",
@@ -9,6 +10,7 @@ const BLOCOS = [
       "Você compra um imóvel de R$500 mil. Dá R$150 mil de entrada. O banco financia o resto. O inquilino paga R$3.500/mês de aluguel — que paga a parcela. Em 15 anos, o imóvel é seu. Quitado. Quem pagou? O inquilino. Não você.",
   },
   {
+    showHeader: true,
     eyebrow: "Princípio 2",
     title: "Compre na hora certa, do jeito certo.",
     sub: "(Arbitragem)",
@@ -16,25 +18,28 @@ const BLOCOS = [
       "Quando você compra no leilão um imóvel por R$600 mil que vale R$1 milhão, você criou R$400 mil de patrimônio no ato. Sem esperar. Sem sorte. Só por saber onde comprar e como estruturar.",
   },
   {
+    showHeader: false,
     eyebrow: "Combinação",
     title: "Alavancagem + Arbitragem com a engenharia certa.",
     sub: "",
     body:
-      "Você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação. (Grava essa palavra.)",
+      "Quando você combina alavancagem e arbitragem com a engenharia certa, você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação! (Grava essa palavra.)",
   },
   {
+    showHeader: false,
     eyebrow: "Originação",
     title: "A zona onde o dinheiro de verdade é criado.",
     sub: "",
     body:
-      "Não é onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide: quem compra produtos financia quem gera riqueza de verdade.",
+      "Originação é a zona onde o dinheiro de verdade é criado, não só onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide, onde quem compra produtos financia quem gera riqueza de verdade.",
   },
   {
+    showHeader: false,
     eyebrow: "Método",
     title: "Eu sistematizei isso.",
     sub: "",
     body:
-      "Depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
+      "Eu sistematizei isso depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
   },
 ];
 

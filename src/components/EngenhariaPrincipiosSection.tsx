@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { Landmark, Gavel, Coins, Building2, Clock, Home, Scale } from "lucide-react";
+import { Landmark, Gavel, Coins, Clock, Scale } from "lucide-react";
 
 const BLOCOS = [
   {

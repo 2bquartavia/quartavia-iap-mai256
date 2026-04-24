@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Landmark, Gavel, Coins, Building2, Clock, Home, Scale } from "lucide-react";
 
 const BLOCOS = [
   {
@@ -8,6 +9,7 @@ const BLOCOS = [
     sub: "(Alavancagem)",
     body:
       "Você compra um imóvel de R$500 mil. Dá R$150 mil de entrada. O banco financia o resto. O inquilino paga R$3.500/mês de aluguel — que paga a parcela. Em 15 anos, o imóvel é seu. Quitado. Quem pagou? O inquilino. Não você.",
+    Icon: Landmark,
   },
   {
     showHeader: true,
@@ -16,6 +18,7 @@ const BLOCOS = [
     sub: "(Arbitragem)",
     body:
       "Quando você compra no leilão um imóvel por R$600 mil que vale R$1 milhão, você criou R$400 mil de patrimônio no ato. Sem esperar. Sem sorte. Só por saber onde comprar e como estruturar.",
+    Icon: Gavel,
   },
   {
     showHeader: false,
@@ -24,6 +27,7 @@ const BLOCOS = [
     sub: "",
     body:
       "Quando você combina alavancagem e arbitragem com a engenharia certa, você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação! (Grava essa palavra.)",
+    Icon: Scale,
   },
   {
     showHeader: false,
@@ -32,6 +36,7 @@ const BLOCOS = [
     sub: "",
     body:
       "Originação é a zona onde o dinheiro de verdade é criado, não só onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide, onde quem compra produtos financia quem gera riqueza de verdade.",
+    Icon: Coins,
   },
   {
     showHeader: false,
@@ -40,49 +45,19 @@ const BLOCOS = [
     sub: "",
     body:
       "Eu sistematizei isso depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
+    Icon: Clock,
   },
 ];
 
 export default function EngenhariaPrincipiosSection() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = wrapperRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = rect.height - vh;
-      const passed = -rect.top;
-      const p = Math.min(1, Math.max(0, passed / Math.max(1, total)));
-      setProgress(p);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  // Hourglass fill: areia desce de cima pra baixo conforme progress (0..1)
-  const topFill = 1 - progress; // proporção que ainda está em cima
-  const bottomFill = progress;
-
   return (
     <section
-      ref={wrapperRef}
       className="relative w-full"
       style={{
         background: "#031a28",
-        // grid de quadrados
         backgroundImage:
           "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
         backgroundSize: "64px 64px",
-        // Altura grande para permitir scroll
-        minHeight: "260vh",
       }}
     >
       {/* gradiente sutil nas bordas */}
@@ -95,88 +70,93 @@ export default function EngenhariaPrincipiosSection() {
         }}
       />
 
-      <div className="sticky top-0 h-screen flex items-center">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center">
-            {/* COLUNA ESQUERDA — título fixo + lista empilhada */}
-            <div className="text-white">
-              <span className="inline-flex items-center rounded-full border border-white/20 bg-white/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
-                Engenharia Patrimonial
-              </span>
-              <h2 className="mt-5 font-semibold leading-[1.05] tracking-[-0.02em] text-[clamp(1.8rem,3.6vw,3rem)]">
-                A Engenharia Patrimonial funciona com{" "}
-                <span style={{ color: "#FFC14D" }}>dois princípios.</span>
-              </h2>
+      <div className="relative mx-auto w-full max-w-[860px] px-5 md:px-8 py-20 md:py-28 text-center">
+        <span className="inline-flex items-center rounded-full border border-white/20 bg-white/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
+          Engenharia Patrimonial
+        </span>
+        <h2 className="mt-5 font-semibold leading-[1.05] tracking-[-0.02em] text-white text-[clamp(1.8rem,3.6vw,3rem)]">
+          A Engenharia Patrimonial funciona com{" "}
+          <span style={{ color: "#FFC14D" }}>dois princípios.</span>
+        </h2>
 
-              {/* Lista empilhada — cada bloco surge mas permanece visível */}
-              <div className="mt-6 md:mt-8 flex flex-col gap-4 md:gap-5 pr-2">
-                {BLOCOS.map((b, i) => {
-                  // Usa apenas 80% do progresso para revelar os blocos —
-                  // garante que TUDO esteja 100% visível antes do fim do scroll.
-                  const reveal = Math.min(1, progress / 0.8);
-                  const slice = 1 / BLOCOS.length;
-                  const start = i * slice;
-                  const local = Math.min(
-                    1,
-                    Math.max(0, (reveal - start) / slice)
-                  );
-                  const translateY = (1 - local) * 24;
-                  return (
-                    <div
-                      key={i}
-                      style={{
-                        opacity: 0.15 + local * 0.85,
-                        transform: `translateY(${translateY}px)`,
-                        transition:
-                          "opacity 0.4s ease-out, transform 0.4s ease-out",
-                      }}
-                    >
-                      {b.showHeader && (
-                        <>
-                          <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold">
-                            {b.eyebrow}
-                          </div>
-                          <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
-                            {b.title}{" "}
-                            {b.sub && (
-                              <span className="text-white/60 font-normal italic">
-                                {b.sub}
-                              </span>
-                            )}
-                          </h3>
-                        </>
-                      )}
-                      <p
-                        className={`${
-                          b.showHeader ? "mt-1.5" : "mt-0"
-                        } text-white/75 text-[13px] md:text-[14px] leading-[1.55] max-w-[560px]`}
+        <div className="mt-10 md:mt-14 flex flex-col gap-5 md:gap-6 text-left">
+          {BLOCOS.map((b, i) => {
+            const isOrange = i % 2 === 0;
+            const bg = isOrange ? "#cc7514" : "#031a28";
+            const border = isOrange ? "rgba(255,255,255,0.18)" : "rgba(255,193,77,0.35)";
+            const eyebrowColor = isOrange ? "#FFE6B8" : "#FFC14D";
+            const Icon = b.Icon;
+            return (
+              <article
+                key={i}
+                className="rounded-2xl p-5 md:p-7 flex gap-4 md:gap-5 items-start"
+                style={{
+                  background: bg,
+                  border: `1px solid ${border}`,
+                  boxShadow: "0 10px 30px -15px rgba(0,0,0,0.5)",
+                }}
+              >
+                <div
+                  className="shrink-0 rounded-xl flex items-center justify-center"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    background: isOrange
+                      ? "rgba(3,26,40,0.25)"
+                      : "rgba(204,117,20,0.18)",
+                    color: isOrange ? "#fff" : "#FFC14D",
+                  }}
+                >
+                  <Icon size={24} strokeWidth={1.8} />
+                </div>
+                <div className="flex-1">
+                  {b.showHeader ? (
+                    <>
+                      <div
+                        className="uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold"
+                        style={{ color: eyebrowColor }}
                       >
+                        {b.eyebrow}
+                      </div>
+                      <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
+                        {b.title}{" "}
+                        {b.sub && (
+                          <span className="text-white/70 font-normal italic">
+                            {b.sub}
+                          </span>
+                        )}
+                      </h3>
+                      <p className="mt-2 text-white/85 text-[13px] md:text-[14px] leading-[1.6]">
                         {b.body}
                       </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* COLUNA DIREITA — Ampulheta arredondada, alinhada à direita */}
-            <div className="flex justify-end">
-              <Hourglass topFill={topFill} bottomFill={bottomFill} />
-            </div>
-          </div>
+                    </>
+                  ) : (
+                    <p className="text-white/90 text-[13px] md:text-[14px] leading-[1.6]">
+                      {b.body}
+                    </p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
+
+        {/* Fade-out gradient overlay no fim da dobra cobrindo os retângulos */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-0 right-0 bottom-0"
+          style={{
+            height: "260px",
+            background:
+              "linear-gradient(180deg, rgba(3,26,40,0) 0%, rgba(3,26,40,0.85) 60%, #031a28 100%)",
+          }}
+        />
       </div>
     </section>
   );
 }
 
-function Hourglass({
-  topFill,
-  bottomFill,
-}: {
-  topFill: number;
-  bottomFill: number;
-}) {
+function _UnusedHourglass({ topFill, bottomFill }: { topFill: number; bottomFill: number }) {
   // Ampulheta realista — bulbos esféricos em vidro transparente.
   // viewBox 220x380. Bulbo superior: y 30→180. Gargalo y≈180-190. Bulbo inferior: y 190→340.
   // O fluido OBEDECE GRAVIDADE: superfície horizontal sempre no topo do líquido acumulado embaixo.

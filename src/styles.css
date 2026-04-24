@@ -1827,6 +1827,81 @@
   .testimonial-card.is-center .testimonial-card__media { transform: scale(1.15); }
 }
 
+/* ============ DEPO CAROUSEL (Primos que viraram tios) ============ */
+.depo-carousel {
+  position: relative;
+  overflow: visible;
+}
+.depo-carousel::before,
+.depo-carousel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10%;
+  z-index: 3;
+  pointer-events: none;
+}
+.depo-carousel::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--cream) 0%, transparent 100%);
+}
+.depo-carousel::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--cream) 0%, transparent 100%);
+}
+.depo-track {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 50%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: auto;
+  cursor: grab;
+}
+.depo-track:active { cursor: grabbing; }
+.depo-track::-webkit-scrollbar { display: none; }
+.depo-card {
+  margin: 0;
+  flex: 0 0 auto;
+  width: clamp(260px, 26vw, 340px);
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.depo-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, rgba(8,40,62,0.78) 0%, rgba(3,26,40,0.72) 100%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.55);
+  transition: transform .3s ease-out, opacity .3s ease-out, box-shadow .3s ease-out;
+  opacity: .35;
+  transform: scale(0.82);
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.depo-card.is-center { z-index: 2; }
+.depo-card.is-center .depo-card__inner {
+  opacity: 1;
+  transform: scale(1.08);
+  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(250,237,221,0.18);
+}
+@media (max-width: 700px) {
+  .depo-card { width: 78vw; height: 440px; }
+  .depo-card.is-center .depo-card__inner { transform: scale(1.02); }
+}
+
 /* ===================== SPEAKER V3 — open editorial layout ===================== */
 .speaker-v3 {
   padding: clamp(3rem, 5vw, 4.5rem) 0;

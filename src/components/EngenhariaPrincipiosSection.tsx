@@ -91,9 +91,9 @@ export default function EngenhariaPrincipiosSection() {
       />
 
       <div className="sticky top-0 h-screen flex items-center">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10">
+        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 w-full">
           <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center">
-            {/* COLUNA ESQUERDA — título fixo + texto que surge */}
+            {/* COLUNA ESQUERDA — título fixo + lista empilhada */}
             <div className="text-white">
               <span className="inline-flex items-center rounded-full border border-white/20 bg-white/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
                 Engenharia Patrimonial
@@ -103,33 +103,30 @@ export default function EngenhariaPrincipiosSection() {
                 <span style={{ color: "#FFC14D" }}>dois princípios.</span>
               </h2>
 
-              {/* Stack de blocos com efeito de scroll */}
-              <div className="relative mt-10 md:mt-12 min-h-[280px]">
+              {/* Lista empilhada — cada bloco surge mas permanece visível */}
+              <div className="mt-8 md:mt-10 flex flex-col gap-5 md:gap-6 max-h-[62vh] overflow-hidden pr-2">
                 {BLOCOS.map((b, i) => {
                   const slice = 1 / BLOCOS.length;
                   const start = i * slice;
-                  const end = start + slice;
                   const local = Math.min(
                     1,
-                    Math.max(0, (progress - start) / (end - start))
+                    Math.max(0, (progress - start) / slice)
                   );
-                  const translateY = (1 - local) * 40;
+                  const translateY = (1 - local) * 24;
                   return (
                     <div
                       key={i}
-                      className="absolute inset-0"
                       style={{
-                        opacity: local,
+                        opacity: 0.15 + local * 0.85,
                         transform: `translateY(${translateY}px)`,
                         transition:
-                          "opacity 0.3s ease-out, transform 0.3s ease-out",
-                          pointerEvents: local > 0.5 ? "auto" : "none",
+                          "opacity 0.4s ease-out, transform 0.4s ease-out",
                       }}
                     >
-                      <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[11px] md:text-xs font-semibold">
+                      <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold">
                         {b.eyebrow}
                       </div>
-                      <h3 className="mt-3 font-semibold text-white text-[clamp(1.15rem,2vw,1.6rem)] leading-[1.25] tracking-[-0.01em]">
+                      <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
                         {b.title}{" "}
                         {b.sub && (
                           <span className="text-white/60 font-normal italic">
@@ -137,7 +134,7 @@ export default function EngenhariaPrincipiosSection() {
                           </span>
                         )}
                       </h3>
-                      <p className="mt-4 text-white/75 text-[15px] md:text-[17px] leading-[1.6] max-w-[560px]">
+                      <p className="mt-1.5 text-white/70 text-[13px] md:text-[14px] leading-[1.5] max-w-[560px]">
                         {b.body}
                       </p>
                     </div>
@@ -146,8 +143,8 @@ export default function EngenhariaPrincipiosSection() {
               </div>
             </div>
 
-            {/* COLUNA DIREITA — Ampulheta */}
-            <div className="flex justify-center">
+            {/* COLUNA DIREITA — Ampulheta arredondada, alinhada à direita */}
+            <div className="flex justify-end">
               <Hourglass topFill={topFill} bottomFill={bottomFill} />
             </div>
           </div>

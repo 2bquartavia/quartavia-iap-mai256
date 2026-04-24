@@ -8,6 +8,7 @@ import CTAFinalSection from "@/components/CTAFinalSection";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
 import PrimoTioSection from "@/components/PrimoTioSection";
 import PrimosViraramTiosSection from "@/components/PrimosViraramTiosSection";
+import EngenhariaPrincipiosSection from "@/components/EngenhariaPrincipiosSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -187,6 +188,9 @@ function IndexV2() {
 
       {/* QUARTA DOBRA — Primos que viraram tios */}
       <PrimosViraramTiosSection />
+
+      {/* QUINTA DOBRA — Engenharia Patrimonial: 2 princípios */}
+      <EngenhariaPrincipiosSection />
 
       <ImmersionSection />
 

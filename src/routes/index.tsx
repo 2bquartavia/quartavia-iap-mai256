@@ -6,6 +6,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import HeroPortrait from "@/components/HeroPortrait";
+import CountdownBanner from "@/components/CountdownBanner";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 const heroBg = "/hero-v2-desktop.jpg";
 
@@ -118,6 +119,7 @@ function Index() {
       </section>
 
       {/* IMMERSION — segunda dobra */}
+      <CountdownBanner />
       <ImmersionSection />
 
       {/* DEPOIMENTOS */}

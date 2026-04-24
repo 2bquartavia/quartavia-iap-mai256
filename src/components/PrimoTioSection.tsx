@@ -160,20 +160,23 @@ export default function PrimoTioSection() {
 
           {/* Grid com imagens reais */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
-            {/* PRIMO — manchete real */}
-            <div className="group relative rounded-2xl overflow-hidden border border-[#b9352a]/25 bg-white shadow-lg flex flex-col">
-              <div className="relative aspect-[16/10] overflow-hidden bg-[#031a28]/[0.04]">
-                <img
-                  src={bancoMasterNews}
-                  alt="Manchete G1: STF avalia prisões no caso do Banco Master"
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> Notícia real
-                </span>
+            {/* PRIMO — manchete real (recorte inclinado, fora do card) */}
+            <div className="group relative rounded-2xl border border-[#b9352a]/25 bg-white shadow-lg flex flex-col pt-28 md:pt-32">
+              {/* Imagem flutuante inclinada */}
+              <div className="absolute -top-10 md:-top-14 left-4 md:left-6 right-4 md:right-6 z-10 -rotate-[2.5deg] origin-top-left transition-transform duration-300 group-hover:-rotate-[1.5deg]">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-white">
+                  <img
+                    src={bancoMasterNews}
+                    alt="Manchete G1: STF avalia prisões no caso do Banco Master"
+                    className="block w-full h-auto"
+                    loading="lazy"
+                  />
+                  <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
+                    <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> Notícia real
+                  </span>
+                </div>
               </div>
-              <div className="p-6 md:p-7 bg-[#b9352a]/[0.05] border-t border-[#b9352a]/15 flex-1">
+              <div className="p-6 md:p-7 bg-[#b9352a]/[0.05] rounded-b-2xl flex-1">
                 <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
                 <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
                   Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>

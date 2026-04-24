@@ -35,6 +35,22 @@ export const Route = createFileRoute("/v2")({
 });
 
 function IndexV2() {
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlide((s) => (s + 1) % heroSlides.length);
+    }, 1500);
+    return () => clearInterval(id);
+  }, []);
+
+  // Preload all slides
+  useEffect(() => {
+    heroSlides.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <main>

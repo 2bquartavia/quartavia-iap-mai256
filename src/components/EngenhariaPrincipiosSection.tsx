@@ -161,88 +161,90 @@ function Hourglass({
   topFill: number;
   bottomFill: number;
 }) {
-  // SVG ampulheta. Coordenadas viewbox 200x320
-  // Bulbo de cima: triângulo invertido com base superior em y=20, ponta em y=160
-  // Bulbo de baixo: triângulo com ponta em y=160 e base em y=300
-  // Areia desce: a parte cheia do topo encolhe da base; a parte cheia da base cresce a partir da ponta.
+  // Ampulheta arredondada — bulbos formados por curvas Bezier.
+  // viewBox 200x340. Bulbo superior y: 20 → 160 (gargalo). Bulbo inferior: 160 → 300.
+  // Areia no topo drena pela parte superior; nível desce de y=20 até y=160.
+  const topY = 20 + (1 - topFill) * 140;
+  const bottomY = 300 - bottomFill * 140;
 
-  // Topo: clipPath que mantém a parte de baixo (perto da ponta) sempre cheia? Não — areia drena de cima.
-  // Convencionalmente, no topo a areia ocupa a parte de baixo do bulbo (próximo ao gargalo) e vai esvaziando pelo topo.
-  // Vamos simplificar: o nível da areia no topo desce — então o "preenchimento" começa em y= 20 + (1-topFill)*140 até 160.
-  // No fundo: o nível sobe a partir de 300, ou seja, preenchido entre y= 300 - bottomFill*140 e 300.
-
-  const topY = 20 + (1 - topFill) * 140; // topo do líquido superior
-  const bottomY = 300 - bottomFill * 140; // topo do líquido inferior
+  // Path arredondado bulbo superior (vidro)
+  const topBulb =
+    "M 30 20 L 170 20 C 170 70, 130 110, 105 155 C 102 159, 98 159, 95 155 C 70 110, 30 70, 30 20 Z";
+  // Path arredondado bulbo inferior
+  const bottomBulb =
+    "M 95 165 C 98 161, 102 161, 105 165 C 130 210, 170 250, 170 300 L 30 300 C 30 250, 70 210, 95 165 Z";
 
   return (
     <div className="relative">
       <svg
         viewBox="0 0 200 340"
-        width="280"
-        height="476"
-        className="drop-shadow-[0_20px_40px_rgba(255,193,77,0.15)]"
+        width="260"
+        height="442"
+        className="drop-shadow-[0_20px_40px_rgba(255,193,77,0.18)]"
       >
         <defs>
-          {/* Clip para o triângulo de cima (invertido) */}
           <clipPath id="topBulb">
-            <polygon points="20,20 180,20 100,160" />
+            <path d={topBulb} />
           </clipPath>
-          {/* Clip para o triângulo de baixo */}
           <clipPath id="bottomBulb">
-            <polygon points="100,160 180,300 20,300" />
+            <path d={bottomBulb} />
           </clipPath>
           <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#FFD27A" />
             <stop offset="100%" stopColor="#FFC14D" />
           </linearGradient>
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
+          </linearGradient>
         </defs>
 
-        {/* Tampas */}
-        <rect x="10" y="10" width="180" height="12" rx="3" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
-        <rect x="10" y="308" width="180" height="12" rx="3" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
+        {/* Tampas arredondadas */}
+        <rect x="14" y="8" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
+        <rect x="14" y="306" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
 
-        {/* Vidro — contornos dos bulbos */}
-        <polygon
-          points="20,20 180,20 100,160"
-          fill="rgba(255,255,255,0.03)"
-          stroke="#FFC14D"
-          strokeWidth="1.5"
-        />
-        <polygon
-          points="100,160 180,300 20,300"
-          fill="rgba(255,255,255,0.03)"
-          stroke="#FFC14D"
-          strokeWidth="1.5"
-        />
+        {/* Vidro */}
+        <path d={topBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
+        <path d={bottomBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
 
-        {/* Areia no bulbo superior */}
+        {/* Areia bulbo superior */}
         <g clipPath="url(#topBulb)">
           <rect x="0" y={topY} width="200" height={160 - topY} fill="url(#sand)" />
         </g>
 
         {/* Fluxo central */}
         {topFill > 0.001 && bottomFill < 0.999 && (
-          <rect x="98.5" y="155" width="3" height="12" fill="#FFC14D">
+          <rect x="98.5" y="155" width="3" height="14" fill="#FFC14D">
             <animate
               attributeName="opacity"
-              values="0.7;1;0.7"
+              values="0.6;1;0.6"
               dur="0.8s"
               repeatCount="indefinite"
             />
           </rect>
         )}
 
-        {/* Areia no bulbo inferior */}
+        {/* Areia bulbo inferior */}
         <g clipPath="url(#bottomBulb)">
           <rect x="0" y={bottomY} width="200" height={300 - bottomY} fill="url(#sand)" />
         </g>
 
-        {/* Hastes laterais */}
-        <line x1="20" y1="22" x2="20" y2="308" stroke="#FFC14D" strokeWidth="1" opacity="0.4" />
-        <line x1="180" y1="22" x2="180" y2="308" stroke="#FFC14D" strokeWidth="1" opacity="0.4" />
+        {/* Brilho lateral */}
+        <path
+          d="M 38 28 C 40 70, 70 105, 92 150"
+          stroke="rgba(255,255,255,0.25)"
+          strokeWidth="1"
+          fill="none"
+        />
+        <path
+          d="M 92 178 C 70 220, 40 258, 38 298"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1"
+          fill="none"
+        />
       </svg>
 
-      <div className="mt-4 text-center text-white/50 text-[12px] uppercase tracking-[0.2em]">
+      <div className="mt-4 text-right text-white/50 text-[11px] uppercase tracking-[0.2em] pr-2">
         Originação → Distribuição
       </div>
     </div>

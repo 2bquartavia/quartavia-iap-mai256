@@ -13,6 +13,7 @@ import CincoNoitesSection from "@/components/CincoNoitesSection";
 import PorQueAdrianSection from "@/components/PorQueAdrianSection";
 import DezHorasSection from "@/components/DezHorasSection";
 import InvestimentoSection from "@/components/InvestimentoSection";
+import GarantiasSection from "@/components/GarantiasSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -207,6 +208,9 @@ function IndexV2() {
 
       {/* OFERTA — Resumo de investimento */}
       <InvestimentoSection />
+
+      {/* GARANTIAS — duas garantias */}
+      <GarantiasSection />
 
       <ImmersionSection />
 

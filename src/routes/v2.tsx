@@ -184,6 +184,9 @@ function IndexV2() {
       {/* TERCEIRA DOBRA — Primo vs Tio */}
       <PrimoTioSection />
 
+      {/* QUARTA DOBRA — Primos que viraram tios */}
+      <PrimosViraramTiosSection />
+
       <ImmersionSection />
 
       {/* DEPOIMENTOS */}

@@ -131,14 +131,9 @@ export default function CincoNoitesSection() {
         <span className="orb orb--5" />
       </div>
       <div className="wrap immersion__intro immersion__intro--center">
-        <span className="immersion__eyebrow">5 Noites · Uma alavanca por noite</span>
         <h2 className="display immersion__title">
-          Em 5 noites, eu entrego essa <em>engenharia</em>.
+          Em 5 noites, eu entrego essa engenharia. Uma alavanca por noite:
         </h2>
-        <p className="immersion__lead">
-          Cada noite ao vivo, às <strong>20h</strong>, com Adrian. Você entende, pergunta e
-          implementa — uma alavanca por noite até montar o sistema completo.
-        </p>
       </div>
 
       <div

@@ -12,6 +12,7 @@ import EngenhariaPrincipiosSection from "@/components/EngenhariaPrincipiosSectio
 import CincoNoitesSection from "@/components/CincoNoitesSection";
 import PorQueAdrianSection from "@/components/PorQueAdrianSection";
 import DezHorasSection from "@/components/DezHorasSection";
+import InvestimentoSection from "@/components/InvestimentoSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -203,6 +204,9 @@ function IndexV2() {
 
       {/* OITAVA DOBRA — 10 horas ao vivo (cards empilhando) */}
       <DezHorasSection />
+
+      {/* OFERTA — Resumo de investimento */}
+      <InvestimentoSection />
 
       <ImmersionSection />
 

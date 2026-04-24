@@ -1,51 +1,13 @@
-import { Landmark, Gavel, Coins, Clock, Scale } from "lucide-react";
+import { Landmark, Home, Clock, Building2, Gavel, Scale, Coins } from "lucide-react";
 
-const BLOCOS = [
-  {
-    showHeader: true,
-    eyebrow: "Princípio 1",
-    title: "Use o dinheiro dos outros.",
-    sub: "(Alavancagem)",
-    body:
-      "Você compra um imóvel de R$500 mil. Dá R$150 mil de entrada. O banco financia o resto. O inquilino paga R$3.500/mês de aluguel — que paga a parcela. Em 15 anos, o imóvel é seu. Quitado. Quem pagou? O inquilino. Não você.",
-    Icon: Landmark,
-  },
-  {
-    showHeader: true,
-    eyebrow: "Princípio 2",
-    title: "Compre na hora certa, do jeito certo.",
-    sub: "(Arbitragem)",
-    body:
-      "Quando você compra no leilão um imóvel por R$600 mil que vale R$1 milhão, você criou R$400 mil de patrimônio no ato. Sem esperar. Sem sorte. Só por saber onde comprar e como estruturar.",
-    Icon: Gavel,
-  },
-  {
-    showHeader: false,
-    eyebrow: "Combinação",
-    title: "Alavancagem + Arbitragem com a engenharia certa.",
-    sub: "",
-    body:
-      "Quando você combina alavancagem e arbitragem com a engenharia certa, você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação! (Grava essa palavra.)",
-    Icon: Scale,
-  },
-  {
-    showHeader: false,
-    eyebrow: "Originação",
-    title: "A zona onde o dinheiro de verdade é criado.",
-    sub: "",
-    body:
-      "Originação é a zona onde o dinheiro de verdade é criado, não só onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide, onde quem compra produtos financia quem gera riqueza de verdade.",
-    Icon: Coins,
-  },
-  {
-    showHeader: false,
-    eyebrow: "Método",
-    title: "Eu sistematizei isso.",
-    sub: "",
-    body:
-      "Eu sistematizei isso depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.",
-    Icon: Clock,
-  },
+const ICONS = [
+  { Icon: Landmark, label: "Instituições bancárias" },
+  { Icon: Home, label: "Aluguel" },
+  { Icon: Clock, label: "Hora certa" },
+  { Icon: Building2, label: "Imóvel" },
+  { Icon: Gavel, label: "Leilão" },
+  { Icon: Scale, label: "Arbitragem" },
+  { Icon: Coins, label: "Dinheiro" },
 ];
 
 export default function EngenhariaPrincipiosSection() {
@@ -78,78 +40,43 @@ export default function EngenhariaPrincipiosSection() {
           <span style={{ color: "#FFC14D" }}>dois princípios.</span>
         </h2>
 
-        <div className="mt-10 md:mt-14 flex flex-col gap-5 md:gap-6 text-left">
-          {BLOCOS.map((b, i) => {
-            const isOrange = i % 2 === 0;
-            const bg = isOrange ? "#cc7514" : "#031a28";
-            const border = isOrange ? "rgba(255,255,255,0.18)" : "rgba(255,193,77,0.35)";
-            const eyebrowColor = isOrange ? "#FFE6B8" : "#FFC14D";
-            const Icon = b.Icon;
-            return (
-              <article
-                key={i}
-                className="rounded-2xl p-5 md:p-7 flex gap-4 md:gap-5 items-start"
-                style={{
-                  background: bg,
-                  border: `1px solid ${border}`,
-                  boxShadow: "0 10px 30px -15px rgba(0,0,0,0.5)",
-                }}
-              >
-                <div
-                  className="shrink-0 rounded-xl flex items-center justify-center"
-                  style={{
-                    width: 48,
-                    height: 48,
-                    background: isOrange
-                      ? "rgba(3,26,40,0.25)"
-                      : "rgba(204,117,20,0.18)",
-                    color: isOrange ? "#fff" : "#FFC14D",
-                  }}
-                >
-                  <Icon size={24} strokeWidth={1.8} />
-                </div>
-                <div className="flex-1">
-                  {b.showHeader ? (
-                    <>
-                      <div
-                        className="uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold"
-                        style={{ color: eyebrowColor }}
-                      >
-                        {b.eyebrow}
-                      </div>
-                      <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
-                        {b.title}{" "}
-                        {b.sub && (
-                          <span className="text-white/70 font-normal italic">
-                            {b.sub}
-                          </span>
-                        )}
-                      </h3>
-                      <p className="mt-2 text-white/85 text-[13px] md:text-[14px] leading-[1.6]">
-                        {b.body}
-                      </p>
-                    </>
-                  ) : (
-                    <p className="text-white/90 text-[13px] md:text-[14px] leading-[1.6]">
-                      {b.body}
-                    </p>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+        <div className="mt-10 md:mt-14 mx-auto max-w-[720px] text-left space-y-5 md:space-y-6 text-white/90 text-[15px] md:text-[17px] leading-[1.7]">
+          <p>
+            <span className="uppercase tracking-[0.18em] text-[11px] md:text-xs font-semibold" style={{ color: "#FFC14D" }}>Princípio 1 — Alavancagem.</span>{" "}
+            Use o dinheiro dos outros. Você compra um imóvel de R$500 mil. Dá R$150 mil de entrada. O banco financia o resto. O inquilino paga R$3.500/mês de aluguel — que paga a parcela. Em 15 anos, o imóvel é seu. Quitado. Quem pagou? O inquilino. Não você.
+          </p>
+          <p>
+            <span className="uppercase tracking-[0.18em] text-[11px] md:text-xs font-semibold" style={{ color: "#FFC14D" }}>Princípio 2 — Arbitragem.</span>{" "}
+            Compre na hora certa, do jeito certo. Quando você compra no leilão um imóvel por R$600 mil que vale R$1 milhão, você criou R$400 mil de patrimônio no ato. Sem esperar. Sem sorte. Só por saber onde comprar e como estruturar.
+          </p>
+          <p>
+            Quando você combina alavancagem e arbitragem com a engenharia certa, você não paga pelos ativos que constrói. Você alavanca. Você posiciona o seu dinheiro na etapa de originação! (Grava essa palavra.) Originação é a zona onde o dinheiro de verdade é criado, não só onde ele é revendido com margem. O sistema financeiro funciona como uma pirâmide, onde quem compra produtos financia quem gera riqueza de verdade.
+          </p>
+          <p>
+            Eu sistematizei isso depois de +3.215 reuniões, 100+ ativos pessoais e R$3 bilhões sob aconselhamento. Não inventei — organizei o que os tios fazem por instinto há décadas.
+          </p>
         </div>
 
-        {/* Fade-out gradient overlay no fim da dobra cobrindo os retângulos */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 right-0 bottom-0"
-          style={{
-            height: "260px",
-            background:
-              "linear-gradient(180deg, rgba(3,26,40,0) 0%, rgba(3,26,40,0.85) 60%, #031a28 100%)",
-          }}
-        />
+        {/* Glass icon grid */}
+        <div className="mt-12 md:mt-16 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3 md:gap-4 justify-items-center">
+          {ICONS.map(({ Icon, label }, i) => (
+            <div
+              key={i}
+              aria-label={label}
+              title={label}
+              className="w-full aspect-square max-w-[96px] rounded-2xl flex items-center justify-center backdrop-blur-md transition-transform hover:scale-105"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03))",
+                border: "1px solid rgba(255,255,255,0.18)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -15px rgba(0,0,0,0.55)",
+              }}
+            >
+              <Icon size={28} strokeWidth={1.6} color="#FFC14D" />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

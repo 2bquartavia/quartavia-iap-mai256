@@ -91,9 +91,9 @@ export default function EngenhariaPrincipiosSection() {
       />
 
       <div className="sticky top-0 h-screen flex items-center">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10">
+        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 w-full">
           <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center">
-            {/* COLUNA ESQUERDA — título fixo + texto que surge */}
+            {/* COLUNA ESQUERDA — título fixo + lista empilhada */}
             <div className="text-white">
               <span className="inline-flex items-center rounded-full border border-white/20 bg-white/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
                 Engenharia Patrimonial
@@ -103,33 +103,30 @@ export default function EngenhariaPrincipiosSection() {
                 <span style={{ color: "#FFC14D" }}>dois princípios.</span>
               </h2>
 
-              {/* Stack de blocos com efeito de scroll */}
-              <div className="relative mt-10 md:mt-12 min-h-[280px]">
+              {/* Lista empilhada — cada bloco surge mas permanece visível */}
+              <div className="mt-8 md:mt-10 flex flex-col gap-5 md:gap-6 max-h-[62vh] overflow-hidden pr-2">
                 {BLOCOS.map((b, i) => {
                   const slice = 1 / BLOCOS.length;
                   const start = i * slice;
-                  const end = start + slice;
                   const local = Math.min(
                     1,
-                    Math.max(0, (progress - start) / (end - start))
+                    Math.max(0, (progress - start) / slice)
                   );
-                  const translateY = (1 - local) * 40;
+                  const translateY = (1 - local) * 24;
                   return (
                     <div
                       key={i}
-                      className="absolute inset-0"
                       style={{
-                        opacity: local,
+                        opacity: 0.15 + local * 0.85,
                         transform: `translateY(${translateY}px)`,
                         transition:
-                          "opacity 0.3s ease-out, transform 0.3s ease-out",
-                          pointerEvents: local > 0.5 ? "auto" : "none",
+                          "opacity 0.4s ease-out, transform 0.4s ease-out",
                       }}
                     >
-                      <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[11px] md:text-xs font-semibold">
+                      <div className="text-[#FFC14D] uppercase tracking-[0.2em] text-[10px] md:text-[11px] font-semibold">
                         {b.eyebrow}
                       </div>
-                      <h3 className="mt-3 font-semibold text-white text-[clamp(1.15rem,2vw,1.6rem)] leading-[1.25] tracking-[-0.01em]">
+                      <h3 className="mt-1.5 font-semibold text-white text-[15px] md:text-[17px] leading-[1.3] tracking-[-0.01em]">
                         {b.title}{" "}
                         {b.sub && (
                           <span className="text-white/60 font-normal italic">
@@ -137,7 +134,7 @@ export default function EngenhariaPrincipiosSection() {
                           </span>
                         )}
                       </h3>
-                      <p className="mt-4 text-white/75 text-[15px] md:text-[17px] leading-[1.6] max-w-[560px]">
+                      <p className="mt-1.5 text-white/70 text-[13px] md:text-[14px] leading-[1.5] max-w-[560px]">
                         {b.body}
                       </p>
                     </div>
@@ -146,8 +143,8 @@ export default function EngenhariaPrincipiosSection() {
               </div>
             </div>
 
-            {/* COLUNA DIREITA — Ampulheta */}
-            <div className="flex justify-center">
+            {/* COLUNA DIREITA — Ampulheta arredondada, alinhada à direita */}
+            <div className="flex justify-end">
               <Hourglass topFill={topFill} bottomFill={bottomFill} />
             </div>
           </div>
@@ -164,88 +161,90 @@ function Hourglass({
   topFill: number;
   bottomFill: number;
 }) {
-  // SVG ampulheta. Coordenadas viewbox 200x320
-  // Bulbo de cima: triângulo invertido com base superior em y=20, ponta em y=160
-  // Bulbo de baixo: triângulo com ponta em y=160 e base em y=300
-  // Areia desce: a parte cheia do topo encolhe da base; a parte cheia da base cresce a partir da ponta.
+  // Ampulheta arredondada — bulbos formados por curvas Bezier.
+  // viewBox 200x340. Bulbo superior y: 20 → 160 (gargalo). Bulbo inferior: 160 → 300.
+  // Areia no topo drena pela parte superior; nível desce de y=20 até y=160.
+  const topY = 20 + (1 - topFill) * 140;
+  const bottomY = 300 - bottomFill * 140;
 
-  // Topo: clipPath que mantém a parte de baixo (perto da ponta) sempre cheia? Não — areia drena de cima.
-  // Convencionalmente, no topo a areia ocupa a parte de baixo do bulbo (próximo ao gargalo) e vai esvaziando pelo topo.
-  // Vamos simplificar: o nível da areia no topo desce — então o "preenchimento" começa em y= 20 + (1-topFill)*140 até 160.
-  // No fundo: o nível sobe a partir de 300, ou seja, preenchido entre y= 300 - bottomFill*140 e 300.
-
-  const topY = 20 + (1 - topFill) * 140; // topo do líquido superior
-  const bottomY = 300 - bottomFill * 140; // topo do líquido inferior
+  // Path arredondado bulbo superior (vidro)
+  const topBulb =
+    "M 30 20 L 170 20 C 170 70, 130 110, 105 155 C 102 159, 98 159, 95 155 C 70 110, 30 70, 30 20 Z";
+  // Path arredondado bulbo inferior
+  const bottomBulb =
+    "M 95 165 C 98 161, 102 161, 105 165 C 130 210, 170 250, 170 300 L 30 300 C 30 250, 70 210, 95 165 Z";
 
   return (
     <div className="relative">
       <svg
         viewBox="0 0 200 340"
-        width="280"
-        height="476"
-        className="drop-shadow-[0_20px_40px_rgba(255,193,77,0.15)]"
+        width="260"
+        height="442"
+        className="drop-shadow-[0_20px_40px_rgba(255,193,77,0.18)]"
       >
         <defs>
-          {/* Clip para o triângulo de cima (invertido) */}
           <clipPath id="topBulb">
-            <polygon points="20,20 180,20 100,160" />
+            <path d={topBulb} />
           </clipPath>
-          {/* Clip para o triângulo de baixo */}
           <clipPath id="bottomBulb">
-            <polygon points="100,160 180,300 20,300" />
+            <path d={bottomBulb} />
           </clipPath>
           <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#FFD27A" />
             <stop offset="100%" stopColor="#FFC14D" />
           </linearGradient>
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
+          </linearGradient>
         </defs>
 
-        {/* Tampas */}
-        <rect x="10" y="10" width="180" height="12" rx="3" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
-        <rect x="10" y="308" width="180" height="12" rx="3" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
+        {/* Tampas arredondadas */}
+        <rect x="14" y="8" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
+        <rect x="14" y="306" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
 
-        {/* Vidro — contornos dos bulbos */}
-        <polygon
-          points="20,20 180,20 100,160"
-          fill="rgba(255,255,255,0.03)"
-          stroke="#FFC14D"
-          strokeWidth="1.5"
-        />
-        <polygon
-          points="100,160 180,300 20,300"
-          fill="rgba(255,255,255,0.03)"
-          stroke="#FFC14D"
-          strokeWidth="1.5"
-        />
+        {/* Vidro */}
+        <path d={topBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
+        <path d={bottomBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
 
-        {/* Areia no bulbo superior */}
+        {/* Areia bulbo superior */}
         <g clipPath="url(#topBulb)">
           <rect x="0" y={topY} width="200" height={160 - topY} fill="url(#sand)" />
         </g>
 
         {/* Fluxo central */}
         {topFill > 0.001 && bottomFill < 0.999 && (
-          <rect x="98.5" y="155" width="3" height="12" fill="#FFC14D">
+          <rect x="98.5" y="155" width="3" height="14" fill="#FFC14D">
             <animate
               attributeName="opacity"
-              values="0.7;1;0.7"
+              values="0.6;1;0.6"
               dur="0.8s"
               repeatCount="indefinite"
             />
           </rect>
         )}
 
-        {/* Areia no bulbo inferior */}
+        {/* Areia bulbo inferior */}
         <g clipPath="url(#bottomBulb)">
           <rect x="0" y={bottomY} width="200" height={300 - bottomY} fill="url(#sand)" />
         </g>
 
-        {/* Hastes laterais */}
-        <line x1="20" y1="22" x2="20" y2="308" stroke="#FFC14D" strokeWidth="1" opacity="0.4" />
-        <line x1="180" y1="22" x2="180" y2="308" stroke="#FFC14D" strokeWidth="1" opacity="0.4" />
+        {/* Brilho lateral */}
+        <path
+          d="M 38 28 C 40 70, 70 105, 92 150"
+          stroke="rgba(255,255,255,0.25)"
+          strokeWidth="1"
+          fill="none"
+        />
+        <path
+          d="M 92 178 C 70 220, 40 258, 38 298"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1"
+          fill="none"
+        />
       </svg>
 
-      <div className="mt-4 text-center text-white/50 text-[12px] uppercase tracking-[0.2em]">
+      <div className="mt-4 text-right text-white/50 text-[11px] uppercase tracking-[0.2em] pr-2">
         Originação → Distribuição
       </div>
     </div>

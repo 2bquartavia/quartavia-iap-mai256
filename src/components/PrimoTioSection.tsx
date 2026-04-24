@@ -158,29 +158,37 @@ export default function PrimoTioSection() {
             </p>
           </header>
 
-          {/* Grid de imagens — apenas visual, sem alterar copy */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-end pt-10 md:pt-14">
-            {/* PRIMO — manchete real inclinada */}
-            <figure className="relative mx-auto w-[88%] md:w-[92%] -rotate-[2.5deg] transition-transform duration-300 hover:-rotate-[1.5deg]">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-white">
-                <img
-                  src={bancoMasterNews}
-                  alt="Manchete G1: STF avalia prisões no caso do Banco Master"
-                  className="block w-full h-auto"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> Notícia real
-                </span>
+          {/* Grid com imagens reais */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
+            {/* PRIMO — manchete real (imagem inclinada acima do card, sem cobrir texto) */}
+            <div className="relative flex flex-col pt-10 md:pt-14">
+              {/* Imagem flutuante inclinada — fora do card, acima */}
+              <div className="relative mx-auto w-[78%] -mb-6 md:-mb-8 z-10 -rotate-[2.5deg] transition-transform duration-300 hover:-rotate-[1.5deg]">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-white">
+                  <img
+                    src={bancoMasterNews}
+                    alt="Manchete G1: STF avalia prisões no caso do Banco Master"
+                    className="block w-full h-auto"
+                    loading="lazy"
+                  />
+                  <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
+                    <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> Notícia real
+                  </span>
+                </div>
               </div>
-              <figcaption className="mt-4 text-center text-[12px] uppercase tracking-[0.14em] font-semibold text-[#b9352a]">
-                O mundo do Primo
-              </figcaption>
-            </figure>
+              <div className="relative p-6 md:p-7 pt-10 md:pt-12 bg-[#b9352a]/[0.05] border border-[#b9352a]/25 rounded-2xl shadow-lg flex-1">
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
+                <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
+                  Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>
+                </p>
+              </div>
+            </div>
 
             {/* TIO — prédio de aluguéis */}
-            <figure className="relative">
-              <div className="relative rounded-2xl overflow-hidden ring-1 ring-[#031a28]/30 shadow-2xl aspect-[4/5] md:aspect-[4/5]">
+            <div className="group relative rounded-2xl overflow-hidden ring-1 ring-[#031a28]/30 shadow-2xl flex flex-col"
+              style={{ background: "linear-gradient(180deg, #042234 0%, #021b28 100%)" }}
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
                 <img
                   src={predioAlugueis}
                   alt="Prédio residencial gerador de aluguéis"
@@ -192,7 +200,7 @@ export default function PrimoTioSection() {
                   className="absolute inset-0"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(2,27,40,0) 45%, rgba(2,27,40,0.65) 100%)",
+                      "linear-gradient(180deg, rgba(2,27,40,0) 40%, rgba(2,27,40,0.55) 100%)",
                   }}
                 />
                 <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#FAEDDD] text-[#031a28] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-md">
@@ -203,16 +211,14 @@ export default function PrimoTioSection() {
                   <p className="text-[#FAEDDD] font-semibold tabular-nums text-[15px]">R$ 18.000</p>
                 </div>
               </div>
-              <figcaption className="mt-4 text-center text-[12px] uppercase tracking-[0.14em] font-semibold text-[#031a28]/70">
-                O mundo do Tio
-              </figcaption>
-            </figure>
+              <div className="p-6 md:p-7 border-t border-white/10 flex-1">
+                <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#FAEDDD]/80 mb-3">O Tio</p>
+                <p className="text-white/90 text-[15px] leading-[1.7]">
+                  Estava <span className="font-semibold">viajando com a renda dos aluguéis</span>. Recebeu o depósito do aluguel no <span className="font-semibold">dia 5</span>. Como sempre.
+                </p>
+              </div>
+            </div>
           </div>
-
-          {/* Parágrafo único — texto literal do original */}
-          <p className="max-w-[820px] text-[#031a28]/85 text-[16px] md:text-[17px] leading-[1.75]">
-            Quando o <span className="font-semibold text-[#031a28]">Banco Master quebrou com R$47 bilhões em CDBs</span>, o primo perdeu o sono. O tio estava viajando com a renda dos aluguéis. Quando <span className="font-semibold text-[#031a28]">6 instituições financeiras foram liquidadas pelo BC em 6 meses</span>, o primo se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em> O tio recebeu o depósito do aluguel no <span className="font-semibold text-[#031a28]">dia 5</span>. Como sempre.
-          </p>
 
           <p className="max-w-[820px] text-[#031a28]/80 text-[15px] md:text-[16px] leading-[1.75] border-l-2 border-[#031a28]/40 pl-5">
             Investidores que compraram <span className="font-semibold text-[#031a28]">COEs de Ambipar</span> receberam de volta <span className="font-semibold text-[#b9352a]">6,88%</span> do que investiram. Seis reais e oitenta e oito centavos a cada cem. O tio nunca precisou de assessor. <span className="text-[#031a28] font-semibold">O tio tem escritura.</span>

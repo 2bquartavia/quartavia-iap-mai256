@@ -37,30 +37,36 @@ function IndexV2() {
         style={{ background: "#CC7514" }}
       >
         <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-20">
-          {/* Logo */}
-          <div className="flex items-center justify-start mb-10 md:mb-14">
+          {/* Topbar — logo | data | ao vivo */}
+          <div className="flex items-center justify-between gap-4 mb-10 md:mb-14">
             <img
               src={logoQuartavia}
               alt="Imersão Alavanca Patrimonial"
-              className="h-9 md:h-11 w-auto brightness-0 invert"
+              className="h-9 md:h-11 w-auto brightness-0 invert shrink-0"
               decoding="async"
             />
+            <span className="hidden md:inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white">
+              25 a 29 de maio
+            </span>
+            <span className="hidden md:inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white shrink-0">
+              Ao vivo com Adrian Carvalho
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Coluna esquerda — texto */}
             <div className="text-white">
-              {/* Pílulas com cada informação */}
+              {/* Pílulas restantes (mobile mostra todas; desktop só as que não estão no topo) */}
               <div className="flex flex-wrap gap-2 mb-7">
                 {[
-                  "Imersão Alavanca Patrimonial",
-                  "25 a 29 de maio",
-                  "Ao vivo com Adrian Carvalho",
-                  "Apenas 50 Diagnósticos Individuais",
-                ].map((t) => (
+                  { t: "Imersão Alavanca Patrimonial", mobileOnly: false },
+                  { t: "25 a 29 de maio", mobileOnly: true },
+                  { t: "Ao vivo com Adrian Carvalho", mobileOnly: true },
+                  { t: "Apenas 50 Diagnósticos Individuais", mobileOnly: false },
+                ].map(({ t, mobileOnly }) => (
                   <span
                     key={t}
-                    className="inline-flex items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white"
+                    className={`${mobileOnly ? "inline-flex md:hidden" : "inline-flex"} items-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-white`}
                   >
                     {t}
                   </span>

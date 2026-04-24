@@ -109,19 +109,19 @@ function IndexV2() {
               </div>
             </div>
 
-            {/* Coluna direita — foto no retângulo, rosto centralizado em cima */}
-            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15">
-              <picture>
-                <source media="(max-width: 768px)" srcSet={heroBgMobile} />
+            {/* Coluna direita — slideshow no retângulo, rosto centralizado em cima */}
+            <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/15 bg-black/20">
+              {heroSlides.map((src, i) => (
                 <img
-                  src={heroBg}
-                  alt="Adrian Carvalho no palco da Mansão Davos"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: "50% 15%" }}
+                  key={src}
+                  src={src}
+                  alt="Adrian Carvalho"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+                  style={{ objectPosition: "50% 15%", opacity: slide === i ? 1 : 0 }}
                   decoding="async"
-                  fetchPriority="high"
+                  fetchPriority={i === 0 ? "high" : "low"}
                 />
-              </picture>
+              ))}
             </div>
           </div>
         </div>

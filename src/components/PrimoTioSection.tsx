@@ -128,14 +128,14 @@ export default function PrimoTioSection() {
         </div>
 
         {/* Bloco analítico — diferença */}
-        <div className="max-w-[780px] mx-auto space-y-12 md:space-y-14">
+        <div className="max-w-[780px] mx-auto space-y-10 md:space-y-12">
           <p className="text-[#031a28]/85 text-[17px] md:text-[19px] leading-[1.75]">
             <span className="text-[#031a28] font-semibold">O primo tem informação. O tio tem patrimônio.</span> Um estuda riqueza. O outro constrói. E o mais importante: o tio não pagou pelos imóveis dele. Os inquilinos pagaram. O banco financiou. O mercado valorizou. <span className="text-[#031a28] font-semibold">O tio entrou com a engenharia — e saiu com os ativos.</span>
           </p>
 
           {/* Frase-âncora */}
           <div className="relative pl-6 md:pl-8 border-l-2 border-[#031a28]/30">
-            <p className="text-[#031a28] text-[clamp(1.25rem,2.4vw,1.75rem)] font-semibold leading-[1.4] tracking-[-0.01em]">
+            <p className="text-[#031a28] text-[clamp(1.05rem,1.8vw,1.35rem)] font-semibold leading-[1.45] tracking-[-0.01em]">
               A diferença entre o primo e o tio não é sorte. Não é capital inicial. Não é conhecimento técnico. É{" "}
               <span className="relative inline-block px-1">
                 <span className="relative z-10">Engenharia Patrimonial</span>

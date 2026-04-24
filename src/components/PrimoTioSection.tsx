@@ -160,10 +160,10 @@ export default function PrimoTioSection() {
 
           {/* Grid com imagens reais */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
-            {/* PRIMO — manchete real (recorte inclinado, fora do card) */}
-            <div className="group relative rounded-2xl border border-[#b9352a]/25 bg-white shadow-lg flex flex-col pt-28 md:pt-32">
-              {/* Imagem flutuante inclinada */}
-              <div className="absolute -top-10 md:-top-14 left-4 md:left-6 right-4 md:right-6 z-10 -rotate-[2.5deg] origin-top-left transition-transform duration-300 group-hover:-rotate-[1.5deg]">
+            {/* PRIMO — manchete real (imagem inclinada acima do card, sem cobrir texto) */}
+            <div className="relative flex flex-col pt-10 md:pt-14">
+              {/* Imagem flutuante inclinada — fora do card, acima */}
+              <div className="relative mx-auto w-[78%] -mb-6 md:-mb-8 z-10 -rotate-[2.5deg] transition-transform duration-300 hover:-rotate-[1.5deg]">
                 <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-white">
                   <img
                     src={bancoMasterNews}
@@ -176,7 +176,7 @@ export default function PrimoTioSection() {
                   </span>
                 </div>
               </div>
-              <div className="p-6 md:p-7 bg-[#b9352a]/[0.05] rounded-b-2xl flex-1">
+              <div className="relative p-6 md:p-7 pt-10 md:pt-12 bg-[#b9352a]/[0.05] border border-[#b9352a]/25 rounded-2xl shadow-lg flex-1">
                 <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#b9352a] mb-3">O Primo</p>
                 <p className="text-[#031a28]/85 text-[15px] leading-[1.7]">
                   Quando o <span className="font-semibold">Banco Master quebrou com R$47 bilhões em CDBs</span>, perdeu o sono. Quando 6 instituições financeiras foram liquidadas pelo BC em 6 meses, se perguntou: <em className="not-italic">"será que meus investimentos estão seguros?"</em>

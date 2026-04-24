@@ -1,5 +1,7 @@
 import { Check, X, TrendingDown, KeyRound, Sparkles } from "lucide-react";
 import PillButton from "@/components/PillButton";
+import bancoMasterNews from "@/assets/banco-master-news.png";
+import predioAlugueis from "@/assets/predio-alugueis.png";
 
 const PRIMO = [
   "Sabe tudo sobre investimentos",

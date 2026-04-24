@@ -177,87 +177,222 @@ function Hourglass({
   topFill: number;
   bottomFill: number;
 }) {
-  // Ampulheta arredondada — bulbos formados por curvas Bezier.
-  // viewBox 200x340. Bulbo superior y: 20 → 160 (gargalo). Bulbo inferior: 160 → 300.
-  // Areia no topo drena pela parte superior; nível desce de y=20 até y=160.
-  const topY = 20 + (1 - topFill) * 140;
-  const bottomY = 300 - bottomFill * 140;
+  // Ampulheta realista — bulbos esféricos em vidro transparente.
+  // viewBox 220x380. Bulbo superior: y 30→180. Gargalo y≈180-190. Bulbo inferior: y 190→340.
+  // O fluido OBEDECE GRAVIDADE: superfície horizontal sempre no topo do líquido acumulado embaixo.
 
-  // Path arredondado bulbo superior (vidro)
+  // Bulbo superior — topo do líquido sobe da base (y=180) até o topo (y=30) conforme topFill diminui.
+  // Aqui invertemos: areia no topo está DRENANDO. topFill = quanto ainda resta no topo.
+  // Como a areia drena pelo gargalo (embaixo do bulbo de cima), o que sobra fica na PARTE DE BAIXO do bulbo de cima,
+  // com superfície horizontal subindo de baixo pra cima conforme... NÃO. Pensando de novo:
+  // No bulbo de cima a areia OCUPA a parte de baixo (próximo ao gargalo). Conforme drena, o nível DESCE.
+  // topFill=1 → areia preenche quase todo o bulbo (nível alto, y pequeno).
+  // topFill=0 → vazio (nível no fundo do bulbo, y=180).
+  const topLevelY = 180 - topFill * 145; // 35 (cheio) → 180 (vazio)
+
+  // Bulbo inferior — areia se acumula na parte de baixo, nível sobe.
+  // bottomFill=0 → vazio (nível em y=340). bottomFill=1 → cheio (nível em y=195).
+  const bottomLevelY = 340 - bottomFill * 145;
+
+  // Paths dos bulbos — formas esféricas como na referência (foto da ampulheta).
+  // Bulbo superior: esfera achatada que afunila no gargalo central.
   const topBulb =
-    "M 30 20 L 170 20 C 170 70, 130 110, 105 155 C 102 159, 98 159, 95 155 C 70 110, 30 70, 30 20 Z";
-  // Path arredondado bulbo inferior
+    "M 110 30 C 50 30, 22 70, 22 110 C 22 145, 60 170, 100 184 C 104 186, 106 188, 108 190 L 112 190 C 114 188, 116 186, 120 184 C 160 170, 198 145, 198 110 C 198 70, 170 30, 110 30 Z";
+  // Bulbo inferior: espelho do superior.
   const bottomBulb =
-    "M 95 165 C 98 161, 102 161, 105 165 C 130 210, 170 250, 170 300 L 30 300 C 30 250, 70 210, 95 165 Z";
+    "M 108 190 C 106 192, 104 194, 100 196 C 60 210, 22 235, 22 270 C 22 310, 50 350, 110 350 C 170 350, 198 310, 198 270 C 198 235, 160 210, 120 196 C 116 194, 114 192, 112 190 Z";
+
+  const flowing = topFill > 0.001 && bottomFill < 0.999;
 
   return (
     <div className="relative">
       <svg
-        viewBox="0 0 200 340"
-        width="260"
-        height="442"
-        className="drop-shadow-[0_20px_40px_rgba(255,193,77,0.18)]"
+        viewBox="0 0 220 400"
+        width="280"
+        height="510"
+        className="drop-shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
       >
         <defs>
-          <clipPath id="topBulb">
+          <clipPath id="topBulbClip">
             <path d={topBulb} />
           </clipPath>
-          <clipPath id="bottomBulb">
+          <clipPath id="bottomBulbClip">
             <path d={bottomBulb} />
           </clipPath>
-          <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#FFD27A" />
-            <stop offset="100%" stopColor="#FFC14D" />
+
+          {/* Areia: tom natural bege/dourado claro como na foto */}
+          <linearGradient id="sandFluid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#E8D9B0" />
+            <stop offset="50%" stopColor="#D4BE8A" />
+            <stop offset="100%" stopColor="#B89C68" />
           </linearGradient>
-          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
+
+          {/* Vidro transparente com leve azulado */}
+          <linearGradient id="glassBody" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.18)" />
+            <stop offset="40%" stopColor="rgba(255,255,255,0.04)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.10)" />
+          </linearGradient>
+
+          {/* Reflexo principal lateral (highlight) */}
+          <linearGradient id="glassHighlight" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.35)" />
+            <stop offset="20%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+
+          {/* Sombra da areia (top da superfície líquida — leve sombra) */}
+          <linearGradient id="sandShade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(0,0,0,0.18)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0)" />
           </linearGradient>
         </defs>
 
-        {/* Tampas arredondadas */}
-        <rect x="14" y="8" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
-        <rect x="14" y="306" width="172" height="14" rx="7" fill="#0b2a3d" stroke="#FFC14D" strokeWidth="1.5" />
+        {/* === BULBO SUPERIOR === */}
+        {/* Vidro fundo */}
+        <path
+          d={topBulb}
+          fill="url(#glassBody)"
+          stroke="rgba(255,255,255,0.45)"
+          strokeWidth="1.2"
+        />
 
-        {/* Vidro */}
-        <path d={topBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
-        <path d={bottomBulb} fill="url(#glass)" stroke="#FFC14D" strokeWidth="1.5" />
-
-        {/* Areia bulbo superior */}
-        <g clipPath="url(#topBulb)">
-          <rect x="0" y={topY} width="200" height={160 - topY} fill="url(#sand)" />
+        {/* Areia dentro do bulbo superior — sempre no FUNDO, superfície horizontal */}
+        <g clipPath="url(#topBulbClip)">
+          {/* Massa de areia */}
+          <rect
+            x="0"
+            y={topLevelY}
+            width="220"
+            height={200 - topLevelY}
+            fill="url(#sandFluid)"
+          />
+          {/* Sombra logo abaixo da superfície */}
+          <rect
+            x="0"
+            y={topLevelY}
+            width="220"
+            height="8"
+            fill="url(#sandShade)"
+          />
+          {/* Linha da superfície (meniscus) */}
+          <line
+            x1="0"
+            y1={topLevelY}
+            x2="220"
+            y2={topLevelY}
+            stroke="rgba(255,255,255,0.25)"
+            strokeWidth="0.6"
+          />
         </g>
 
-        {/* Fluxo central */}
-        {topFill > 0.001 && bottomFill < 0.999 && (
-          <rect x="98.5" y="155" width="3" height="14" fill="#FFC14D">
-            <animate
-              attributeName="opacity"
-              values="0.6;1;0.6"
-              dur="0.8s"
-              repeatCount="indefinite"
-            />
-          </rect>
+        {/* Highlight de vidro no bulbo superior */}
+        <path
+          d="M 45 55 C 35 80, 32 110, 42 140"
+          stroke="rgba(255,255,255,0.55)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M 50 50 C 60 45, 75 42, 90 42"
+          stroke="rgba(255,255,255,0.4)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* === FLUXO CENTRAL (areia caindo) === */}
+        {flowing && (
+          <>
+            <line
+              x1="110"
+              y1="186"
+              x2="110"
+              y2="200"
+              stroke="#C8AC78"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            >
+              <animate
+                attributeName="opacity"
+                values="0.7;1;0.7"
+                dur="0.6s"
+                repeatCount="indefinite"
+              />
+            </line>
+            {/* Pequeno cone de impacto na areia inferior */}
+            <ellipse
+              cx="110"
+              cy={bottomLevelY + 2}
+              rx="6"
+              ry="2"
+              fill="rgba(200,172,120,0.6)"
+            >
+              <animate
+                attributeName="opacity"
+                values="0.4;0.9;0.4"
+                dur="0.6s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+          </>
         )}
 
-        {/* Areia bulbo inferior */}
-        <g clipPath="url(#bottomBulb)">
-          <rect x="0" y={bottomY} width="200" height={300 - bottomY} fill="url(#sand)" />
+        {/* === BULBO INFERIOR === */}
+        <path
+          d={bottomBulb}
+          fill="url(#glassBody)"
+          stroke="rgba(255,255,255,0.45)"
+          strokeWidth="1.2"
+        />
+
+        {/* Areia no bulbo inferior — sempre no FUNDO, superfície horizontal */}
+        <g clipPath="url(#bottomBulbClip)">
+          <rect
+            x="0"
+            y={bottomLevelY}
+            width="220"
+            height={350 - bottomLevelY}
+            fill="url(#sandFluid)"
+          />
+          {/* Sombra abaixo da superfície */}
+          <rect
+            x="0"
+            y={bottomLevelY}
+            width="220"
+            height="8"
+            fill="url(#sandShade)"
+          />
+          {/* Linha da superfície */}
+          <line
+            x1="0"
+            y1={bottomLevelY}
+            x2="220"
+            y2={bottomLevelY}
+            stroke="rgba(255,255,255,0.3)"
+            strokeWidth="0.6"
+          />
         </g>
 
-        {/* Brilho lateral */}
+        {/* Highlight de vidro no bulbo inferior */}
         <path
-          d="M 38 28 C 40 70, 70 105, 92 150"
-          stroke="rgba(255,255,255,0.25)"
-          strokeWidth="1"
+          d="M 42 235 C 32 265, 35 305, 48 330"
+          stroke="rgba(255,255,255,0.5)"
+          strokeWidth="2"
+          strokeLinecap="round"
           fill="none"
         />
         <path
-          d="M 92 178 C 70 220, 40 258, 38 298"
-          stroke="rgba(255,255,255,0.18)"
-          strokeWidth="1"
+          d="M 175 235 C 185 270, 182 305, 170 330"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="1.2"
+          strokeLinecap="round"
           fill="none"
         />
+
+        {/* Reflexo geral de vidro (faixa superior fina nos dois bulbos) */}
+        <ellipse cx="80" cy="55" rx="22" ry="6" fill="rgba(255,255,255,0.18)" />
+        <ellipse cx="80" cy="220" rx="22" ry="5" fill="rgba(255,255,255,0.12)" />
       </svg>
 
       <div className="mt-4 text-right text-white/50 text-[11px] uppercase tracking-[0.2em] pr-2">

@@ -189,14 +189,16 @@ export default function CincoNoitesSection() {
 
       <div className="wrap immersion__close">
         <p className="immersion__close-text">
-          <strong>Garantia de 30 dias</strong> + <strong>Garantia da Quarta-feira</strong>.
-          Risco zero.
+          Cada noite ao vivo. 20h. Com Adrian. Você entende, pergunta, implementa e nós
         </p>
         <PillButton
           label="Entrar nas 5 noites — R$97"
           variant="gold"
           size="lg"
         />
+        <p className="immersion__close-text" style={{ marginTop: "1rem" }}>
+          Garantia de 30 dias + Garantia da Quarta-feira. Risco zero.
+        </p>
       </div>
     </section>
   );

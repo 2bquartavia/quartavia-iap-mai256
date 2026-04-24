@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import renatoOberg from "@/assets/renato-oberg.png";
 
 export default function DiagnosticoSection() {
   return (
@@ -27,8 +28,16 @@ export default function DiagnosticoSection() {
           <blockquote className="text-[#031a28] text-[17px] md:text-[19px] leading-[1.55] font-medium">
             “Passei por 2 assessorias e 1 consultoria. Nenhuma me deu um plano real de construção de ativos. Aqui, o que foi prometido foi entregue.”
           </blockquote>
-          <figcaption className="mt-4 text-[#031a28]/70 text-[13px] md:text-[14px] uppercase tracking-[0.12em]">
-            Renato Oberg <span className="text-[#031a28]/40">— Médico</span>
+          <figcaption className="mt-5 flex items-center gap-3">
+            <img
+              src={renatoOberg}
+              alt="Renato Oberg"
+              className="h-10 w-10 rounded-full object-cover object-top ring-1 ring-[#031a28]/20"
+              loading="lazy"
+            />
+            <span className="text-[#031a28]/70 text-[13px] md:text-[14px] uppercase tracking-[0.12em]">
+              Renato Oberg <span className="text-[#031a28]/40">— Médico</span>
+            </span>
           </figcaption>
         </figure>
 

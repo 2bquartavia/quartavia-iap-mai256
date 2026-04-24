@@ -140,11 +140,7 @@ export default function DiagnosticoSection() {
         </p>
 
         <p className="mt-10 text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">
-          Eu sei disso porque já sentei com mais de <span className="text-[#031a28] font-semibold">3.000 profissionais</span> nessa situação. Médicos, empresários, advogados, engenheiros. Gente que acorda cedo, dorme tarde e faz mais do que a maioria.
-        </p>
-
-        <p className="mt-5 text-[#031a28]/75 text-[16px] md:text-[17px] leading-[1.65]">
-          Quase todos tinham o mesmo perfil:
+          Eu sei disso porque já sentei com mais de <span className="text-[#031a28] font-semibold">3.000 profissionais</span> nessa situação. Médicos, empresários, advogados, engenheiros. Gente que acorda cedo, dorme tarde e faz mais do que a maioria. Quase todos tinham o mesmo perfil:
         </p>
 
         {/* Lista de perfil — roda-gigante */}

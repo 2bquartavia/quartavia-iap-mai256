@@ -145,7 +145,7 @@ function IndexV2() {
                     key={l}
                     className="w-[260px] md:w-[300px] rounded-lg border border-white/25 bg-black/55 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
                   >
-                    <div className="flex items-baseline gap-2 text-white justify-end text-right">
+                    <div className="flex items-baseline gap-2 text-white justify-start text-left">
                       <span className="text-[14px] md:text-[16px] leading-none">
                         {icon}
                       </span>

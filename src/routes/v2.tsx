@@ -128,14 +128,14 @@ function IndexV2() {
                   src={src}
                   alt="Adrian Carvalho"
                   className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-                  style={{ objectPosition: "50% 15%", opacity: slide === i ? 1 : 0 }}
+                  style={{ objectPosition: "50% 90%", opacity: slide === i ? 1 : 0 }}
                   decoding="async"
                   fetchPriority={i === 0 ? "high" : "low"}
                 />
               ))}
 
-              {/* Stats sobrepostos — abaixo do rosto, sem cobri-lo */}
-              <div className="absolute inset-x-0 top-[46%] md:top-[42%] flex flex-col gap-2 md:gap-2.5 px-3 md:px-4 pointer-events-none">
+              {/* Stats sobrepostos no topo — rosto fica embaixo */}
+              <div className="absolute inset-x-0 top-0 flex flex-col gap-2 md:gap-2.5 p-3 md:p-4 pointer-events-none bg-gradient-to-b from-black/60 via-black/25 to-transparent pb-10 md:pb-14">
                 {[
                   { v: "1.917", l: "Famílias atendidas" },
                   { v: "R$3 bi", l: "Sob aconselhamento" },

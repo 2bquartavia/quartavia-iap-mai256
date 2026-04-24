@@ -11,6 +11,7 @@ import PrimosViraramTiosSection from "@/components/PrimosViraramTiosSection";
 import EngenhariaPrincipiosSection from "@/components/EngenhariaPrincipiosSection";
 import CincoNoitesSection from "@/components/CincoNoitesSection";
 import PorQueAdrianSection from "@/components/PorQueAdrianSection";
+import DezHorasSection from "@/components/DezHorasSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -199,6 +200,9 @@ function IndexV2() {
 
       {/* SÉTIMA DOBRA — Por que eu sou a melhor pessoa */}
       <PorQueAdrianSection />
+
+      {/* OITAVA DOBRA — 10 horas ao vivo (cards empilhando) */}
+      <DezHorasSection />
 
       <ImmersionSection />
 

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import PillButton from "@/components/PillButton";
 
 type Item = {
   eyebrow: string;
@@ -111,18 +110,24 @@ export default function DezHorasSection() {
               style={{ background: "#ffffff", opacity: 0.4 }}
             />
 
-            {/* CTA fica visível no fim da rolagem */}
-            <div
-              className="mt-8 transition-opacity duration-500"
-              style={{ opacity: progress > 0.85 ? 1 : 0.25 }}
-            >
-              <PillButton
-                label="Entrar nas 5 noites — R$97"
-                variant="gold"
-                size="lg"
-              />
-              <p className="mt-3 text-white/55 text-[12px] md:text-[13px]">
-                Garantia de 30 dias + Garantia da Quarta-feira. Risco zero.
+            {/* Bloco de investimento */}
+            <div className="mt-8">
+              <p className="text-white/60 text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.22em]">
+                Investimento para as 5 noites
+              </p>
+              <p
+                className="mt-3 font-semibold text-white leading-none tracking-[-0.03em] text-[clamp(2.6rem,6vw,4.4rem)]"
+                style={{
+                  fontFamily:
+                    '"Source Serif 4", "Source Serif Pro", Georgia, serif',
+                }}
+              >
+                R$ 97
+              </p>
+              <p className="mt-4 text-white/70 text-[14px] md:text-[15px] leading-[1.55] max-w-[460px]">
+                Custa menos do que o jantar de sexta-feira que você vai esquecer
+                até segunda. Com uma diferença: esse jantar não vai mudar a
+                engenharia da sua vida.
               </p>
             </div>
           </div>

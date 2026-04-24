@@ -10,6 +10,7 @@ import PrimoTioSection from "@/components/PrimoTioSection";
 import PrimosViraramTiosSection from "@/components/PrimosViraramTiosSection";
 import EngenhariaPrincipiosSection from "@/components/EngenhariaPrincipiosSection";
 import CincoNoitesSection from "@/components/CincoNoitesSection";
+import PorQueAdrianSection from "@/components/PorQueAdrianSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -195,6 +196,9 @@ function IndexV2() {
 
       {/* SEXTA DOBRA — 5 Noites */}
       <CincoNoitesSection />
+
+      {/* SÉTIMA DOBRA — Por que eu sou a melhor pessoa */}
+      <PorQueAdrianSection />
 
       <ImmersionSection />
 

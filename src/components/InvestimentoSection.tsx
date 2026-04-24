@@ -36,41 +36,27 @@ export default function InvestimentoSection() {
           />
         </div>
 
-        {/* Card / fatura */}
-        <div
-          className="relative mt-12 md:mt-16 rounded-[22px] overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(155deg, #f6f1e8 0%, #ece4d4 50%, #d9cfbb 100%)",
-            boxShadow:
-              "0 40px 80px -20px rgba(0,0,0,0.6), 0 8px 24px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.7)",
-          }}
-        >
-          {/* reflexo */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(120deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.2) 100%)",
-              mixBlendMode: "screen",
-            }}
-          />
-
-          <div className="relative p-7 md:p-12 text-[#031a28]">
-            {/* Linhas */}
-            <ul className="divide-y divide-[#031a28]/15">
+        {/* Layout: lista à esquerda, preço/CTA à direita */}
+        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-stretch">
+          {/* Lista — esquerda */}
+          <div className="md:col-span-7">
+            <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-white/55">
+              Tudo que está incluso
+            </p>
+            <ul className="mt-5 divide-y divide-white/12">
               {LINHAS.map((l) => (
                 <li
                   key={l.nome}
-                  className="flex items-baseline justify-between gap-4 py-4 md:py-5"
+                  className="flex items-baseline justify-between gap-5 py-4 md:py-5"
                 >
-                  <span className="text-[15px] md:text-[17px] leading-snug font-medium">
+                  <span className="text-white text-[15px] md:text-[17px] leading-snug font-medium">
                     {l.nome}
                   </span>
                   <span
-                    className={`shrink-0 text-[13px] md:text-[14px] font-semibold uppercase tracking-[0.16em] ${
-                      l.incluso ? "text-[#0a6d3a]" : "text-[#031a28]/70"
+                    className={`shrink-0 text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.16em] ${
+                      l.incluso
+                        ? "text-[#e6c674]"
+                        : "text-white/55 line-through decoration-white/40"
                     }`}
                   >
                     {l.valor}
@@ -79,32 +65,42 @@ export default function InvestimentoSection() {
               ))}
             </ul>
 
-            {/* Divisor pontilhado estilo recibo */}
-            <div
-              aria-hidden
-              className="my-7 md:my-9 h-px w-full"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, #031a28 0 6px, transparent 6px 12px)",
-                backgroundSize: "12px 1px",
-                backgroundRepeat: "repeat-x",
-                opacity: 0.35,
-              }}
-            />
+            <p className="mt-6 text-white/55 text-[13px] md:text-[14px]">
+              Valor total dos itens:{" "}
+              <span className="text-white/80 font-semibold">R$ 2.188</span>
+            </p>
+          </div>
 
-            {/* Total */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center">
-              <div>
+          {/* Preço + CTA — direita */}
+          <aside className="md:col-span-5">
+            <div
+              className="relative h-full rounded-[22px] overflow-hidden p-7 md:p-9 flex flex-col"
+              style={{
+                background:
+                  "linear-gradient(160deg, #f6f1e8 0%, #ece4d4 55%, #d9cfbb 100%)",
+                boxShadow:
+                  "0 40px 80px -20px rgba(0,0,0,0.6), 0 8px 24px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.7)",
+              }}
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(120deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.2) 100%)",
+                  mixBlendMode: "screen",
+                }}
+              />
+
+              <div className="relative text-[#031a28] flex flex-col h-full">
                 <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-[#031a28]/55">
                   Seu investimento
                 </p>
-                <div className="mt-2 flex items-baseline gap-3">
-                  <span className="text-[18px] md:text-[20px] text-[#031a28]/55 line-through">
-                    De R$ 2.188
-                  </span>
-                </div>
+                <span className="mt-3 text-[18px] md:text-[20px] text-[#031a28]/55 line-through">
+                  De R$ 2.188
+                </span>
                 <p
-                  className="mt-1 font-semibold leading-none tracking-[-0.03em] text-[clamp(2.6rem,6vw,4.4rem)]"
+                  className="mt-1 font-semibold leading-none tracking-[-0.03em] text-[clamp(3rem,6.5vw,4.8rem)]"
                   style={{
                     fontFamily:
                       '"Source Serif 4", "Source Serif Pro", Georgia, serif',
@@ -112,20 +108,36 @@ export default function InvestimentoSection() {
                 >
                   Por R$ 97
                 </p>
-                <p className="mt-3 text-[#031a28]/65 text-[13px] md:text-[14px]">
-                  Pagamento único <span className="mx-2 opacity-50">//</span> Sem assinatura
+                <p className="mt-3 text-[#031a28]/70 text-[13px] md:text-[14px]">
+                  Pagamento único{" "}
+                  <span className="mx-2 opacity-50">//</span> Sem assinatura
                 </p>
-              </div>
 
-              <div className="md:text-right">
-                <PillButton
-                  label="Garantir minha vaga agora"
-                  variant="dark"
-                  size="lg"
+                <div
+                  aria-hidden
+                  className="my-6 h-px w-full"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(to right, #031a28 0 6px, transparent 6px 12px)",
+                    backgroundSize: "12px 1px",
+                    backgroundRepeat: "repeat-x",
+                    opacity: 0.3,
+                  }}
                 />
+
+                <div className="mt-auto">
+                  <PillButton
+                    label="Garantir minha vaga agora"
+                    variant="dark"
+                    size="lg"
+                  />
+                  <p className="mt-4 text-[#031a28]/60 text-[12px] md:text-[13px]">
+                    Garantia de 30 dias. Risco zero.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
 
         {/* Rodapé da seção */}

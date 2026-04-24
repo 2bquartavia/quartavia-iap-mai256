@@ -9,6 +9,7 @@ import DiagnosticoSection from "@/components/DiagnosticoSection";
 import PrimoTioSection from "@/components/PrimoTioSection";
 import PrimosViraramTiosSection from "@/components/PrimosViraramTiosSection";
 import EngenhariaPrincipiosSection from "@/components/EngenhariaPrincipiosSection";
+import CincoNoitesSection from "@/components/CincoNoitesSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
 const heroSlides = [
@@ -191,6 +192,9 @@ function IndexV2() {
 
       {/* QUINTA DOBRA — Engenharia Patrimonial: 2 princípios */}
       <EngenhariaPrincipiosSection />
+
+      {/* SEXTA DOBRA — 5 Noites */}
+      <CincoNoitesSection />
 
       <ImmersionSection />
 

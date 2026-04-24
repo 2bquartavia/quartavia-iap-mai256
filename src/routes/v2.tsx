@@ -134,8 +134,8 @@ function IndexV2() {
                 />
               ))}
 
-              {/* Stats sobrepostos no rodapé (não cobrem o rosto, que está no topo) */}
-              <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 md:gap-2.5 p-3 md:p-4 pointer-events-none bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-10 md:pt-16">
+              {/* Stats sobrepostos — abaixo do rosto, sem cobri-lo */}
+              <div className="absolute inset-x-0 top-[46%] md:top-[42%] flex flex-col gap-2 md:gap-2.5 px-3 md:px-4 pointer-events-none">
                 {[
                   { v: "1.917", l: "Famílias atendidas" },
                   { v: "R$3 bi", l: "Sob aconselhamento" },
@@ -143,7 +143,7 @@ function IndexV2() {
                 ].map(({ v, l }) => (
                   <div
                     key={l}
-                    className="rounded-lg border border-white/25 bg-black/45 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
+                    className="rounded-lg border border-white/25 bg-black/55 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
                   >
                     <div className="flex items-baseline gap-2 text-white">
                       <span className="font-semibold tracking-tight text-[16px] md:text-[19px] leading-none">

@@ -2141,6 +2141,25 @@
 .cta-thirds__dot {
   width: 4px; height: 4px; border-radius: 50%; background: #CC7514;
 }
+.cta-thirds__signature {
+  margin: 2.25rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(230,198,116,0.25);
+  max-width: 32rem;
+}
+.cta-thirds__sig-name {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  color: #E6C674; font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+  letter-spacing: 0.01em; margin: 0 0 0.25rem;
+}
+.cta-thirds__sig-role {
+  color: rgba(255,255,255,0.85); font-size: clamp(0.82rem, 0.9vw, 0.92rem);
+  margin: 0 0 0.35rem; font-weight: 500;
+}
+.cta-thirds__sig-meta {
+  color: rgba(255,255,255,0.6); font-size: clamp(0.74rem, 0.82vw, 0.84rem);
+  letter-spacing: 0.02em; margin: 0;
+}
 @media (max-width: 768px) {
   .cta-thirds {
     position: relative;

@@ -128,7 +128,7 @@ function IndexV2() {
                   src={src}
                   alt="Adrian Carvalho"
                   className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-                  style={{ objectPosition: "50% 15%", opacity: slide === i ? 1 : 0 }}
+                  style={{ objectPosition: "50% 90%", opacity: slide === i ? 1 : 0 }}
                   decoding="async"
                   fetchPriority={i === 0 ? "high" : "low"}
                 />

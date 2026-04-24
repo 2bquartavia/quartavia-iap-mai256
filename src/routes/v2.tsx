@@ -1,12 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import PillButton from "@/components/PillButton";
 import ImmersionSection from "@/components/ImmersionSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import SpeakerSection from "@/components/SpeakerSection";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
-const heroBg = "/hero-v2-desktop.jpg";
-const heroBgMobile = "/hero-v2-mobile.jpg";
+
+const heroSlides = [
+  "/hero-v2-1.png",
+  "/hero-v2-2.png",
+  "/hero-v2-3.png",
+  "/hero-v2-4.png",
+];
+const heroBg = heroSlides[0];
 
 export const Route = createFileRoute("/v2")({
   head: () => ({

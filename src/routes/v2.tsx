@@ -57,7 +57,7 @@ function IndexV2() {
       {/* HERO — fundo laranja, texto à esquerda, foto à direita */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ background: "#CC7514" }}
+        style={{ background: "#031a28" }}
       >
         <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-20">
           {/* Topbar — logo | data | ao vivo */}

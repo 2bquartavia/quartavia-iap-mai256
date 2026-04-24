@@ -271,36 +271,23 @@ export default function PrimosViraramTiosSection() {
           </div>
         </article>
 
-        {/* GRID de depoimentos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
-          {DEPOIMENTOS.map((d, i) => (
-            <article
-              key={i}
-              className="group relative rounded-2xl bg-white/70 backdrop-blur-sm border border-[#031a28]/15 p-7 md:p-8 shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
-            >
-              {d.badge && (
-                <span className="absolute -top-2.5 right-6 inline-flex items-center rounded-full bg-[#031a28] text-[#FAEDDD] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] shadow-md">
-                  {d.badge}
-                </span>
-              )}
-              <Quote
-                aria-hidden
-                className="h-6 w-6 text-[#031a28]/25 mb-4"
-                strokeWidth={2}
-              />
-              <p className="text-[#031a28]/85 text-[15px] md:text-[15.5px] leading-[1.7] flex-1">
-                {d.quote}
-              </p>
-              <div className="mt-6 pt-5 border-t border-[#031a28]/10">
-                <p className="text-[#031a28] font-semibold text-[14.5px]">
-                  {d.name}
-                </p>
-                <p className="text-[#031a28]/55 text-[12.5px] mt-0.5">
-                  {d.role}
-                </p>
-              </div>
-            </article>
-          ))}
+        {/* Carrossel de depoimentos — vidro azulado, mesmo movimento da seção Imersão */}
+        <div className="tcarousel-text -mx-5 md:-mx-8">
+          <div ref={trackRef} className="tcarousel-text__track">
+            {loop.map((d, i) => (
+              <figure key={i} className="tcard-text">
+                <div className="tcard-text__inner relative">
+                  {d.badge && <span className="tcard-text__badge">{d.badge}</span>}
+                  <Quote className="tcard-text__quoteicon" strokeWidth={2} />
+                  <p className="tcard-text__quote">{d.quote}</p>
+                  <div className="tcard-text__foot">
+                    <p className="tcard-text__name">{d.name}</p>
+                    <p className="tcard-text__role">{d.role}</p>
+                  </div>
+                </div>
+              </figure>
+            ))}
+          </div>
         </div>
 
         {/* CTA */}

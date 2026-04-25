@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -16,13 +17,17 @@ const LeadModalContext = createContext<LeadModalContextValue | null>(null);
 export function LeadModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // open é estável (deps vazias) — não recria a value do Provider e não invalida
-  // consumidores via context.
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
+  // useMemo CRÍTICO: sem ele, o objeto `value` é recriado a cada render do
+  // Provider, invalidando o Context e re-renderizando TODOS os consumidores
+  // (todos os PillButtons da página). Em uma LP com muitos CTAs isso cascateia
+  // num evento síncrono de click e trava a aba.
+  const value = useMemo(() => ({ open }), [open]);
+
   return (
-    <LeadModalContext.Provider value={{ open }}>
+    <LeadModalContext.Provider value={value}>
       {children}
       {/* Render condicional: modal só existe na árvore quando aberto.
           Quando fecha, o componente é desmontado totalmente — nenhum hook

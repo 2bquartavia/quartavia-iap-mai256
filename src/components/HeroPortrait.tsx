@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
+
 const heroBg = "/hero-v2-desktop.jpg";
 const heroBgMobile = "/hero-v2-mobile.jpg";
 
@@ -24,6 +26,7 @@ export default function HeroPortrait() {
     };
 
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       if (raf) return;
       raf = requestAnimationFrame(update);
     };

@@ -48,17 +48,9 @@ export default defineConfig({
             if (id.includes("@tanstack/react-router") || id.includes("@tanstack/router-")) {
               return "router";
             }
-            if (id.includes("@tanstack/react-query")) {
-              return "query";
-            }
-            if (id.includes("@radix-ui")) {
-              return "radix";
-            }
             if (id.includes("lucide-react")) {
               return "icons";
             }
-            // @supabase: só com import() dinâmico em acSubscribe / submit — não isolar
-            // num chunk nomeado, evita referência a SDK no carregamento inicial.
           }
         },
       },

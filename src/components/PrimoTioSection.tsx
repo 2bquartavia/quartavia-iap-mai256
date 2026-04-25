@@ -12,7 +12,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { isLeadModalOpenNow } from "@/components/leadModalStore";
+import { isLeadModalOpenNow, leadModalStore } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 import bancoMasterNews from "@/assets/banco-master-news.png";
 import LpPicture from "@/components/LpPicture";
@@ -97,14 +97,28 @@ function CountUp({
     if (!inView) return;
     let raf = 0;
     const start = performance.now();
+    let progress = 0;
     const tick = (t: number) => {
+      if (isLeadModalOpenNow()) {
+        raf = 0;
+        return;
+      }
       const p = Math.min(1, (t - start) / duration);
+      progress = p;
       const eased = 1 - Math.pow(1 - p, 3);
       setValue(Math.round(eased * target));
       if (p < 1) raf = requestAnimationFrame(tick);
     };
+    const unsub = leadModalStore.subscribe(() => {
+      if (isLeadModalOpenNow() || progress >= 1) return;
+      if (raf) return;
+      raf = requestAnimationFrame(tick);
+    });
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      unsub();
+      cancelAnimationFrame(raf);
+    };
   }, [inView, target, duration]);
   const formatted = value.toLocaleString("pt-BR");
   return (

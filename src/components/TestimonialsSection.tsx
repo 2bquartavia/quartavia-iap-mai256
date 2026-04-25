@@ -32,6 +32,10 @@ export default function TestimonialsSection() {
     const SLOW_SPEED = 55; // px/segundo quando um card está centralizado (nunca para)
     const SLOW_RANGE_RATIO = 0.45; // fração da largura do card considerada "zona de leitura"
 
+    // getBoundingClientRect em todos os cards a 60fps mata o main thread; Primos
+    // já usa 10fps.
+    let lastCenterT = 0;
+
     let centerDist = Infinity;
     let centerCardWidth = 0;
     let pointerDown = false;
@@ -69,7 +73,10 @@ export default function TestimonialsSection() {
       if (track.scrollLeft >= c * 2) track.scrollLeft -= c;
       else if (track.scrollLeft <= 0) track.scrollLeft += c;
 
-      updateCenter();
+      if (t - lastCenterT > 100) {
+        updateCenter();
+        lastCenterT = t;
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
 

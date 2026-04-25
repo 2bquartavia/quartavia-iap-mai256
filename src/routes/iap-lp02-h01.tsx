@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Users, Briefcase, TrendingUp } from "lucide-react";
+import LpPicture from "@/components/LpPicture";
 import PillButton from "@/components/PillButton";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
@@ -16,13 +17,9 @@ import ParaQuemSection from "@/components/ParaQuemSection";
 import FAQSection from "@/components/FAQSection";
 import logoQuartavia from "@/assets/logo-alavanca.png";
 
-const heroSlides = [
-  "/hero-v2-1.png",
-  "/hero-v2-2.png",
-  "/hero-v2-3.png",
-  "/hero-v2-4.png",
-];
-const heroBg = heroSlides[0];
+/** Gerados em /images-lp/ por `npm run optimize:images` (a partir de public/hero-v2-*.png) */
+const HERO_STEMS = ["hero-v2-1", "hero-v2-2", "hero-v2-3", "hero-v2-4"] as const;
+const heroPreload = "/images-lp/hero-v2-1-1280.webp";
 
 export const Route = createFileRoute("/iap-lp02-h01")({
   head: () => ({
@@ -37,7 +34,7 @@ export const Route = createFileRoute("/iap-lp02-h01")({
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4e090813-50f4-47ee-8148-8442949c3e88/id-preview-97fb3713--a07d5729-6853-49b6-99b2-8873d0bc14e0.lovable.app-1776739634797.png" },
     ],
     links: [
-      { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" },
+      { rel: "preload", as: "image", href: heroPreload, fetchPriority: "high" },
     ],
   }),
   component: IndexV2,
@@ -83,22 +80,26 @@ function HeroSlideshow() {
 
   // Preload das demais slides (a primeira já é preloaded via head links)
   useEffect(() => {
-    heroSlides.forEach((src) => {
+    HERO_STEMS.forEach((stem) => {
       const img = new Image();
-      img.src = src;
+      img.src = `/images-lp/${stem}-1280.webp`;
     });
   }, []);
 
   return (
     <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
-      {heroSlides.map((src, i) => {
+      {HERO_STEMS.map((stem, i) => {
         const isActive = slide === i;
         return (
-          <img
-            key={src}
-            src={src}
+          <LpPicture
+            key={stem}
+            stem={stem}
             alt="Adrian Carvalho"
-            className="absolute inset-0 w-full h-full object-cover will-change-transform"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            width={960}
+            height={1200}
+            frameClassName="absolute inset-0 w-full h-full"
+            className="w-full h-full object-cover will-change-transform"
             style={{
               objectPosition: "50% 90%",
               opacity: isActive ? 1 : 0,
@@ -108,8 +109,8 @@ function HeroSlideshow() {
               transition:
                 "opacity 800ms ease-in-out, transform 1900ms cubic-bezier(0.22, 0.61, 0.36, 1)",
             }}
+            priority={i === 0}
             decoding="async"
-            fetchPriority={i === 0 ? "high" : "low"}
           />
         );
       })}

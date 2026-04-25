@@ -306,9 +306,12 @@ export default function DiagnosticoSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scanProgress, setScanProgress] = useState(0);
 
-  // Scan line desce a imagem conforme você rola — toque "diagnóstico"
+  // Scan line: 1 rAF / frame. Sem isso, cada evento de scroll = setState (focus no
+  // form pode gerar "scroll into view" e centenas de updates → trava a aba).
   useEffect(() => {
-    const onScroll = () => {
+    let raf = 0;
+    const run = () => {
+      raf = 0;
       if (isLeadModalOpenNow()) return;
       const el = wrapperRef.current;
       if (!el) return;
@@ -319,10 +322,16 @@ export default function DiagnosticoSection() {
       const p = Math.min(1, Math.max(0, passed / total));
       setScanProgress(p);
     };
-    onScroll();
+    const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
+      if (raf) return;
+      raf = requestAnimationFrame(run);
+    };
+    run();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };

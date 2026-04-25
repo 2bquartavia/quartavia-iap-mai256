@@ -18,6 +18,14 @@ const SOURCES = [
   "predio-alugueis.png",
 ];
 
+/** Hero LP (public/) — PNGs grandes trocados por AVIF/WebP/JPEG em images-lp/ */
+const PUBLIC_PNG = [
+  "hero-v2-1.png",
+  "hero-v2-2.png",
+  "hero-v2-3.png",
+  "hero-v2-4.png",
+];
+
 const WIDTHS = [480, 800, 1280];
 
 async function fileExists(p) {
@@ -64,4 +72,29 @@ await mkdir(OUT, { recursive: true });
 for (const f of SOURCES) {
   await processFile(f);
 }
+
+const publicDir = join(root, "public");
+for (const f of PUBLIC_PNG) {
+  const input = join(publicDir, f);
+  if (!(await fileExists(input))) {
+    console.warn(`[optimize-lp-images] skip hero (missing): ${input}`);
+    continue;
+  }
+  const name = stem(f);
+  for (const w of WIDTHS) {
+    const base = await sharp(input)
+      .rotate()
+      .resize({ width: w, withoutEnlargement: true });
+
+    const bufAvif = await base.clone().avif({ quality: 62, effort: 4 }).toBuffer();
+    const bufWebp = await base.clone().webp({ quality: 78 }).toBuffer();
+    const bufJpg = await base.clone().jpeg({ quality: 80, mozjpeg: true }).toBuffer();
+
+    await writeFile(join(OUT, `${name}-${w}.avif`), bufAvif);
+    await writeFile(join(OUT, `${name}-${w}.webp`), bufWebp);
+    await writeFile(join(OUT, `${name}-${w}.jpg`), bufJpg);
+  }
+  console.log(`[optimize-lp-images] ok hero: ${name} (${WIDTHS.join(", ")}w)`);
+}
+
 console.log("[optimize-lp-images] concluído.");

@@ -295,7 +295,13 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
         display: "grid",
         placeItems: "center",
         padding: "1rem",
-        background: "rgba(0,0,0,0.78)",
+        // Fundo opaco — evita re-composite contínuo com a página abaixo
+        // (que tem dezenas de animações CSS rodando). Crítico em mobile.
+        background: "#031a28",
+        // Isolamento total de compositing/layout/paint — input não invalida
+        // estilos da página abaixo a cada keystroke.
+        isolation: "isolate",
+        contain: "layout style paint",
       }}
     >
       <div
@@ -311,6 +317,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           borderRadius: "1rem",
           background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
           color: "#fff",
+          contain: "layout style paint",
         }}
       >
         <button

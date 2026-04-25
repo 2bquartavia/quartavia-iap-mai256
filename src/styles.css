@@ -2266,29 +2266,6 @@ main blockquote, main p, main li {
 }
 .diag-engineering > * { position: relative; z-index: 1; }
 
-/* Pausa global de animações enquanto a modal estiver aberta.
- *
- * Animações de fundo (orbs, hero__grid, marquee, pillShift/pillShine,
- * garantia-halo/glow, bp-fly, ep-icon flip etc.) continuam rodando invisíveis
- * sob o overlay e custam GPU/compositor todo frame. `animation-play-state:
- * paused` congela no frame atual sem remover — ao fechar a modal, voltam de
- * onde pararam. Carrosséis JS já param via `isLeadModalOpenNow()` no store.
- *
- * Pausa em tudo dentro do body, e re-ativa explicitamente em #modal-root pra
- * preservar qualquer animação interna do próprio modal.
- */
-html[data-lead-modal-open] body *,
-html[data-lead-modal-open] body *::before,
-html[data-lead-modal-open] body *::after {
-  animation-play-state: paused !important;
-}
-html[data-lead-modal-open] #modal-root,
-html[data-lead-modal-open] #modal-root *,
-html[data-lead-modal-open] #modal-root *::before,
-html[data-lead-modal-open] #modal-root *::after {
-  animation-play-state: running !important;
-}
-
 .testimonial-card {
   margin: 0;
   flex: 0 0 auto;

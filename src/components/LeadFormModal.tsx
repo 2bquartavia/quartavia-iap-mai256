@@ -57,9 +57,15 @@ const COUNTRIES: CountryEntry[] = [
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /**
- * Com o fundo ainda scrollável, o Chrome tenta scroll-into-view / scroll anchoring na
- * página inteira ao focar inputs no portal — dispara tempestade de eventos scroll + rAF
- * nas seções e congela a aba. Travamos body + marcamos #root como inert.
+ * Enquanto a modal estiver aberta:
+ *  - trava rolagem (overflow: hidden em html/body) e overscroll bounce;
+ *  - aplica `content-visibility: hidden` em #root → o browser PULA layout, paint
+ *    e compositing de toda a árvore da app. Sem isso, cada keystroke num input
+ *    do portal forçava invalidação de estilo em milhares de nós (gradients,
+ *    transitions, marquees, will-change) — o que travava a aba no foco/digitação.
+ *    `contain-intrinsic-size` preserva a altura medida pra que o scroll volte
+ *    no mesmo lugar quando a modal fechar.
+ *  - `inert` + `aria-hidden` em #root → impede tab focus e leitura por SR.
  */
 export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   const nomeRef = useRef<HTMLInputElement>(null);
@@ -77,53 +83,49 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
     const html = document.documentElement;
     const body = document.body;
     const root = document.getElementById("root");
-    const y = window.scrollY;
+    const gutter = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
 
     const prevHtmlOverflow = html.style.overflow;
-    const prevBodyPosition = body.style.position;
-    const prevBodyTop = body.style.top;
-    const prevBodyLeft = body.style.left;
-    const prevBodyRight = body.style.right;
-    const prevBodyWidth = body.style.width;
     const prevBodyOverflow = body.style.overflow;
+    const prevBodyPad = body.style.paddingRight;
+    const prevHtmlOs = html.style.overscrollBehavior;
+    const prevBodyOs = body.style.overscrollBehavior;
 
+    if (gutter) body.style.paddingRight = `${gutter}px`;
     html.style.overflow = "hidden";
-    body.style.position = "fixed";
-    body.style.top = `-${y}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
     body.style.overflow = "hidden";
-
-    // Atributo no <html> habilita as regras CSS de `animation-play-state: paused`
-    // no fundo (ver styles.css "Pausa global de animações"), e também serve como
-    // fonte de verdade pra qualquer fallback puramente CSS.
-    html.dataset.leadModalOpen = "1";
+    html.style.overscrollBehavior = "none";
+    body.style.overscrollBehavior = "none";
 
     let prevRootInert: boolean | undefined;
     let prevRootAriaHidden: string | null = null;
+    let prevRootCV = "";
+    let prevRootCIS = "";
     if (root) {
       prevRootInert = root.inert;
       prevRootAriaHidden = root.getAttribute("aria-hidden");
+      prevRootCV = root.style.contentVisibility;
+      prevRootCIS = root.style.containIntrinsicSize;
+      const h = root.getBoundingClientRect().height;
       root.inert = true;
       root.setAttribute("aria-hidden", "true");
+      root.style.contentVisibility = "hidden";
+      root.style.containIntrinsicSize = `auto ${Math.round(h)}px`;
     }
 
     return () => {
       html.style.overflow = prevHtmlOverflow;
-      body.style.position = prevBodyPosition;
-      body.style.top = prevBodyTop;
-      body.style.left = prevBodyLeft;
-      body.style.right = prevBodyRight;
-      body.style.width = prevBodyWidth;
       body.style.overflow = prevBodyOverflow;
-      delete html.dataset.leadModalOpen;
+      body.style.paddingRight = prevBodyPad;
+      html.style.overscrollBehavior = prevHtmlOs;
+      body.style.overscrollBehavior = prevBodyOs;
       if (root) {
         root.inert = prevRootInert ?? false;
         if (prevRootAriaHidden === null) root.removeAttribute("aria-hidden");
         else root.setAttribute("aria-hidden", prevRootAriaHidden);
+        root.style.contentVisibility = prevRootCV;
+        root.style.containIntrinsicSize = prevRootCIS;
       }
-      window.scrollTo(0, y);
     };
   }, []);
 

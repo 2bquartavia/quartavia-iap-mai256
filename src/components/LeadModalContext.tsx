@@ -20,11 +20,13 @@ export function LeadModalProvider({ children }: { children: ReactNode }) {
   );
 }
 
+const LEAD_MODAL_ACTIONS = {
+  open: leadModalStore.open,
+  close: leadModalStore.close,
+} as const;
+
 export function useLeadModal() {
-  return {
-    open: leadModalStore.open,
-    close: leadModalStore.close,
-  };
+  return LEAD_MODAL_ACTIONS;
 }
 
 /**

@@ -2267,11 +2267,15 @@ main blockquote, main p, main li {
 }
 .diag-engineering > * { position: relative; z-index: 1; }
 
+/* visibility: hidden em vez de display: none — o display: none tirava esses
+   elementos do fluxo no momento exato do click, forçando reflow da página inteira
+   (que é gigante). Em iOS Safari isso podia travar a thread principal por segundos
+   antes do modal aparecer. visibility: hidden mantém o layout, sem reflow. */
 .lead-modal-open .hero__grid,
 .lead-modal-open .hero__marquee,
 .lead-modal-open .ticker,
 .lead-modal-open .testimonials__carousel {
-  display: none;
+  visibility: hidden;
 }
 
 .lead-modal-open .pill-btn--gold,

@@ -135,16 +135,26 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   const country =
     COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
 
-  // useLayoutEffect garante que body class + overflow são aplicados ANTES do paint
-  // do modal — sem flash visual entre frames.
+  // overflow:hidden roda em useLayoutEffect — precisa ser aplicado antes do paint
+  // pra travar o scroll no instante que o modal aparece.
   useLayoutEffect(() => {
     persistUtmsFromUrl();
     const previousOverflow = document.body.style.overflow;
-    document.body.classList.add("lead-modal-open");
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.classList.remove("lead-modal-open");
       document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  // A classe lead-modal-open é DEFERIDA pra useEffect (depois do paint do modal)
+  // porque ela dispara um style recalc enorme em toda a árvore via descendant
+  // selectors (.lead-modal-open .pill-btn--gold, etc.). Aplicar antes do paint
+  // estava bloqueando a thread principal por segundos em devices mais lentos —
+  // usuário clicava e a aba congelava antes do modal renderizar.
+  useEffect(() => {
+    document.body.classList.add("lead-modal-open");
+    return () => {
+      document.body.classList.remove("lead-modal-open");
     };
   }, []);
 

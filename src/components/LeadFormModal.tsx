@@ -1,8 +1,15 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+} from "react";
+import { createPortal } from "react-dom";
 
 interface LeadFormModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
 }
 
 type CountryEntry = {
@@ -10,14 +17,11 @@ type CountryEntry = {
   name: string;
   flag: string;
   dial: string;
-  // Max number of national digits (after country code)
   maxNational: number;
-  // Lightweight format groups for visual mask (BR-style only for BR)
   format?: (digits: string) => string;
 };
 
 const formatBR = (d: string) => {
-  // (11) 99999-9999
   const a = d.slice(0, 2);
   const b = d.slice(2, 7);
   const c = d.slice(7, 11);
@@ -49,7 +53,7 @@ const COUNTRIES: CountryEntry[] = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const ACTIVE_FIELD_PARAM_KEYS = [
+const TRACKED_UTM_KEYS = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
@@ -57,178 +61,112 @@ const ACTIVE_FIELD_PARAM_KEYS = [
   "utm_term",
   "utm_id",
 ] as const;
+const STORAGE_PREFIX = "lead_param_";
 
-const STORAGE_PARAM_PREFIX = "lead_param_";
-
-function safeSet(storage: Storage | null, key: string, value: string) {
-  if (!storage) return;
+function safeStorageOp(op: () => void) {
   try {
-    storage.setItem(key, value);
+    op();
   } catch {
-    /* ignore quota / privacy mode */
+    /* quota / privacy mode */
   }
 }
 
-function safeGet(storage: Storage | null, key: string): string | null {
-  if (!storage) return null;
-  try {
-    return storage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
-function safeRemove(storage: Storage | null, key: string) {
-  if (!storage) return;
-  try {
-    storage.removeItem(key);
-  } catch {
-    /* ignore quota / privacy mode */
-  }
-}
-
-function getStorages(): Array<Storage | null> {
-  if (typeof window === "undefined") return [];
-  let local: Storage | null = null;
-  let session: Storage | null = null;
-  try {
-    local = window.localStorage;
-  } catch {
-    local = null;
-  }
-  try {
-    session = window.sessionStorage;
-  } catch {
-    session = null;
-  }
-  return [local, session];
-}
-
-function persistCurrentSearchParams() {
-  if (typeof window === "undefined") return;
-
-  const params = new URLSearchParams(window.location.search);
-  const [local, session] = getStorages();
-  const storages = [local, session];
-  const hasAnyTrackedParam = ACTIVE_FIELD_PARAM_KEYS.some((key) => {
-    const value = params.get(key);
-    return typeof value === "string" && value.trim().length > 0;
-  });
-
-  if (hasAnyTrackedParam) {
-    for (const key of ACTIVE_FIELD_PARAM_KEYS) {
-      const value = params.get(key)?.trim();
-      for (const storage of storages) {
-        safeRemove(storage, `${STORAGE_PARAM_PREFIX}${key}`);
-        safeRemove(storage, key);
-      }
-      if (!value) continue;
-      const safeValue = value.slice(0, 255);
-      for (const storage of storages) {
-        safeSet(storage, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-        safeSet(storage, key, safeValue);
-      }
-    }
-  }
-
-  params.forEach((value, key) => {
-    const trimmedValue = value.trim();
-    if (!key || !trimmedValue || key.startsWith("utm_")) return;
-    const safeValue = trimmedValue.slice(0, 255);
-    for (const storage of storages) {
-      safeSet(storage, `${STORAGE_PARAM_PREFIX}${key}`, safeValue);
-    }
-  });
-}
-
-function getLeadParams(): Record<string, string> {
+// Lê UTMs da URL atual + storage (URL tem prioridade). Sempre inclui utm_pagina = document.title.
+function collectLeadParams(): Record<string, string> {
   if (typeof window === "undefined") return {};
-
-  persistCurrentSearchParams();
   const params = new URLSearchParams(window.location.search);
-  const [local, session] = getStorages();
   const out: Record<string, string> = {};
-
-  for (const key of ACTIVE_FIELD_PARAM_KEYS) {
+  for (const key of TRACKED_UTM_KEYS) {
     const fromUrl = params.get(key)?.trim();
     if (fromUrl) {
       out[key] = fromUrl.slice(0, 255);
       continue;
     }
-
-    const stored =
-      safeGet(local, `${STORAGE_PARAM_PREFIX}${key}`) ??
-      safeGet(session, `${STORAGE_PARAM_PREFIX}${key}`) ??
-      safeGet(local, key) ??
-      safeGet(session, key);
-
-    if (stored?.trim()) {
-      out[key] = stored.trim().slice(0, 255);
+    let stored: string | null = null;
+    try {
+      stored =
+        localStorage.getItem(STORAGE_PREFIX + key) ??
+        sessionStorage.getItem(STORAGE_PREFIX + key);
+    } catch {
+      /* ignore */
     }
+    if (stored?.trim()) out[key] = stored.trim().slice(0, 255);
   }
-
-  const currentPageTitle = typeof document !== "undefined" ? document.title.trim() : "";
-  if (currentPageTitle) out.utm_pagina = currentPageTitle.slice(0, 255);
-
+  if (typeof document !== "undefined" && document.title.trim()) {
+    out.utm_pagina = document.title.trim().slice(0, 255);
+  }
   return out;
 }
 
-export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps) {
-  // Inputs UNCONTROLLED — value/onChange foram removidos pra evitar re-render
-  // do componente a cada keystroke (estava travando em produção). Lemos os
-  // valores via refs no submit. Browser cuida do estado do input nativamente.
+// Persiste qualquer UTM da URL atual no storage. Roda uma vez no mount.
+function persistUtmsFromUrl() {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams(window.location.search);
+  let hasAnyUtm = false;
+  for (const key of TRACKED_UTM_KEYS) {
+    if (params.get(key)) {
+      hasAnyUtm = true;
+      break;
+    }
+  }
+  if (!hasAnyUtm) return;
+  for (const key of TRACKED_UTM_KEYS) {
+    const value = params.get(key)?.trim();
+    if (!value) continue;
+    const safeValue = value.slice(0, 255);
+    safeStorageOp(() => localStorage.setItem(STORAGE_PREFIX + key, safeValue));
+    safeStorageOp(() =>
+      sessionStorage.setItem(STORAGE_PREFIX + key, safeValue),
+    );
+  }
+}
+
+export default function LeadFormModal({ onClose }: LeadFormModalProps) {
+  // Inputs uncontrolled — refs lidos só no submit. ZERO re-render por keystroke.
   const nomeRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
 
+  // País é o único state — muda raramente (no select).
   const [countryCode, setCountryCode] = useState<string>("BR");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
-  // Ref de country pra ler o último valor dentro do onInput sem fechar sobre stale state.
-  const countryRef = useRef(country);
-  countryRef.current = country;
+  const country =
+    COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
 
-  useEffect(() => {
-    persistCurrentSearchParams();
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      setError(null);
-      setSubmitting(false);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open || typeof document === "undefined") return;
+  // useLayoutEffect garante que body class + overflow são aplicados ANTES do paint
+  // do modal — sem flash visual entre frames.
+  useLayoutEffect(() => {
+    persistUtmsFromUrl();
     const previousOverflow = document.body.style.overflow;
     document.body.classList.add("lead-modal-open");
     document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onOpenChange(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.classList.remove("lead-modal-open");
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [onOpenChange, open]);
+  }, []);
 
-  // Mascara o telefone IMPERATIVAMENTE (sem state, sem re-render).
+  // ESC fecha
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  // Máscara do telefone — IMPERATIVA, sem state, sem re-render.
   const onPhoneInput = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
-    const c = countryRef.current;
-    const digits = target.value.replace(/\D/g, "").slice(0, c.maxNational);
-    target.value = c.format ? c.format(digits) : digits;
+    const digits = target.value.replace(/\D/g, "").slice(0, country.maxNational);
+    target.value = country.format ? country.format(digits) : digits;
   };
 
-  const handleCountryChange = (code: string) => {
+  const onCountryChange = (code: string) => {
     const next = COUNTRIES.find((c) => c.code === code) ?? COUNTRIES[0];
     setCountryCode(code);
-    // Reformata o phone com a máscara do novo país, in-place.
     if (phoneRef.current) {
       const digits = phoneRef.current.value
         .replace(/\D/g, "")
@@ -237,24 +175,24 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     setError(null);
 
-    const nomeTrim = (nomeRef.current?.value ?? "").trim();
-    const emailTrim = (emailRef.current?.value ?? "").trim();
+    const nome = (nomeRef.current?.value ?? "").trim();
+    const email = (emailRef.current?.value ?? "").trim();
     const phoneRaw = phoneRef.current?.value ?? "";
+    const digits = phoneRaw.replace(/\D/g, "");
 
-    if (nomeTrim.length < 2) {
+    if (nome.length < 2) {
       setError("Informe seu nome");
       return;
     }
-    if (!EMAIL_RE.test(emailTrim) || emailTrim.length > 255) {
+    if (!EMAIL_RE.test(email) || email.length > 255) {
       setError("E-mail inválido");
       return;
     }
-
-    const digits = phoneRaw.replace(/\D/g, "");
     if (digits.length < 6 || digits.length > country.maxNational) {
       setError("Telefone inválido — confira o DDD e o número");
       return;
@@ -263,16 +201,18 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
     setSubmitting(true);
     try {
-      const leadParams = getLeadParams();
-      const landing_url = typeof window !== "undefined" ? window.location.href : "";
+      const leadParams = collectLeadParams();
+      const landing_url =
+        typeof window !== "undefined" ? window.location.href : "";
       const referrer = typeof document !== "undefined" ? document.referrer : "";
+
       const { supabase } = await import("@/integrations/supabase/client");
       const { data, error: fnError } = await supabase.functions.invoke(
         "ac-subscribe",
         {
           body: {
-            nome: nomeTrim,
-            email: emailTrim,
+            nome,
+            email,
             telefone: telefoneE164,
             landing_url,
             referrer,
@@ -287,8 +227,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       for (const [key, value] of Object.entries(leadParams)) {
         if (value) params.set(key, value);
       }
-      params.set("nome", nomeTrim);
-      params.set("email", emailTrim);
+      params.set("nome", nome);
+      params.set("email", email);
       params.set("telefone", telefoneE164);
       window.location.href = `/obrigado?${params.toString()}`;
     } catch (err) {
@@ -299,21 +239,13 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     }
   };
 
-  if (!open) return null;
+  if (typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div
       role="presentation"
-      onClick={() => onOpenChange(false)}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        display: "grid",
-        placeItems: "center",
-        padding: "1rem",
-        background: "rgba(0,0,0,0.78)",
-      }}
+      onClick={onClose}
+      style={overlayStyle}
     >
       <div
         role="dialog"
@@ -321,47 +253,22 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
         aria-labelledby="lead-modal-title"
         aria-describedby="lead-modal-description"
         onClick={(event) => event.stopPropagation()}
-        style={{
-          position: "relative",
-          width: "min(100%, 28rem)",
-          overflow: "hidden",
-          borderRadius: "1rem",
-          background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
-          color: "#fff",
-        }}
+        style={dialogStyle}
       >
         <button
           type="button"
           aria-label="Fechar"
-          onClick={() => onOpenChange(false)}
+          onClick={onClose}
           style={closeButtonStyle}
         >
           ×
         </button>
         <div style={{ padding: "1.5rem 1.25rem 1.25rem" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-            <h2
-              id="lead-modal-title"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1.15rem, 4vw, 1.35rem)",
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                color: "#fff",
-                textAlign: "left",
-              }}
-            >
+            <h2 id="lead-modal-title" style={titleStyle}>
               Garanta sua vaga no Lote ZERO
             </h2>
-            <p
-              id="lead-modal-description"
-              style={{
-                color: "rgba(255,255,255,0.65)",
-                fontSize: "0.875rem",
-                textAlign: "left",
-                margin: 0,
-              }}
-            >
+            <p id="lead-modal-description" style={descriptionStyle}>
               Preencha seus dados para receber o acesso prioritário.
             </p>
           </div>
@@ -369,13 +276,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           <form
             className="lead-form"
             data-utmify-ignore="true"
-            onSubmit={handleSubmit}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-              marginTop: "1.1rem",
-            }}
+            onSubmit={onSubmit}
+            style={formStyle}
           >
             <input
               ref={nomeRef}
@@ -413,7 +315,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               <div style={{ position: "relative" }}>
                 <select
                   value={countryCode}
-                  onChange={(e) => handleCountryChange(e.target.value)}
+                  onChange={(e) => onCountryChange(e.target.value)}
                   aria-label="País"
                   style={{
                     ...inputStyle,
@@ -428,18 +330,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
                     </option>
                   ))}
                 </select>
-                <span
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    right: "0.6rem",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "rgba(255,255,255,0.5)",
-                    pointerEvents: "none",
-                    fontSize: "0.7rem",
-                  }}
-                >
+                <span aria-hidden style={selectArrowStyle}>
                   ▾
                 </span>
               </div>
@@ -449,7 +340,9 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
                 type="tel"
                 name="telefone"
                 placeholder={
-                  country.code === "BR" ? "(11) 99999-9999" : `+${country.dial} número`
+                  country.code === "BR"
+                    ? "(11) 99999-9999"
+                    : `+${country.dial} número`
                 }
                 defaultValue=""
                 onInput={onPhoneInput}
@@ -463,57 +356,42 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             </div>
 
             {error && (
-              <p
-                style={{
-                  color: "#ff9a9a",
-                  fontSize: "0.85rem",
-                  margin: "0.25rem 0 0",
-                }}
-              >
-                {error}
-              </p>
+              <p style={errorStyle}>{error}</p>
             )}
 
-            <button
-              type="submit"
-              disabled={submitting}
-              style={{
-                marginTop: "0.5rem",
-                padding: "0.95rem 1.25rem",
-                borderRadius: "999px",
-                border: "none",
-                background: submitting
-                  ? "rgba(204,117,20,0.55)"
-                  : "linear-gradient(135deg, #E8A554 0%, #CC7514 100%)",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: "0.95rem",
-                letterSpacing: "0.01em",
-                cursor: submitting ? "not-allowed" : "pointer",
-                transition: "transform 0.15s ease, opacity 0.2s ease",
-              }}
-            >
+            <button type="submit" disabled={submitting} style={submitStyle(submitting)}>
               {submitting ? "Enviando..." : "Quero garantir minha vaga"}
             </button>
 
-            <p
-              style={{
-                fontSize: "0.7rem",
-                color: "rgba(255,255,255,0.45)",
-                textAlign: "center",
-                margin: "0.4rem 0 0",
-              }}
-            >
-              Seus dados estão seguros. Não enviamos spam.
-            </p>
+            <p style={footerStyle}>Seus dados estão seguros. Não enviamos spam.</p>
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
-const inputStyle: React.CSSProperties = {
+const overlayStyle: CSSProperties = {
+  position: "fixed",
+  inset: 0,
+  zIndex: 9999,
+  display: "grid",
+  placeItems: "center",
+  padding: "1rem",
+  background: "rgba(0,0,0,0.78)",
+};
+
+const dialogStyle: CSSProperties = {
+  position: "relative",
+  width: "min(100%, 28rem)",
+  overflow: "hidden",
+  borderRadius: "1rem",
+  background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
+  color: "#fff",
+};
+
+const inputStyle: CSSProperties = {
   width: "100%",
   padding: "0.85rem 0.9rem",
   borderRadius: "0.75rem",
@@ -525,7 +403,7 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "inherit",
 };
 
-const closeButtonStyle: React.CSSProperties = {
+const closeButtonStyle: CSSProperties = {
   position: "absolute",
   top: "0.8rem",
   right: "0.9rem",
@@ -539,4 +417,66 @@ const closeButtonStyle: React.CSSProperties = {
   cursor: "pointer",
   fontSize: "1.4rem",
   lineHeight: 1,
+};
+
+const titleStyle: CSSProperties = {
+  fontFamily: "var(--font-display)",
+  fontSize: "clamp(1.15rem, 4vw, 1.35rem)",
+  fontWeight: 600,
+  letterSpacing: "-0.01em",
+  color: "#fff",
+  textAlign: "left",
+};
+
+const descriptionStyle: CSSProperties = {
+  color: "rgba(255,255,255,0.65)",
+  fontSize: "0.875rem",
+  textAlign: "left",
+  margin: 0,
+};
+
+const formStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.75rem",
+  marginTop: "1.1rem",
+};
+
+const selectArrowStyle: CSSProperties = {
+  position: "absolute",
+  right: "0.6rem",
+  top: "50%",
+  transform: "translateY(-50%)",
+  color: "rgba(255,255,255,0.5)",
+  pointerEvents: "none",
+  fontSize: "0.7rem",
+};
+
+const errorStyle: CSSProperties = {
+  color: "#ff9a9a",
+  fontSize: "0.85rem",
+  margin: "0.25rem 0 0",
+};
+
+const submitStyle = (submitting: boolean): CSSProperties => ({
+  marginTop: "0.5rem",
+  padding: "0.95rem 1.25rem",
+  borderRadius: "999px",
+  border: "none",
+  background: submitting
+    ? "rgba(204,117,20,0.55)"
+    : "linear-gradient(135deg, #E8A554 0%, #CC7514 100%)",
+  color: "#fff",
+  fontWeight: 700,
+  fontSize: "0.95rem",
+  letterSpacing: "0.01em",
+  cursor: submitting ? "not-allowed" : "pointer",
+  transition: "transform 0.15s ease, opacity 0.2s ease",
+});
+
+const footerStyle: CSSProperties = {
+  fontSize: "0.7rem",
+  color: "rgba(255,255,255,0.45)",
+  textAlign: "center",
+  margin: "0.4rem 0 0",
 };

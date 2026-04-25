@@ -24,7 +24,7 @@ const heroSlides = [
 ];
 const heroBg = heroSlides[0];
 
-export const Route = createFileRoute("/v2")({
+export const Route = createFileRoute("/iap-l02-h01")({
   head: () => ({
     meta: [
       { title: "QuartaVia — Imersão Alavanca Patrimonial (v2)" },

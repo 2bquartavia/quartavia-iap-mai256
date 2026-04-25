@@ -9,18 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as V2RouteImport } from './routes/v2'
 import { Route as ObrigadoRouteImport } from './routes/obrigado'
+import { Route as LegacyRouteImport } from './routes/legacy'
+import { Route as IapL02H01RouteImport } from './routes/iap-l02-h01'
 import { Route as IndexRouteImport } from './routes/index'
 
-const V2Route = V2RouteImport.update({
-  id: '/v2',
-  path: '/v2',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ObrigadoRoute = ObrigadoRouteImport.update({
   id: '/obrigado',
   path: '/obrigado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegacyRoute = LegacyRouteImport.update({
+  id: '/legacy',
+  path: '/legacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IapL02H01Route = IapL02H01RouteImport.update({
+  id: '/iap-l02-h01',
+  path: '/iap-l02-h01',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,48 +37,59 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/iap-l02-h01': typeof IapL02H01Route
+  '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
-  '/v2': typeof V2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/iap-l02-h01': typeof IapL02H01Route
+  '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
-  '/v2': typeof V2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/iap-l02-h01': typeof IapL02H01Route
+  '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
-  '/v2': typeof V2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/obrigado' | '/v2'
+  fullPaths: '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/obrigado' | '/v2'
-  id: '__root__' | '/' | '/obrigado' | '/v2'
+  to: '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
+  id: '__root__' | '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IapL02H01Route: typeof IapL02H01Route
+  LegacyRoute: typeof LegacyRoute
   ObrigadoRoute: typeof ObrigadoRoute
-  V2Route: typeof V2Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/v2': {
-      id: '/v2'
-      path: '/v2'
-      fullPath: '/v2'
-      preLoaderRoute: typeof V2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/obrigado': {
       id: '/obrigado'
       path: '/obrigado'
       fullPath: '/obrigado'
       preLoaderRoute: typeof ObrigadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legacy': {
+      id: '/legacy'
+      path: '/legacy'
+      fullPath: '/legacy'
+      preLoaderRoute: typeof LegacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iap-l02-h01': {
+      id: '/iap-l02-h01'
+      path: '/iap-l02-h01'
+      fullPath: '/iap-l02-h01'
+      preLoaderRoute: typeof IapL02H01RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,8 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IapL02H01Route: IapL02H01Route,
+  LegacyRoute: LegacyRoute,
   ObrigadoRoute: ObrigadoRoute,
-  V2Route: V2Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

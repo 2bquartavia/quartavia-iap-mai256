@@ -389,6 +389,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               placeholder="Nome completo"
               defaultValue=""
               autoComplete="name"
+              spellCheck={false}
               required
               maxLength={120}
               style={inputStyle}
@@ -400,6 +401,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               placeholder="Seu melhor e-mail"
               defaultValue=""
               autoComplete="email"
+              spellCheck={false}
               required
               maxLength={255}
               inputMode="email"
@@ -457,6 +459,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
                 defaultValue=""
                 onInput={onPhoneInput}
                 autoComplete="tel"
+                spellCheck={false}
                 inputMode="tel"
                 required
                 maxLength={32}

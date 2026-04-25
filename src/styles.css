@@ -2279,13 +2279,19 @@ main blockquote, main p, main li {
   transition: none !important;
 }
 
-/* Quando o modal de lead está aberto, esconde a página inteira (#root).
-   O modal é renderizado via createPortal direto em document.body, então
-   continua visível. Isto elimina TODA carga de animação/paint/compositing
-   da página enquanto o usuário preenche o form — input não disputa GPU
-   nem main thread com nada. Quando o modal fecha, a página volta normal. */
+/* Quando o modal está aberto, congela visualmente a página com visibility
+   (mantém layout — sem reflow no abrir/fechar) e pausa animações. Modal
+   continua visível porque é renderizado via createPortal em document.body. */
 body.lead-modal-open > #root {
-  display: none !important;
+  visibility: hidden;
+}
+/* Pausa animações na árvore inteira do #root quando modal aberto.
+   visibility:hidden não para animações por si — mas CSS rules continuam
+   sendo avaliadas e consumindo style recalc. Isso para todas. */
+body.lead-modal-open > #root *,
+body.lead-modal-open > #root *::before,
+body.lead-modal-open > #root *::after {
+  animation-play-state: paused !important;
 }
 
 .testimonial-card {

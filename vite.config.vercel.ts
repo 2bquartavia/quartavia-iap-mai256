@@ -29,14 +29,41 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     target: "es2022",
+    cssCodeSplit: true,
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ["react", "react-dom"],
-          router: ["@tanstack/react-router"],
-          query: ["@tanstack/react-query"],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react-dom") || id.includes("/react/") || id.includes("scheduler")) {
+              return "react-vendor";
+            }
+            if (id.includes("@tanstack/react-router") || id.includes("@tanstack/router-")) {
+              return "router";
+            }
+            if (id.includes("@tanstack/react-query")) {
+              return "query";
+            }
+            if (id.includes("@radix-ui")) {
+              return "radix";
+            }
+            if (id.includes("lucide-react")) {
+              return "icons";
+            }
+            if (id.includes("@supabase")) {
+              return "supabase";
+            }
+          }
         },
       },
+    },
+  },
+  server: {
+    headers: {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
     },
   },
 });

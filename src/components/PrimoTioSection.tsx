@@ -14,7 +14,7 @@ import {
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import PillButton from "@/components/PillButton";
 import bancoMasterNews from "@/assets/banco-master-news.png";
-import predioAlugueis from "@/assets/predio-alugueis.png";
+import LpPicture from "@/components/LpPicture";
 
 const PRIMO = [
   "Sabe tudo sobre investimentos",
@@ -360,12 +360,15 @@ function ScenarioStage() {
               }}
             >
               {/* Background photo (asset placeholder — trocável por foto de viagem real) */}
-              <img
-                src={predioAlugueis}
+              <LpPicture
+                stem="predio-alugueis"
                 alt=""
+                sizes="(max-width: 640px) 100vw, 55vw"
+                width={800}
+                height={600}
+                frameClassName="absolute inset-0 block w-full h-full"
+                className="h-full w-full object-cover"
                 aria-hidden
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
               />
               {/* Forte vinheta navy + tint emerald */}
               <div

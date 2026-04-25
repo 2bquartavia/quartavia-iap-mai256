@@ -1,7 +1,7 @@
 import { Star, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import renatoOberg from "@/assets/renato-oberg.png";
-import profissionalDiagnostico from "@/assets/profissional-diagnostico.png";
+import LpPicture from "@/components/LpPicture";
 
 const REALITY_CHECKS = [
   "A escola dos seus filhos continua sendo paga?",
@@ -604,11 +604,13 @@ export default function DiagnosticoSection() {
 
                   {/* Imagem + scan line */}
                   <div className="relative">
-                    <img
-                      src={profissionalDiagnostico}
+                    <LpPicture
+                      stem="profissional-diagnostico"
                       alt="Profissional concentrado diante do computador"
+                      sizes="(max-width: 900px) 100vw, 40vw"
+                      width={1200}
+                      height={800}
                       className="w-full h-auto block"
-                      loading="lazy"
                     />
 
                     {/* Scan line — desce com o scroll */}

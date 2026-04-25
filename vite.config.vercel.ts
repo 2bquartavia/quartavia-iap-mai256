@@ -9,10 +9,14 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import path from "node:path";
 
 export default defineConfig({
+  // Raiz do site; evita resolução errada de chunks em deploy.
+  base: "/",
   plugins: [
     tanstackRouter({
       target: "react",
-      autoCodeSplitting: true,
+      // Evita chunk por rota (iap-lp02-h01-xxx.js) com import() — elimina
+      // "Failed to fetch dynamically imported module" pós-deploy / cache.
+      autoCodeSplitting: false,
       routesDirectory: "./src/routes",
       generatedRouteTree: "./src/routeTree.gen.ts",
     }),
@@ -30,6 +34,8 @@ export default defineConfig({
     sourcemap: false,
     target: "es2022",
     cssCodeSplit: true,
+    /** Melhor minificação de CSS; ~120kb → ligeiramente menor que esbuild. */
+    cssMinify: "lightningcss",
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
@@ -51,9 +57,8 @@ export default defineConfig({
             if (id.includes("lucide-react")) {
               return "icons";
             }
-            if (id.includes("@supabase")) {
-              return "supabase";
-            }
+            // @supabase: só com import() dinâmico em acSubscribe / submit — não isolar
+            // num chunk nomeado, evita referência a SDK no carregamento inicial.
           }
         },
       },

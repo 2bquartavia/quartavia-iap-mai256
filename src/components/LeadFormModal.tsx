@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 
+import { invokeAcSubscribe } from "@/lib/acSubscribe";
 import { collectLeadParams } from "@/lib/leadUtms";
 
 interface LeadFormModalProps {
@@ -117,16 +118,13 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
       const landing_url = typeof window !== "undefined" ? window.location.href : "";
       const referrer = typeof document !== "undefined" ? document.referrer : "";
 
-      const { supabase } = await import("@/integrations/supabase/client");
-      const { data, error: fnError } = await supabase.functions.invoke("ac-subscribe", {
-        body: {
-          nome,
-          email,
-          telefone: telefoneE164,
-          landing_url,
-          referrer,
-          ...leadParams,
-        },
+      const { data, error: fnError } = await invokeAcSubscribe({
+        nome,
+        email,
+        telefone: telefoneE164,
+        landing_url,
+        referrer,
+        ...leadParams,
       });
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);

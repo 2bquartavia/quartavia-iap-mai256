@@ -1,4 +1,4 @@
-import adrianEsposa from "@/assets/adrian-esposa.jpg";
+import LpPicture from "@/components/LpPicture";
 
 const COLUMNS: { n: string; tag: string; paras: string[] }[] = [
   {
@@ -39,11 +39,18 @@ export default function PorQueAdrianSection() {
         aria-hidden
         className="absolute inset-0 opacity-[0.14] pointer-events-none"
       >
-        <img
-          src={adrianEsposa}
+        <LpPicture
+          stem="adrian-esposa"
           alt=""
+          sizes="100vw"
+          width={800}
+          height={600}
+          frameClassName="block w-full h-full"
           className="w-full h-full object-cover"
           style={{ filter: "blur(60px) saturate(0.55)" }}
+          aria-hidden
+          blurBackground
+          singleWidth={480}
         />
       </div>
       <div
@@ -86,13 +93,16 @@ export default function PorQueAdrianSection() {
               className="relative w-full bg-[#031a28]"
               style={{ aspectRatio: "1 / 1" }}
             >
-              <img
-                src={adrianEsposa}
+              <LpPicture
+                stem="adrian-esposa"
                 alt="Adrian Carvalho com sua esposa"
-                className="absolute inset-0 w-full h-full object-cover"
+                sizes="(max-width: 768px) 100vw, 440px"
+                width={1080}
+                height={1080}
+                frameClassName="absolute inset-0 block w-full h-full"
+                className="h-full w-full object-cover"
                 style={{ objectPosition: "top center" }}
                 decoding="async"
-                loading="lazy"
               />
               {/* Selo flutuante no canto inferior — glass chip */}
               <div

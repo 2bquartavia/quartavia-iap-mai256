@@ -147,6 +147,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <div id="modal-root" />
         <Scripts />
       </body>
     </html>

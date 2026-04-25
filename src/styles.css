@@ -2267,29 +2267,7 @@ main blockquote, main p, main li {
 }
 .diag-engineering > * { position: relative; z-index: 1; }
 
-/* visibility: hidden em vez de display: none — o display: none tirava esses
-   elementos do fluxo no momento exato do click, forçando reflow da página inteira
-   (que é gigante). Em iOS Safari isso podia travar a thread principal por segundos
-   antes do modal aparecer. visibility: hidden mantém o layout, sem reflow. */
-/* Classe fica no #root (não no body) — recalcula só a subárvore da app, não o portal do modal. */
-#root.lead-modal-open .hero__grid,
-#root.lead-modal-open .hero__marquee,
-#root.lead-modal-open .ticker,
-#root.lead-modal-open .testimonials__carousel {
-  visibility: hidden;
-}
-
-#root.lead-modal-open .pill-btn--gold,
-#root.lead-modal-open .pill-btn--gold::before,
-#root.lead-modal-open .hero__pill-dot,
-#root.lead-modal-open .vticker__item,
-#root.lead-modal-open .immersion__stack .lesson-card,
-#root.lead-modal-open .testimonial-card__media {
-  animation: none !important;
-  transition: none !important;
-}
-
-/* Modal em portal irmão do #root; a classe de pausa fica no #root (ver LeadFormModal). */
+/* Pausa de animação com o modal: carrosséis usam isLeadModalOpenNow() (store), sem regras globais. */
 
 .testimonial-card {
   margin: 0;

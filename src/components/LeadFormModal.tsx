@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 
-import { getModalPauseElement, LEAD_MODAL_PAUSE_CLASS } from "@/components/leadModalStore";
+import { collectLeadParams } from "@/lib/leadUtms";
 
 interface LeadFormModalProps {
   onClose: () => void;
@@ -48,123 +48,30 @@ const COUNTRIES: CountryEntry[] = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const TRACKED_UTM_KEYS = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_content",
-  "utm_term",
-  "utm_id",
-] as const;
-const STORAGE_PREFIX = "lead_param_";
-
-function safeStorageOp(op: () => void) {
-  try {
-    op();
-  } catch {
-    /* quota / privacy mode */
-  }
-}
-
-// Lê UTMs da URL atual + storage (URL tem prioridade). Sempre inclui utm_pagina = document.title.
-function collectLeadParams(): Record<string, string> {
-  if (typeof window === "undefined") return {};
-  const params = new URLSearchParams(window.location.search);
-  const out: Record<string, string> = {};
-  for (const key of TRACKED_UTM_KEYS) {
-    const fromUrl = params.get(key)?.trim();
-    if (fromUrl) {
-      out[key] = fromUrl.slice(0, 255);
-      continue;
-    }
-    let stored: string | null = null;
-    try {
-      stored =
-        localStorage.getItem(STORAGE_PREFIX + key) ?? sessionStorage.getItem(STORAGE_PREFIX + key);
-    } catch {
-      /* ignore */
-    }
-    if (stored?.trim()) out[key] = stored.trim().slice(0, 255);
-  }
-  if (typeof document !== "undefined" && document.title.trim()) {
-    out.utm_pagina = document.title.trim().slice(0, 255);
-  }
-  return out;
-}
-
-// Persiste qualquer UTM da URL atual no storage. Roda uma vez no mount.
-function persistUtmsFromUrl() {
-  if (typeof window === "undefined") return;
-  const params = new URLSearchParams(window.location.search);
-  let hasAnyUtm = false;
-  for (const key of TRACKED_UTM_KEYS) {
-    if (params.get(key)) {
-      hasAnyUtm = true;
-      break;
-    }
-  }
-  if (!hasAnyUtm) return;
-  for (const key of TRACKED_UTM_KEYS) {
-    const value = params.get(key)?.trim();
-    if (!value) continue;
-    const safeValue = value.slice(0, 255);
-    safeStorageOp(() => localStorage.setItem(STORAGE_PREFIX + key, safeValue));
-    safeStorageOp(() => sessionStorage.setItem(STORAGE_PREFIX + key, safeValue));
-  }
-}
-
+/**
+ * Versão mínima: sem bloquear scroll em body/html, sem class em #root, sem efeito de layout
+ * síncrono. Só portal + overlay com wheel/touch não-passive para reduzir scroll de fundo.
+ * Pausa de carrossel via `isLeadModalOpenNow()` no store, não via CSS.
+ */
 export default function LeadFormModal({ onClose }: LeadFormModalProps) {
-  // Inputs uncontrolled — refs lidos só no submit. ZERO re-render por keystroke.
   const nomeRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
 
-  // País é o único state — muda raramente (no select).
   const [countryCode, setCountryCode] = useState<string>("BR");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
 
-  // Tudo em useEffect (não useLayoutEffect): o sync no layout + classe no `body`
-  // recalculava a página toda e travava a build de produção (Vercel), sobretudo na LP
-  // iap-lp02-h01. A classe de pausa vai em #root, não no body, e só depois de 2 rAFs.
   useEffect(() => {
-    persistUtmsFromUrl();
-    const bodyPrev = document.body.style.overflow;
-    const htmlPrev = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    const pauseEl = getModalPauseElement();
-    let cancelled = false;
-    const outer = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (!cancelled) {
-          pauseEl?.classList.add(LEAD_MODAL_PAUSE_CLASS);
-        }
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(outer);
-      document.body.style.overflow = bodyPrev;
-      document.documentElement.style.overflow = htmlPrev;
-      pauseEl?.classList.remove(LEAD_MODAL_PAUSE_CLASS);
-    };
-  }, []);
-
-  // ESC fecha
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Máscara do telefone — IMPERATIVA, sem state, sem re-render.
   const onPhoneInput = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
     const digits = target.value.replace(/\D/g, "").slice(0, country.maxNational);
@@ -187,7 +94,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
 
     const nome = (nomeRef.current?.value ?? "").trim();
     const email = (emailRef.current?.value ?? "").trim();
-    const phoneRaw = phoneRef.current?.value ?? "";
+    const phoneRaw = (phoneRef.current?.value ?? "").trim();
     const digits = phoneRaw.replace(/\D/g, "");
 
     if (nome.length < 2) {
@@ -240,6 +147,9 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   };
 
   if (typeof document === "undefined") return null;
+
+  const portalNode = document.getElementById("modal-root") ?? document.body;
+  if (!portalNode.isConnected) return null;
 
   return createPortal(
     <div role="presentation" onClick={onClose} style={overlayStyle}>
@@ -353,27 +263,31 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
         </div>
       </div>
     </div>,
-    document.body,
+    portalNode,
   );
 }
 
 const overlayStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
-  zIndex: 9999,
+  zIndex: 99999,
   display: "grid",
   placeItems: "center",
   padding: "1rem",
   background: "rgba(0,0,0,0.78)",
+  overscrollBehavior: "contain",
+  isolation: "isolate",
 };
 
 const dialogStyle: CSSProperties = {
   position: "relative",
   width: "min(100%, 28rem)",
-  overflow: "hidden",
+  maxHeight: "min(100dvh, 32rem)",
+  overflow: "auto",
   borderRadius: "1rem",
   background: "linear-gradient(180deg, #062234 0%, #031a28 100%)",
   color: "#fff",
+  touchAction: "auto",
 };
 
 const inputStyle: CSSProperties = {

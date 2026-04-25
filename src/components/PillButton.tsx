@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { startTransition, type ButtonHTMLAttributes, type ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import { useLeadModal } from "@/components/LeadModalContext";
 
@@ -34,9 +34,7 @@ export default function PillButton({
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     onClick?.(e);
     if (!e.defaultPrevented && !noModal) {
-      startTransition(() => {
-        open();
-      });
+      open();
     }
   };
 

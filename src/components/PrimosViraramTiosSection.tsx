@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Quote, Sparkles } from "lucide-react";
-import { isModalPauseClassActive } from "@/components/leadModalStore";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 
 type Depo = {
@@ -90,7 +90,7 @@ export default function PrimosViraramTiosSection() {
     // layout thrashing que travava a aba após ~10s.
     let lastCenterT = 0;
     const tick = (t: number) => {
-      if (document.hidden || isModalPauseClassActive()) {
+      if (document.hidden || isLeadModalOpenNow()) {
         lastTimeRef.current = 0;
         rafRef.current = requestAnimationFrame(tick);
         return;

@@ -1,3 +1,5 @@
+import { persistUtmsFromUrl } from "@/lib/leadUtms";
+
 let isOpen = false;
 const listeners = new Set<() => void>();
 
@@ -6,10 +8,8 @@ function emit() {
 }
 
 /**
- * Store global do modal (fora de React). Abrir/fechar dispara re-render
- * somente do componente que chama `useSyncExternalStore` — nunca da LP inteira.
- * Colocar `isOpen` em useState no Provider pedia re-render a todos os
- * filhos (HeadContent + rota) a cada clique, o que congelava a aba em produção.
+ * Store fora de React: ao abrir, só o `LeadModalHost` re-renderiza (useSyncExternalStore).
+ * Não mexe no DOM além de `isOpen` em memória.
  */
 export const leadModalStore = {
   subscribe(callback: () => void) {
@@ -24,6 +24,15 @@ export const leadModalStore = {
     if (isOpen) return;
     isOpen = true;
     emit();
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        try {
+          persistUtmsFromUrl();
+        } catch {
+          /* ignore */
+        }
+      }, 0);
+    }
   },
   close: () => {
     if (!isOpen) return;
@@ -32,14 +41,7 @@ export const leadModalStore = {
   },
 };
 
-/** Classe no #root (não no `body`) para pausar animações; evita recalc de estilo do documento inteiro. */
-export const LEAD_MODAL_PAUSE_CLASS = "lead-modal-open";
-
-export function getModalPauseElement(): HTMLElement | null {
-  if (typeof document === "undefined") return null;
-  return document.getElementById("root");
-}
-
-export function isModalPauseClassActive(): boolean {
-  return getModalPauseElement()?.classList.contains(LEAD_MODAL_PAUSE_CLASS) ?? false;
+/** Carrosséis/RAF: leitura barata, sem classList no DOM. */
+export function isLeadModalOpenNow(): boolean {
+  return isOpen;
 }

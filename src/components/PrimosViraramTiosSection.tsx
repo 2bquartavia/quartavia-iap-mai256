@@ -76,6 +76,18 @@ export default function PrimosViraramTiosSection() {
     let startX = 0;
     let startY = 0;
 
+    // Cache scrollWidth/3 — só recalcula se layout mudar (resize/cards mounted).
+    // Chamar `track.scrollWidth` toda frame força sync layout.
+    let cycleWidth = track.scrollWidth / 3;
+    const recalcCycle = () => {
+      cycleWidth = track.scrollWidth / 3;
+    };
+    window.addEventListener("resize", recalcCycle);
+
+    // Throttle updateCenter pra 10fps. Visualmente imperceptível, mas reduz
+    // 24+ getBoundingClientRect/frame → mesmo só 4×/s. Foi a fonte do
+    // layout thrashing que travava a aba após ~10s.
+    let lastCenterT = 0;
     const tick = (t: number) => {
       if (document.hidden || document.body.classList.contains("lead-modal-open")) {
         lastTimeRef.current = 0;
@@ -90,11 +102,13 @@ export default function PrimosViraramTiosSection() {
         track.scrollLeft += BASE_SPEED * dt;
       }
 
-      const c = track.scrollWidth / 3;
-      if (track.scrollLeft >= c * 2) track.scrollLeft -= c;
-      else if (track.scrollLeft <= 0) track.scrollLeft += c;
+      if (track.scrollLeft >= cycleWidth * 2) track.scrollLeft -= cycleWidth;
+      else if (track.scrollLeft <= 0) track.scrollLeft += cycleWidth;
 
-      updateCenter();
+      if (t - lastCenterT > 100) {
+        updateCenter();
+        lastCenterT = t;
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
 
@@ -151,11 +165,14 @@ export default function PrimosViraramTiosSection() {
     track.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
-    track.addEventListener("scroll", updateCenter, { passive: true });
+    // Removido: track.addEventListener("scroll", updateCenter) era REDUNDANTE
+    // — toda alteração de scrollLeft no rAF disparava scroll event que chamava
+    // updateCenter de novo. updateCenter roda só a partir do tick agora.
 
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", recalcCycle);
       track.removeEventListener("touchstart", onTouchStart);
       track.removeEventListener("touchmove", onTouchMove);
       track.removeEventListener("touchend", onTouchEnd);
@@ -163,7 +180,6 @@ export default function PrimosViraramTiosSection() {
       track.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-      track.removeEventListener("scroll", updateCenter);
     };
   }, []);
 

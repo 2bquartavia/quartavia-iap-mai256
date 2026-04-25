@@ -1,6 +1,8 @@
-import { useCallback, useSyncExternalStore, type ReactNode } from "react";
-import LeadFormModal from "@/components/LeadFormModal";
+import { lazy, Suspense, useCallback, useSyncExternalStore, type ReactNode } from "react";
+
 import { leadModalStore } from "@/components/leadModalStore";
+
+const LeadFormModal = lazy(() => import("@/components/LeadFormModal"));
 
 /**
  * Só quem inscreve no store — alternar o modal re-renderiza este subtree,
@@ -14,7 +16,11 @@ function LeadModalHost() {
   );
   const onClose = useCallback(() => leadModalStore.close(), []);
 
-  return isOpen ? <LeadFormModal onClose={onClose} /> : null;
+  return isOpen ? (
+    <Suspense fallback={null}>
+      <LeadFormModal onClose={onClose} />
+    </Suspense>
+  ) : null;
 }
 
 export function LeadModalProvider({ children }: { children: ReactNode }) {

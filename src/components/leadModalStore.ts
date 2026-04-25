@@ -31,3 +31,15 @@ export const leadModalStore = {
     emit();
   },
 };
+
+/** Classe no #root (não no `body`) para pausar animações; evita recalc de estilo do documento inteiro. */
+export const LEAD_MODAL_PAUSE_CLASS = "lead-modal-open";
+
+export function getModalPauseElement(): HTMLElement | null {
+  if (typeof document === "undefined") return null;
+  return document.getElementById("root");
+}
+
+export function isModalPauseClassActive(): boolean {
+  return getModalPauseElement()?.classList.contains(LEAD_MODAL_PAUSE_CLASS) ?? false;
+}

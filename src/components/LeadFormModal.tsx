@@ -1,12 +1,7 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type FormEvent,
-} from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { createPortal } from "react-dom";
+
+import { getModalPauseElement, LEAD_MODAL_PAUSE_CLASS } from "@/components/leadModalStore";
 
 interface LeadFormModalProps {
   onClose: () => void;
@@ -85,8 +80,7 @@ function collectLeadParams(): Record<string, string> {
     let stored: string | null = null;
     try {
       stored =
-        localStorage.getItem(STORAGE_PREFIX + key) ??
-        sessionStorage.getItem(STORAGE_PREFIX + key);
+        localStorage.getItem(STORAGE_PREFIX + key) ?? sessionStorage.getItem(STORAGE_PREFIX + key);
     } catch {
       /* ignore */
     }
@@ -115,9 +109,7 @@ function persistUtmsFromUrl() {
     if (!value) continue;
     const safeValue = value.slice(0, 255);
     safeStorageOp(() => localStorage.setItem(STORAGE_PREFIX + key, safeValue));
-    safeStorageOp(() =>
-      sessionStorage.setItem(STORAGE_PREFIX + key, safeValue),
-    );
+    safeStorageOp(() => sessionStorage.setItem(STORAGE_PREFIX + key, safeValue));
   }
 }
 
@@ -132,29 +124,34 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const country =
-    COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
+  const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
 
-  // overflow:hidden roda em useLayoutEffect — precisa ser aplicado antes do paint
-  // pra travar o scroll no instante que o modal aparece.
-  useLayoutEffect(() => {
-    persistUtmsFromUrl();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, []);
-
-  // A classe lead-modal-open é DEFERIDA pra useEffect (depois do paint do modal)
-  // porque ela dispara um style recalc enorme em toda a árvore via descendant
-  // selectors (.lead-modal-open .pill-btn--gold, etc.). Aplicar antes do paint
-  // estava bloqueando a thread principal por segundos em devices mais lentos —
-  // usuário clicava e a aba congelava antes do modal renderizar.
+  // Tudo em useEffect (não useLayoutEffect): o sync no layout + classe no `body`
+  // recalculava a página toda e travava a build de produção (Vercel), sobretudo na LP
+  // iap-lp02-h01. A classe de pausa vai em #root, não no body, e só depois de 2 rAFs.
   useEffect(() => {
-    document.body.classList.add("lead-modal-open");
+    persistUtmsFromUrl();
+    const bodyPrev = document.body.style.overflow;
+    const htmlPrev = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    const pauseEl = getModalPauseElement();
+    let cancelled = false;
+    const outer = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!cancelled) {
+          pauseEl?.classList.add(LEAD_MODAL_PAUSE_CLASS);
+        }
+      });
+    });
+
     return () => {
-      document.body.classList.remove("lead-modal-open");
+      cancelled = true;
+      cancelAnimationFrame(outer);
+      document.body.style.overflow = bodyPrev;
+      document.documentElement.style.overflow = htmlPrev;
+      pauseEl?.classList.remove(LEAD_MODAL_PAUSE_CLASS);
     };
   }, []);
 
@@ -178,9 +175,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
     const next = COUNTRIES.find((c) => c.code === code) ?? COUNTRIES[0];
     setCountryCode(code);
     if (phoneRef.current) {
-      const digits = phoneRef.current.value
-        .replace(/\D/g, "")
-        .slice(0, next.maxNational);
+      const digits = phoneRef.current.value.replace(/\D/g, "").slice(0, next.maxNational);
       phoneRef.current.value = next.format ? next.format(digits) : digits;
     }
   };
@@ -212,24 +207,20 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
     setSubmitting(true);
     try {
       const leadParams = collectLeadParams();
-      const landing_url =
-        typeof window !== "undefined" ? window.location.href : "";
+      const landing_url = typeof window !== "undefined" ? window.location.href : "";
       const referrer = typeof document !== "undefined" ? document.referrer : "";
 
       const { supabase } = await import("@/integrations/supabase/client");
-      const { data, error: fnError } = await supabase.functions.invoke(
-        "ac-subscribe",
-        {
-          body: {
-            nome,
-            email,
-            telefone: telefoneE164,
-            landing_url,
-            referrer,
-            ...leadParams,
-          },
+      const { data, error: fnError } = await supabase.functions.invoke("ac-subscribe", {
+        body: {
+          nome,
+          email,
+          telefone: telefoneE164,
+          landing_url,
+          referrer,
+          ...leadParams,
         },
-      );
+      });
       if (fnError) throw fnError;
       if (data?.error) throw new Error(data.error);
 
@@ -242,8 +233,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
       params.set("telefone", telefoneE164);
       window.location.href = `/obrigado?${params.toString()}`;
     } catch (err) {
-      const msg =
-        err instanceof Error ? err.message : "Não foi possível enviar agora";
+      const msg = err instanceof Error ? err.message : "Não foi possível enviar agora";
       setError(msg);
       setSubmitting(false);
     }
@@ -252,11 +242,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   if (typeof document === "undefined") return null;
 
   return createPortal(
-    <div
-      role="presentation"
-      onClick={onClose}
-      style={overlayStyle}
-    >
+    <div role="presentation" onClick={onClose} style={overlayStyle}>
       <div
         role="dialog"
         aria-modal="true"
@@ -265,12 +251,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
         onClick={(event) => event.stopPropagation()}
         style={dialogStyle}
       >
-        <button
-          type="button"
-          aria-label="Fechar"
-          onClick={onClose}
-          style={closeButtonStyle}
-        >
+        <button type="button" aria-label="Fechar" onClick={onClose} style={closeButtonStyle}>
           ×
         </button>
         <div style={{ padding: "1.5rem 1.25rem 1.25rem" }}>
@@ -349,11 +330,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
                 ref={phoneRef}
                 type="tel"
                 name="telefone"
-                placeholder={
-                  country.code === "BR"
-                    ? "(11) 99999-9999"
-                    : `+${country.dial} número`
-                }
+                placeholder={country.code === "BR" ? "(11) 99999-9999" : `+${country.dial} número`}
                 defaultValue=""
                 onInput={onPhoneInput}
                 autoComplete="tel"
@@ -365,9 +342,7 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
               />
             </div>
 
-            {error && (
-              <p style={errorStyle}>{error}</p>
-            )}
+            {error && <p style={errorStyle}>{error}</p>}
 
             <button type="submit" disabled={submitting} style={submitStyle(submitting)}>
               {submitting ? "Enviando..." : "Quero garantir minha vaga"}

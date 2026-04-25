@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { isModalPauseClassActive } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 import dep1 from "@/assets/depoimento-1.jpeg";
 import dep2 from "@/assets/depoimento-2.jpeg";
@@ -46,7 +47,7 @@ export default function TestimonialsSection() {
         rafRef.current = requestAnimationFrame(tick);
         return;
       }
-      if (document.body.classList.contains("lead-modal-open")) {
+      if (isModalPauseClassActive()) {
         lastTimeRef.current = t;
         rafRef.current = requestAnimationFrame(tick);
         return;

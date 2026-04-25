@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 interface LeadFormModalProps {
   open: boolean;
@@ -174,14 +174,21 @@ function getLeadParams(): Record<string, string> {
 }
 
 export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps) {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
+  // Inputs UNCONTROLLED — value/onChange foram removidos pra evitar re-render
+  // do componente a cada keystroke (estava travando em produção). Lemos os
+  // valores via refs no submit. Browser cuida do estado do input nativamente.
+  const nomeRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+
   const [countryCode, setCountryCode] = useState<string>("BR");
-  const [phoneInput, setPhoneInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
+  // Ref de country pra ler o último valor dentro do onInput sem fechar sobre stale state.
+  const countryRef = useRef(country);
+  countryRef.current = country;
 
   useEffect(() => {
     persistCurrentSearchParams();
@@ -210,24 +217,34 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     };
   }, [onOpenChange, open]);
 
-  const handlePhoneChange = (value: string) => {
-    const digits = value.replace(/\D/g, "").slice(0, country.maxNational);
-    setPhoneInput(country.format ? country.format(digits) : digits);
+  // Mascara o telefone IMPERATIVAMENTE (sem state, sem re-render).
+  const onPhoneInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.currentTarget;
+    const c = countryRef.current;
+    const digits = target.value.replace(/\D/g, "").slice(0, c.maxNational);
+    target.value = c.format ? c.format(digits) : digits;
   };
 
   const handleCountryChange = (code: string) => {
     const next = COUNTRIES.find((c) => c.code === code) ?? COUNTRIES[0];
     setCountryCode(code);
-    const digits = phoneInput.replace(/\D/g, "").slice(0, next.maxNational);
-    setPhoneInput(next.format ? next.format(digits) : digits);
+    // Reformata o phone com a máscara do novo país, in-place.
+    if (phoneRef.current) {
+      const digits = phoneRef.current.value
+        .replace(/\D/g, "")
+        .slice(0, next.maxNational);
+      phoneRef.current.value = next.format ? next.format(digits) : digits;
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const nomeTrim = nome.trim();
-    const emailTrim = email.trim();
+    const nomeTrim = (nomeRef.current?.value ?? "").trim();
+    const emailTrim = (emailRef.current?.value ?? "").trim();
+    const phoneRaw = phoneRef.current?.value ?? "";
+
     if (nomeTrim.length < 2) {
       setError("Informe seu nome");
       return;
@@ -237,7 +254,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       return;
     }
 
-    const digits = phoneInput.replace(/\D/g, "");
+    const digits = phoneRaw.replace(/\D/g, "");
     if (digits.length < 6 || digits.length > country.maxNational) {
       setError("Telefone inválido — confira o DDD e o número");
       return;
@@ -368,20 +385,22 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             }}
           >
             <input
+              ref={nomeRef}
               type="text"
+              name="nome"
               placeholder="Nome completo"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              defaultValue=""
               autoComplete="name"
               required
               maxLength={120}
               style={inputStyle}
             />
             <input
+              ref={emailRef}
               type="email"
+              name="email"
               placeholder="Seu melhor e-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              defaultValue=""
               autoComplete="email"
               required
               maxLength={255}
@@ -431,12 +450,14 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
               </div>
 
               <input
+                ref={phoneRef}
                 type="tel"
+                name="telefone"
                 placeholder={
                   country.code === "BR" ? "(11) 99999-9999" : `+${country.dial} número`
                 }
-                value={phoneInput}
-                onChange={(e) => handlePhoneChange(e.target.value)}
+                defaultValue=""
+                onInput={onPhoneInput}
                 autoComplete="tel"
                 inputMode="tel"
                 required

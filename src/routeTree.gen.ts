@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ObrigadoRouteImport } from './routes/obrigado'
 import { Route as LegacyRouteImport } from './routes/legacy'
-import { Route as IapL02H01RouteImport } from './routes/iap-l02-h01'
+import { Route as IapLp02H01RouteImport } from './routes/iap-lp02-h01'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ObrigadoRoute = ObrigadoRouteImport.update({
@@ -24,9 +24,9 @@ const LegacyRoute = LegacyRouteImport.update({
   path: '/legacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IapL02H01Route = IapL02H01RouteImport.update({
-  id: '/iap-l02-h01',
-  path: '/iap-l02-h01',
+const IapLp02H01Route = IapLp02H01RouteImport.update({
+  id: '/iap-lp02-h01',
+  path: '/iap-lp02-h01',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,34 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/iap-l02-h01': typeof IapL02H01Route
+  '/iap-lp02-h01': typeof IapLp02H01Route
   '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/iap-l02-h01': typeof IapL02H01Route
+  '/iap-lp02-h01': typeof IapLp02H01Route
   '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/iap-l02-h01': typeof IapL02H01Route
+  '/iap-lp02-h01': typeof IapLp02H01Route
   '/legacy': typeof LegacyRoute
   '/obrigado': typeof ObrigadoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
+  fullPaths: '/' | '/iap-lp02-h01' | '/legacy' | '/obrigado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
-  id: '__root__' | '/' | '/iap-l02-h01' | '/legacy' | '/obrigado'
+  to: '/' | '/iap-lp02-h01' | '/legacy' | '/obrigado'
+  id: '__root__' | '/' | '/iap-lp02-h01' | '/legacy' | '/obrigado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  IapL02H01Route: typeof IapL02H01Route
+  IapLp02H01Route: typeof IapLp02H01Route
   LegacyRoute: typeof LegacyRoute
   ObrigadoRoute: typeof ObrigadoRoute
 }
@@ -85,11 +85,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/iap-l02-h01': {
-      id: '/iap-l02-h01'
-      path: '/iap-l02-h01'
-      fullPath: '/iap-l02-h01'
-      preLoaderRoute: typeof IapL02H01RouteImport
+    '/iap-lp02-h01': {
+      id: '/iap-lp02-h01'
+      path: '/iap-lp02-h01'
+      fullPath: '/iap-lp02-h01'
+      preLoaderRoute: typeof IapLp02H01RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,7 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  IapL02H01Route: IapL02H01Route,
+  IapLp02H01Route: IapLp02H01Route,
   LegacyRoute: LegacyRoute,
   ObrigadoRoute: ObrigadoRoute,
 }

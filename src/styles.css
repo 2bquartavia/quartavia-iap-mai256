@@ -1,7 +1,12 @@
-@import "tailwindcss" source(none);
-@import "tw-animate-css";
+/* @import statements MUST come first per CSS spec.
+   Tailwind v4 inlines `@import "tailwindcss"` at its position, so any @import
+   placed AFTER it is pushed past thousands of inlined rules and silently
+   ignored by the browser in prod builds (PostCSS warns: "@import must
+   precede all other statements"). Keep all external @imports at the top. */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=mixta-sharp@400,500,600,700&display=swap');
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
 @source "../src";
 
 @custom-variant dark (&:is(.dark *));

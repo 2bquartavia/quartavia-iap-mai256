@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Quote, Sparkles } from "lucide-react";
-import { isLeadModalOpenNow } from "@/components/leadModalStore";
+import { isLeadModalOpenNow, leadModalStore } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 
 type Depo = {
@@ -91,9 +91,13 @@ export default function PrimosViraramTiosSection() {
     // layout thrashing que travava a aba após ~10s.
     let lastCenterT = 0;
     const tick = (t: number) => {
-      if (document.hidden || isLeadModalOpenNow()) {
+      if (document.hidden) {
         lastTimeRef.current = 0;
         rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      if (isLeadModalOpenNow()) {
+        rafRef.current = null;
         return;
       }
       if (!lastTimeRef.current) lastTimeRef.current = t;
@@ -115,6 +119,7 @@ export default function PrimosViraramTiosSection() {
     };
 
     const updateCenter = () => {
+      if (isLeadModalOpenNow()) return;
       const rect = track.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       let bestEl: HTMLElement | null = null;
@@ -171,8 +176,20 @@ export default function PrimosViraramTiosSection() {
     // — toda alteração de scrollLeft no rAF disparava scroll event que chamava
     // updateCenter de novo. updateCenter roda só a partir do tick agora.
 
+    const unsubModal = leadModalStore.subscribe(() => {
+      if (isLeadModalOpenNow()) {
+        if (rafRef.current != null) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+      } else if (rafRef.current == null) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    });
+
     rafRef.current = requestAnimationFrame(tick);
     return () => {
+      unsubModal();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", recalcCycle);
       track.removeEventListener("touchstart", onTouchStart);

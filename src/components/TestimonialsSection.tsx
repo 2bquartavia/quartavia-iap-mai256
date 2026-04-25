@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { isLeadModalOpenNow } from "@/components/leadModalStore";
+import { isLeadModalOpenNow, leadModalStore } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 import dep1 from "@/assets/depoimento-1.jpeg";
 import dep2 from "@/assets/depoimento-2.jpeg";
@@ -47,9 +47,11 @@ export default function TestimonialsSection() {
         rafRef.current = requestAnimationFrame(tick);
         return;
       }
+      // Modal aberta: PARA o rAF (não só o trabalho). Rescheduling a 60fps
+      // com focus/scroll no formulário + updateCenter via scroll event = fila
+      // de getBoundingClientRect que congela o Chrome (desktop e mobile).
       if (isLeadModalOpenNow()) {
-        lastTimeRef.current = t;
-        rafRef.current = requestAnimationFrame(tick);
+        rafRef.current = null;
         return;
       }
 
@@ -72,6 +74,7 @@ export default function TestimonialsSection() {
     };
 
     const updateCenter = () => {
+      if (isLeadModalOpenNow()) return;
       const rect = track.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       let bestEl: HTMLElement | null = null;
@@ -128,10 +131,23 @@ export default function TestimonialsSection() {
     track.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
-    track.addEventListener("scroll", updateCenter, { passive: true });
+    // Não ligar "scroll" → updateCenter: cada tick já altera scrollLeft e
+    // o evento scroll disparava updateCenter 2×/frame (layout thrash).
+
+    const unsubModal = leadModalStore.subscribe(() => {
+      if (isLeadModalOpenNow()) {
+        if (rafRef.current != null) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+      } else if (rafRef.current == null) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    });
 
     rafRef.current = requestAnimationFrame(tick);
     return () => {
+      unsubModal();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       track.removeEventListener("touchstart", onTouchStart);
       track.removeEventListener("touchmove", onTouchMove);
@@ -140,7 +156,6 @@ export default function TestimonialsSection() {
       track.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-      track.removeEventListener("scroll", updateCenter);
     };
   }, []);
 

@@ -2279,20 +2279,10 @@ main blockquote, main p, main li {
   transition: none !important;
 }
 
-/* Quando o modal está aberto, congela visualmente a página com visibility
-   (mantém layout — sem reflow no abrir/fechar) e pausa animações. Modal
-   continua visível porque é renderizado via createPortal em document.body. */
-body.lead-modal-open > #root {
-  visibility: hidden;
-}
-/* Pausa animações na árvore inteira do #root quando modal aberto.
-   visibility:hidden não para animações por si — mas CSS rules continuam
-   sendo avaliadas e consumindo style recalc. Isso para todas. */
-body.lead-modal-open > #root *,
-body.lead-modal-open > #root *::before,
-body.lead-modal-open > #root *::after {
-  animation-play-state: paused !important;
-}
+/* Modal é opaco e cobre 100% do viewport via createPortal em document.body —
+   browser faz occlusion culling naturalmente, sem precisar de visibility/display
+   forçado no #root. Estado de pause de animações específicas (que existiam antes)
+   é gerenciado por componentes via MutationObserver na class do body. */
 
 .testimonial-card {
   margin: 0;

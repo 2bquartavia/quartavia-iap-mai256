@@ -77,18 +77,6 @@ export default function PrimosViraramTiosSection() {
     let startY = 0;
 
     const tick = (t: number) => {
-      // Pausa quando aba está oculta — evita pile-up de timestamps
-      // ao retomar e descarta trabalho desnecessário em background.
-      if (document.hidden) {
-        lastTimeRef.current = 0;
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
-      if (document.body.classList.contains("lead-modal-open")) {
-        lastTimeRef.current = t;
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
       if (!lastTimeRef.current) lastTimeRef.current = t;
       const dt = Math.min((t - lastTimeRef.current) / 1000, 0.1);
       lastTimeRef.current = t;
@@ -104,6 +92,30 @@ export default function PrimosViraramTiosSection() {
       updateCenter();
       rafRef.current = requestAnimationFrame(tick);
     };
+
+    // Pausa REAL — cancela rAF quando aba oculta ou modal aberto.
+    // Não basta short-circuit: o request-animation-frame em si custa main thread.
+    const startTick = () => {
+      if (rafRef.current != null) return;
+      lastTimeRef.current = 0;
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    const stopTick = () => {
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+    const shouldPause = () =>
+      document.hidden || document.body.classList.contains("lead-modal-open");
+    const syncPlayState = () => (shouldPause() ? stopTick() : startTick());
+
+    document.addEventListener("visibilitychange", syncPlayState);
+    const bodyObserver = new MutationObserver(syncPlayState);
+    bodyObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     const updateCenter = () => {
       const rect = track.getBoundingClientRect();
@@ -160,9 +172,11 @@ export default function PrimosViraramTiosSection() {
     window.addEventListener("mouseup", onMouseUp);
     track.addEventListener("scroll", updateCenter, { passive: true });
 
-    rafRef.current = requestAnimationFrame(tick);
+    syncPlayState();
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      stopTick();
+      document.removeEventListener("visibilitychange", syncPlayState);
+      bodyObserver.disconnect();
       track.removeEventListener("touchstart", onTouchStart);
       track.removeEventListener("touchmove", onTouchMove);
       track.removeEventListener("touchend", onTouchEnd);

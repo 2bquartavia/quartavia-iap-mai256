@@ -2279,25 +2279,13 @@ main blockquote, main p, main li {
   transition: none !important;
 }
 
-/* Pausa cirúrgica de animações pesadas quando o modal de lead está aberto.
-   Evita selector universal que torra style recalc; lista só as classes
-   conhecidamente animadas/que custam GPU. */
-.lead-modal-open .ep-icon,
-.lead-modal-open .ep-icon-card,
-.lead-modal-open .pill-btn--gold,
-.lead-modal-open .pill-btn--gold::before,
-.lead-modal-open .pill-btn--gold::after,
-.lead-modal-open .garantia-halo,
-.lead-modal-open .garantia-glow,
-.lead-modal-open .ep-marquee-base .ep-icons-track,
-.lead-modal-open .ep-marquee-overlay .ep-icons-track,
-.lead-modal-open .cn-cta-glow,
-.lead-modal-open .cn-day-cell,
-.lead-modal-open .immersion__orbs .orb,
-.lead-modal-open .lesson-card,
-.lead-modal-open .testimonial-card,
-.lead-modal-open .depo-card {
-  animation-play-state: paused !important;
+/* Quando o modal de lead está aberto, esconde a página inteira (#root).
+   O modal é renderizado via createPortal direto em document.body, então
+   continua visível. Isto elimina TODA carga de animação/paint/compositing
+   da página enquanto o usuário preenche o form — input não disputa GPU
+   nem main thread com nada. Quando o modal fecha, a página volta normal. */
+body.lead-modal-open > #root {
+  display: none !important;
 }
 
 .testimonial-card {

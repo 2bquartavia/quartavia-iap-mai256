@@ -148,7 +148,25 @@
 .pill-btn--sm { --pill-h: 2.6rem; --pill-pad-y: 0.3rem; --pill-pad-l: 1.1rem; --pill-gap: 0.55rem; --pill-font: 0.82rem; --pill-icon: 0.95rem; }
 .pill-btn--md { --pill-h: 3.25rem; --pill-pad-y: 0.35rem; --pill-pad-l: 1.5rem; --pill-gap: 0.75rem; --pill-font: 0.95rem; --pill-icon: 1.05rem; }
 .pill-btn--lg { --pill-h: 3.75rem; --pill-pad-y: 0.4rem; --pill-pad-l: 1.85rem; --pill-gap: 0.9rem; --pill-font: 1.05rem; --pill-icon: 1.15rem; }
-.pill-btn--full { width: 100%; }
+.pill-btn--full { width: 100%; justify-content: center; }
+/* Fullwidth com layout split (label esquerda · ícone direita) — para CTAs em ticket/checkout */
+.pill-btn--full-split { width: 100%; justify-content: space-between; }
+
+/* Mobile: pill button fullWidth pode quebrar linha (label longo) */
+@media (max-width: 480px) {
+  .pill-btn--full {
+    height: auto;
+    min-height: var(--pill-h);
+    padding-block: 0.65rem;
+  }
+  .pill-btn--full .pill-btn__label {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
 
 .pill-btn__label {
   font-size: var(--pill-font);
@@ -260,6 +278,26 @@
 @keyframes pillShine {
   0% { left: -60%; }
   55%, 100% { left: 130%; }
+}
+
+/* Shimmer da barra de vagas — gatilho visual de escassez (ticket Investimento) */
+@keyframes vagasShimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
+/* Halo das garantias — anéis expansivos sutis em volta do ícone */
+@keyframes garantia-halo {
+  0% { transform: scale(1); opacity: 0.55; }
+  80% { opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes garantia-glow {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 18px -2px var(--halo-color, rgba(230,198,116,0.55)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .garantia-halo, .garantia-glow { animation: none !important; }
 }
 
 /* GHOST — variante secundária */
@@ -1790,6 +1828,221 @@ main blockquote, main p, main li {
 @media (prefers-reduced-motion: reduce) {
   .diag-strike { transition: none; }
   .diag-strike[data-active="true"] { background-size: 100% 2.5px; }
+}
+
+/* CincoNoites close — Calendar/scheduler style */
+.cn-day-cell {
+  animation: cn-cell-fade-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.cn-day-cell:nth-child(1) { animation-delay: 0.05s; }
+.cn-day-cell:nth-child(2) { animation-delay: 0.15s; }
+.cn-day-cell:nth-child(3) { animation-delay: 0.25s; }
+.cn-day-cell:nth-child(4) { animation-delay: 0.35s; }
+.cn-day-cell:nth-child(5) { animation-delay: 0.45s; }
+@keyframes cn-cell-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cn-day-cell-active::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FFC14D;
+  box-shadow: 0 0 10px rgba(255,193,77,0.7);
+  animation: cn-dot-pulse 2.4s ease-in-out infinite;
+}
+@keyframes cn-dot-pulse {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.5); }
+}
+
+/* Linha conectora entre as células (timeline-like) */
+.cn-day-rail {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(3,26,40,0.18) 12%,
+    rgba(3,26,40,0.18) 88%,
+    transparent 100%);
+  z-index: 0;
+  transform: translateY(-50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-day-cell, .cn-day-cell-active::after { animation: none !important; }
+}
+
+
+.cn-cta-glow {
+  position: absolute;
+  inset: -16px;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at center, rgba(255,193,77,0.45), rgba(255,193,77,0.15) 50%, transparent 75%);
+  filter: blur(20px);
+  pointer-events: none;
+  animation: cn-cta-breathe 3s ease-in-out infinite;
+}
+@keyframes cn-cta-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cn-cta-glow { animation: none !important; }
+}
+
+/* EngenhariaPrincipios — Marquee mobile com efeito "two worlds" (mono → vivo) */
+.ep-icons-marquee {
+  position: relative;
+  overflow: hidden;
+}
+.ep-icons-track {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: max-content;
+  /* Direção REVERSA — ícones entram pela esquerda (mono) e saem pela direita (vivos) */
+  animation: ep-marquee-scroll 22s linear infinite reverse;
+  will-change: transform;
+}
+/* Camada 1 — base: ícones aparecem aqui (mono na esquerda, vivos na direita) */
+.ep-marquee-base {
+  position: relative;
+}
+/* Camada 2 — sobreposta, mostra os mesmos ícones em color só na direita */
+.ep-marquee-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* MASK — base layer só visível no lado esquerdo (com fade na borda esquerda) */
+.ep-marquee-base {
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%,
+    #000 8%,
+    #000 50%,
+    transparent 52%);
+  mask-image: linear-gradient(to right,
+    transparent 0%,
+    #000 8%,
+    #000 50%,
+    transparent 52%);
+}
+/* MASK — overlay só visível no lado direito (com fade na borda direita) */
+.ep-marquee-overlay {
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 48%,
+    #000 50%,
+    #000 92%,
+    transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 48%,
+    #000 50%,
+    #000 92%,
+    transparent 100%);
+}
+
+@keyframes ep-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ep-marquee-item {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: filter 0.3s ease;
+}
+
+/* Estado MONO — base layer, lado esquerdo (antes da linha) */
+.ep-marquee-base .ep-marquee-item {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.10);
+  filter: grayscale(1) brightness(0.55);
+}
+.ep-marquee-base .ep-marquee-item svg {
+  color: rgba(255,255,255,0.55) !important;
+}
+
+/* Estado VIVO — overlay layer, lado direito (depois da linha) */
+.ep-marquee-overlay .ep-marquee-item {
+  background: linear-gradient(135deg, rgba(255,193,77,0.15), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,193,77,0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: ep-marquee-pulse 2.4s ease-in-out infinite;
+}
+.ep-marquee-overlay .ep-marquee-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  border-radius: 1px;
+}
+@keyframes ep-marquee-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,193,77,0); }
+  50% { box-shadow: 0 0 18px -2px rgba(255,193,77,0.4); }
+}
+
+/* Linha divisória central — "fronteira entre os dois mundos" */
+.ep-marquee-divider {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  bottom: -8px;
+  width: 2px;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255,193,77,0.3) 15%,
+    #FFC14D 45%,
+    #FFC14D 55%,
+    rgba(255,193,77,0.3) 85%,
+    transparent 100%);
+}
+.ep-marquee-divider::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(6px);
+  opacity: 0.7;
+}
+.ep-marquee-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #FFC14D;
+  box-shadow: 0 0 12px rgba(255,193,77,0.9), 0 0 24px rgba(255,193,77,0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ep-icons-track { animation: none !important; }
+  .ep-marquee-overlay .ep-marquee-item { animation: none !important; }
 }
 
 /* EngenhariaPrincipios — animação de ícones: 3D card flip wave (zero box-shadow) */

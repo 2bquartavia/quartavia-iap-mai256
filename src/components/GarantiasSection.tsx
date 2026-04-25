@@ -1,4 +1,60 @@
+import { Clock3, ShieldCheck, Check } from "lucide-react";
 import PillButton from "@/components/PillButton";
+
+type Garantia = {
+  label: string;
+  title: string;
+  kicker: string;
+  body: React.ReactNode;
+  items: string[];
+  Icon: typeof Clock3;
+  accent: string;
+};
+
+const GARANTIAS: Garantia[] = [
+  {
+    label: "Garantia 01",
+    title: "Garantia da Quarta-feira",
+    kicker: "Até a 3ª noite · sem perguntas",
+    body: (
+      <>
+        Se até a terceira noite você não estiver convencido, pede o reembolso.{" "}
+        <span className="text-white font-semibold">
+          Integral. Sem questionário.
+        </span>{" "}
+        Coloco na metade do evento porque confio no que entrego.
+      </>
+    ),
+    items: [
+      "Reembolso 100% integral",
+      "Sem questionário ou justificativa",
+      "Decisão no meio do evento",
+    ],
+    Icon: Clock3,
+    accent: "#e6c674",
+  },
+  {
+    label: "Garantia 02",
+    title: "30 dias incondicionais",
+    kicker: "Após a compra · qualquer motivo",
+    body: (
+      <>
+        30 dias após a compra pra pedir reembolso por qualquer motivo.{" "}
+        <span className="text-white font-semibold">
+          Assiste tudo, aplica tudo, e ainda pede o dinheiro de volta.
+        </span>{" "}
+        O único risco é não estar lá.
+      </>
+    ),
+    items: [
+      "Reembolso por qualquer motivo",
+      "Vale mesmo após assistir tudo",
+      "Sem letras miúdas",
+    ],
+    Icon: ShieldCheck,
+    accent: "#aebfc6",
+  },
+];
 
 export default function GarantiasSection() {
   return (
@@ -6,27 +62,7 @@ export default function GarantiasSection() {
       className="relative w-full overflow-hidden"
       style={{ background: "#031a28" }}
     >
-      {/* Aurora animada de fundo */}
-      <div aria-hidden className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full opacity-[0.18] blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, #e6c674 0%, transparent 70%)",
-            animation: "garantia-orb-1 14s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute -bottom-40 -right-32 h-[520px] w-[520px] rounded-full opacity-[0.14] blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, #aebfc6 0%, transparent 70%)",
-            animation: "garantia-orb-2 18s ease-in-out infinite",
-          }}
-        />
-      </div>
-
-      {/* Linha decorativa superior */}
+      {/* Hairline topo */}
       <div
         aria-hidden
         className="h-px w-full"
@@ -36,336 +72,148 @@ export default function GarantiasSection() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-[1180px] px-5 md:px-10 py-20 md:py-28">
-        {/* Cabeçalho */}
+      {/* Aurora sutil (uma só, bem suave — sem animação tosca) */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute -top-32 left-1/4 h-[420px] w-[420px] rounded-full opacity-[0.08] blur-3xl"
+          style={{
+            background: "radial-gradient(circle, #e6c674 0%, transparent 70%)",
+          }}
+        />
+      </div>
+
+      <div className="relative mx-auto w-full max-w-[1100px] px-5 md:px-10 py-16 md:py-24">
+        {/* Header */}
         <div className="text-center max-w-[780px] mx-auto">
+          <span className="inline-flex items-center gap-2 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.24em] text-white/60">
+            <span aria-hidden className="block h-px w-7 bg-white/30" />
+            Risco zero
+            <span aria-hidden className="block h-px w-7 bg-white/30" />
+          </span>
           <h2
-            className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,4.6vw,3.6rem)]"
+            className="mt-4 md:mt-5 font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(1.85rem,4.6vw,3.4rem)]"
             style={{
               fontFamily:
                 '"Source Serif 4", "Source Serif Pro", Georgia, serif',
             }}
           >
             Duas garantias.{" "}
-            <em className="not-italic text-[#e6c674]">Zero risco.</em>
+            <em className="not-italic" style={{ color: "#e6c674" }}>
+              Zero risco.
+            </em>
           </h2>
         </div>
 
-        {/* Cartões de garantia */}
-        <div className="relative mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-          {/* Garantia 1 */}
-          <article
-            className="group relative rounded-[24px] p-8 md:p-10 transition-transform duration-500 hover:-translate-y-1"
-            style={{
-              background:
-                "linear-gradient(160deg, rgba(230,198,116,0.08), rgba(255,255,255,0.02))",
-              border: "1px solid rgba(230,198,116,0.22)",
-              boxShadow:
-                "0 30px 80px -40px rgba(230,198,116,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-            }}
-          >
-            {/* Borda animada (shimmer) */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-[24px] opacity-60"
-              style={{
-                background:
-                  "linear-gradient(120deg, transparent 30%, rgba(230,198,116,0.35) 50%, transparent 70%)",
-                backgroundSize: "200% 100%",
-                animation: "garantia-shimmer 6s linear infinite",
-                mixBlendMode: "overlay",
-              }}
-            />
-
-            {/* Selo flutuante */}
-            <div
-              className="absolute -top-7 left-8 flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em]"
-              style={{
-                background: "linear-gradient(135deg, #f1d98a, #c9a24a)",
-                color: "#031a28",
-                boxShadow:
-                  "0 14px 30px -10px rgba(201,162,74,0.6), inset 0 1px 0 rgba(255,255,255,0.5)",
-              }}
-            >
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-[#031a28]"
-                style={{ animation: "garantia-pulse 1.6s ease-in-out infinite" }}
-              />
-              Garantia 01
-            </div>
-
-            <div className="relative flex items-start gap-5">
-              <div
-                className="relative h-20 w-20 shrink-0 rounded-2xl flex items-center justify-center"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, #f6e3a8, #c9a24a 70%)",
-                  boxShadow:
-                    "0 0 0 6px rgba(201,162,74,0.12), 0 20px 40px -16px rgba(201,162,74,0.55)",
-                  animation: "garantia-float 6s ease-in-out infinite",
-                }}
-                aria-hidden
+        {/* Grid editorial — duas colunas separadas por hairlines */}
+        <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 border-t border-b border-white/15">
+          {GARANTIAS.map((g, i) => {
+            const Icon = g.Icon;
+            const isFirst = i === 0;
+            return (
+              <article
+                key={g.label}
+                className={`px-5 md:px-8 py-8 md:py-10 ${
+                  isFirst
+                    ? "border-b md:border-b-0 md:border-r border-white/15"
+                    : ""
+                }`}
               >
-                <span
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    background:
-                      "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.45), transparent 40%)",
-                    animation: "garantia-spin 8s linear infinite",
-                    mixBlendMode: "overlay",
-                  }}
-                />
-                <svg
-                  width="34"
-                  height="34"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#031a28"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="relative"
-                >
-                  <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
+                {/* Top: ícone com halo + label mono */}
+                <div className="flex items-center gap-3">
+                  <span
+                    className="relative inline-flex h-8 w-8 md:h-9 md:w-9 items-center justify-center"
+                    style={{
+                      ["--halo-color" as never]: `${g.accent}80`,
+                    }}
+                  >
+                    {/* Halos expansivos — anéis em sequência staggered */}
+                    <span
+                      aria-hidden
+                      className="garantia-halo absolute inset-0 rounded-full"
+                      style={{
+                        border: `1.5px solid ${g.accent}`,
+                        animation: "garantia-halo 3.2s ease-out infinite",
+                      }}
+                    />
+                    <span
+                      aria-hidden
+                      className="garantia-halo absolute inset-0 rounded-full"
+                      style={{
+                        border: `1.5px solid ${g.accent}`,
+                        animation: "garantia-halo 3.2s ease-out infinite 1.6s",
+                      }}
+                    />
+                    {/* Disco do ícone com glow pulsante */}
+                    <span
+                      aria-hidden
+                      className="garantia-glow relative inline-flex h-full w-full items-center justify-center rounded-full"
+                      style={{
+                        background: `${g.accent}15`,
+                        boxShadow: `inset 0 0 0 1px ${g.accent}55`,
+                        animation: "garantia-glow 3.2s ease-in-out infinite",
+                      }}
+                    >
+                      <Icon
+                        className="h-4 w-4 md:h-[17px] md:w-[17px]"
+                        strokeWidth={2}
+                        style={{ color: g.accent }}
+                      />
+                    </span>
+                  </span>
+                  <span
+                    className="font-mono text-[10.5px] md:text-[11.5px] font-bold uppercase tracking-[0.22em]"
+                    style={{ color: g.accent }}
+                  >
+                    {g.label}
+                  </span>
+                </div>
 
-              <div className="pt-2">
+                {/* Title */}
                 <h3
-                  className="text-white font-semibold leading-[1.1] text-[clamp(1.5rem,2.6vw,2.1rem)]"
+                  className="mt-4 md:mt-5 text-white font-semibold leading-[1.15] tracking-[-0.018em] text-[clamp(1.35rem,2.4vw,1.85rem)]"
                   style={{
                     fontFamily:
                       '"Source Serif 4", "Source Serif Pro", Georgia, serif',
                   }}
                 >
-                  Garantia da Quarta-feira
+                  {g.title}
                 </h3>
-                <p className="mt-1 text-[#e6c674] text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.18em]">
-                  Até a 3ª noite · sem perguntas
+
+                {/* Kicker */}
+                <p
+                  className="mt-1.5 font-mono text-[10.5px] md:text-[11.5px] font-semibold uppercase tracking-[0.18em]"
+                  style={{ color: `${g.accent}` }}
+                >
+                  {g.kicker}
                 </p>
-              </div>
-            </div>
 
-            <p className="relative mt-7 text-white/85 text-[15px] md:text-[17px] leading-[1.65]">
-              Se até a terceira noite você não estiver convencido, pede o
-              reembolso.{" "}
-              <span className="text-white font-semibold">
-                Integral. Sem questionário.
-              </span>{" "}
-              Coloco na metade do evento porque confio no que entrego.
-            </p>
-
-            <ul className="relative mt-7 space-y-3">
-              {[
-                "Reembolso 100% integral",
-                "Sem questionário ou justificativa",
-                "Decisão no meio do evento",
-              ].map((t, i) => (
-                <li
-                  key={t}
-                  className="flex items-center gap-3 text-white/80 text-[14px] md:text-[15px]"
-                  style={{
-                    animation: `garantia-fade-up 0.6s ease-out ${i * 0.1}s both`,
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    className="flex h-5 w-5 items-center justify-center rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #f1d98a, #c9a24a)",
-                    }}
-                  >
-                    <svg
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#031a28"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          {/* Conector animado central */}
-          <div
-            aria-hidden
-            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center pointer-events-none z-10"
-          >
-            <div className="relative h-16 w-16">
-              <span
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(230,198,116,0.4), transparent 70%)",
-                  animation: "garantia-pulse-ring 2.5s ease-out infinite",
-                }}
-              />
-              <div
-                className="relative h-16 w-16 rounded-full flex items-center justify-center text-[#031a28] font-bold text-[24px]"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, #f6f1e8, #d9cfbb)",
-                  boxShadow:
-                    "0 0 0 6px #031a28, 0 14px 40px -10px rgba(0,0,0,0.7)",
-                }}
-              >
-                +
-              </div>
-            </div>
-          </div>
-
-          {/* Garantia 2 */}
-          <article
-            className="group relative rounded-[24px] p-8 md:p-10 transition-transform duration-500 hover:-translate-y-1"
-            style={{
-              background:
-                "linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02))",
-              border: "1px solid rgba(255,255,255,0.18)",
-              boxShadow:
-                "0 30px 80px -40px rgba(174,191,198,0.3), inset 0 1px 0 rgba(255,255,255,0.06)",
-            }}
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-[24px] opacity-50"
-              style={{
-                background:
-                  "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%)",
-                backgroundSize: "200% 100%",
-                animation: "garantia-shimmer 7s linear infinite",
-                mixBlendMode: "overlay",
-              }}
-            />
-
-            <div
-              className="absolute -top-7 left-8 flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em]"
-              style={{
-                background: "linear-gradient(135deg, #f6f1e8, #aebfc6)",
-                color: "#031a28",
-                boxShadow:
-                  "0 14px 30px -10px rgba(174,191,198,0.6), inset 0 1px 0 rgba(255,255,255,0.6)",
-              }}
-            >
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-[#031a28]"
-                style={{ animation: "garantia-pulse 1.6s ease-in-out infinite" }}
-              />
-              Garantia 02
-            </div>
-
-            <div className="relative flex items-start gap-5">
-              <div
-                className="relative h-20 w-20 shrink-0 rounded-2xl flex items-center justify-center"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, #ffffff, #aebfc6 70%)",
-                  boxShadow:
-                    "0 0 0 6px rgba(255,255,255,0.08), 0 20px 40px -16px rgba(255,255,255,0.25)",
-                  animation: "garantia-float 6s ease-in-out infinite 1s",
-                }}
-                aria-hidden
-              >
-                <span
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    background:
-                      "conic-gradient(from 180deg, transparent, rgba(255,255,255,0.5), transparent 40%)",
-                    animation: "garantia-spin 9s linear infinite reverse",
-                    mixBlendMode: "overlay",
-                  }}
-                />
-                <svg
-                  width="34"
-                  height="34"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#031a28"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="relative"
-                >
-                  <circle cx="12" cy="12" r="9" />
-                  <polyline points="12 7 12 12 15 14" />
-                </svg>
-              </div>
-
-              <div className="pt-2">
-                <h3
-                  className="text-white font-semibold leading-[1.1] text-[clamp(1.5rem,2.6vw,2.1rem)]"
-                  style={{
-                    fontFamily:
-                      '"Source Serif 4", "Source Serif Pro", Georgia, serif',
-                  }}
-                >
-                  30 dias incondicionais
-                </h3>
-                <p className="mt-1 text-white/65 text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.18em]">
-                  Após a compra · qualquer motivo
+                {/* Body */}
+                <p className="mt-4 md:mt-5 text-white/80 text-[14px] md:text-[15.5px] leading-[1.65]">
+                  {g.body}
                 </p>
-              </div>
-            </div>
 
-            <p className="relative mt-7 text-white/85 text-[15px] md:text-[17px] leading-[1.65]">
-              30 dias após a compra pra pedir reembolso por qualquer motivo.{" "}
-              <span className="text-white font-semibold">
-                Assiste tudo, aplica tudo, e ainda pede o dinheiro de volta.
-              </span>{" "}
-              O único risco é não estar lá.
-            </p>
-
-            <ul className="relative mt-7 space-y-3">
-              {[
-                "Reembolso por qualquer motivo",
-                "Vale mesmo após assistir tudo",
-                "Sem letras miúdas",
-              ].map((t, i) => (
-                <li
-                  key={t}
-                  className="flex items-center gap-3 text-white/80 text-[14px] md:text-[15px]"
-                  style={{
-                    animation: `garantia-fade-up 0.6s ease-out ${0.3 + i * 0.1}s both`,
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    className="flex h-5 w-5 items-center justify-center rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #ffffff, #aebfc6)",
-                    }}
-                  >
-                    <svg
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#031a28"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                {/* Lista — checkmarks lucide simples */}
+                <ul className="mt-5 md:mt-6 space-y-2.5">
+                  {g.items.map((t) => (
+                    <li
+                      key={t}
+                      className="flex items-start gap-2.5 text-white/75 text-[13px] md:text-[14.5px] leading-snug"
                     >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </article>
+                      <Check
+                        className="mt-0.5 h-3.5 w-3.5 md:h-4 md:w-4 shrink-0"
+                        strokeWidth={3}
+                        style={{ color: g.accent }}
+                      />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
         </div>
 
-        {/* CTA central */}
+        {/* CTA */}
         <div className="mt-10 md:mt-14 text-center">
           <PillButton
             label="Começar minha Engenharia Patrimonial — R$97"
@@ -379,42 +227,6 @@ export default function GarantiasSection() {
           </p>
         </div>
       </div>
-
-      {/* Keyframes */}
-      <style>{`
-        @keyframes garantia-orb-1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(60px, 40px) scale(1.1); }
-        }
-        @keyframes garantia-orb-2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-50px, -30px) scale(1.15); }
-        }
-        @keyframes garantia-pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.4); }
-        }
-        @keyframes garantia-pulse-ring {
-          0% { transform: scale(0.8); opacity: 0.8; }
-          100% { transform: scale(1.8); opacity: 0; }
-        }
-        @keyframes garantia-shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-        @keyframes garantia-float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(2deg); }
-        }
-        @keyframes garantia-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes garantia-fade-up {
-          0% { opacity: 0; transform: translateY(8px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </section>
   );
 }

@@ -284,12 +284,11 @@ function ScenarioStage() {
             </p>
           </div>
 
-          {/* Stage — cards empilhados, com maxHeight pra não cortar em viewports baixos */}
+          {/* Stage — cards empilhados, mobile aspect-[5/7] vertical pra evitar overlap, desktop 16/11 wide */}
           <div
-            className="relative w-full mx-auto"
+            className="relative w-full mx-auto aspect-[5/7] sm:aspect-[16/11]"
             style={{
-              aspectRatio: "16 / 11",
-              maxHeight: "min(60vh, 580px)",
+              maxHeight: "min(72vh, 580px)",
             }}
           >
             {/* PRIMO BASE — notícia */}
@@ -320,13 +319,14 @@ function ScenarioStage() {
               />
 
               {/* Badge alarme */}
-              <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow-[0_6px_14px_-3px_rgba(185,53,42,0.6)]">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 inline-flex items-center gap-1.5 rounded-full bg-[#b9352a] text-white px-2 sm:px-2.5 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] shadow-[0_6px_14px_-3px_rgba(185,53,42,0.6)]">
                 <AlertTriangle className="h-3 w-3" strokeWidth={2.6} />
-                Notícia real · 02/2025
+                <span className="hidden sm:inline">Notícia real · 02/2025</span>
+                <span className="sm:hidden">Notícia real</span>
               </div>
 
-              {/* Stat negativo top-right */}
-              <div className="absolute top-4 right-4 rounded-lg bg-black/55 backdrop-blur-md border border-white/10 px-3 py-2 text-right">
+              {/* Stat negativo top-right — só desktop, mobile fica embaixo no overlay de texto */}
+              <div className="hidden sm:block absolute top-4 right-4 rounded-lg bg-black/55 backdrop-blur-md border border-white/10 px-3 py-2 text-right">
                 <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/55 font-bold">
                   CDB · investidor
                 </p>
@@ -378,13 +378,13 @@ function ScenarioStage() {
               />
 
               {/* Avião drifting top-left */}
-              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow-[0_8px_18px_-4px_rgba(16,185,129,0.65)]">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-emerald-500 text-white px-2 sm:px-2.5 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] shadow-[0_8px_18px_-4px_rgba(16,185,129,0.65)]">
                 <Plane className="h-3 w-3 pt-plane-drift" strokeWidth={2.6} />
                 Estava viajando
               </div>
 
-              {/* Boarding-pass meta top-right */}
-              <div className="absolute top-4 right-4 rounded-lg bg-black/40 backdrop-blur-md border border-emerald-300/25 px-3 py-2 text-right">
+              {/* Boarding-pass meta top-right — só desktop */}
+              <div className="hidden sm:block absolute top-4 right-4 rounded-lg bg-black/40 backdrop-blur-md border border-emerald-300/25 px-3 py-2 text-right">
                 <p className="flex items-center justify-end gap-1 font-mono text-[9px] uppercase tracking-[0.2em] text-emerald-300/85 font-bold">
                   <MapPin className="h-2.5 w-2.5" strokeWidth={3} />
                   GRU → CDG
@@ -395,13 +395,13 @@ function ScenarioStage() {
               </div>
 
               {/* Stat chip flutuante — aluguel caindo enquanto viaja */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-[42%] -translate-y-1/2 inline-flex items-center gap-2.5 rounded-2xl bg-emerald-500/95 backdrop-blur-md text-white px-4 py-2.5 shadow-[0_18px_40px_-12px_rgba(16,185,129,0.55)] ring-1 ring-emerald-300/40">
-                <TrendingUp className="h-4 w-4" strokeWidth={3} />
+              <div className="absolute left-1/2 -translate-x-1/2 top-[38%] sm:top-[42%] -translate-y-1/2 inline-flex items-center gap-2 sm:gap-2.5 rounded-2xl bg-emerald-500/95 backdrop-blur-md text-white px-3 sm:px-4 py-2 sm:py-2.5 shadow-[0_18px_40px_-12px_rgba(16,185,129,0.55)] ring-1 ring-emerald-300/40">
+                <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={3} />
                 <div className="text-left">
-                  <p className="font-mono text-[8.5px] uppercase tracking-[0.22em] font-bold opacity-80 leading-none">
+                  <p className="font-mono text-[8px] sm:text-[8.5px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-bold opacity-80 leading-none">
                     Aluguel · dia 5
                   </p>
-                  <p className="font-bold tabular-nums text-[16px] md:text-[18px] leading-tight tracking-tight">
+                  <p className="font-bold tabular-nums text-[14px] sm:text-[16px] md:text-[18px] leading-tight tracking-tight">
                     + R$ 18.000
                   </p>
                 </div>
@@ -528,50 +528,51 @@ function ComparativeCards() {
       </article>
 
       {/* TIO — TRANSFORMOU, esmeralda + cream-deep */}
-      <article
-        data-active={active}
-        className="pt-tio-glow relative rounded-[14px] border-[1.5px] border-[#031a28]/40 bg-[#031a28]/[0.04] px-6 md:px-7 py-7 md:py-8 overflow-hidden"
-        style={{ opacity: 0 }}
-      >
-        {/* Brilho "growth" diagonal up-right */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-[0.6]"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 65%)",
-          }}
-        />
-
-        {/* Sparkles emergindo */}
-        {[
-          { top: "12%", right: "12%", delay: "0.6s", size: 14 },
-          { top: "28%", right: "8%", delay: "0.9s", size: 10 },
-          { top: "20%", right: "22%", delay: "1.2s", size: 11 },
-        ].map((s, i) => (
-          <Sparkles
-            key={i}
-            data-active={active}
-            className="pt-sparkle absolute text-emerald-500 pointer-events-none"
-            style={{
-              top: s.top,
-              right: s.right,
-              width: s.size,
-              height: s.size,
-              animationDelay: s.delay,
-              opacity: 0,
-            }}
-            strokeWidth={2.4}
-          />
-        ))}
-
-        {/* Anchor badge — emerald accent */}
-        <span className="absolute -top-3 left-5 md:left-6 inline-flex items-center gap-1.5 rounded-full bg-[#031a28] text-[#FAEDDD] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow-[0_6px_14px_-6px_rgba(3,26,40,0.55)] ring-1 ring-emerald-400/40">
+      <div className="relative">
+        {/* Anchor badge FORA do article (não é cortado pelo overflow-hidden interno) */}
+        <span className="absolute -top-3 left-5 md:left-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-[#031a28] text-[#FAEDDD] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] shadow-[0_6px_14px_-6px_rgba(3,26,40,0.55)] ring-1 ring-emerald-400/40">
           <Sparkles className="h-3 w-3 text-emerald-300" />
           O caminho do ativo
         </span>
 
-        {/* Eyebrow status — TRANSFORMOU */}
+        <article
+          data-active={active}
+          className="pt-tio-glow relative rounded-[14px] border-[1.5px] border-[#031a28]/40 bg-[#031a28]/[0.04] px-6 md:px-7 py-7 md:py-8 overflow-hidden"
+          style={{ opacity: 0 }}
+        >
+          {/* Brilho "growth" diagonal up-right */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-[0.6]"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 65%)",
+            }}
+          />
+
+          {/* Sparkles emergindo */}
+          {[
+            { top: "12%", right: "12%", delay: "0.6s", size: 14 },
+            { top: "28%", right: "8%", delay: "0.9s", size: 10 },
+            { top: "20%", right: "22%", delay: "1.2s", size: 11 },
+          ].map((s, i) => (
+            <Sparkles
+              key={i}
+              data-active={active}
+              className="pt-sparkle absolute text-emerald-500 pointer-events-none"
+              style={{
+                top: s.top,
+                right: s.right,
+                width: s.size,
+                height: s.size,
+                animationDelay: s.delay,
+                opacity: 0,
+              }}
+              strokeWidth={2.4}
+            />
+          ))}
+
+          {/* Eyebrow status — TRANSFORMOU */}
         <div className="absolute top-5 right-5 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/12 px-2.5 py-1 ring-1 ring-emerald-600/35">
           <span aria-hidden className="block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] animate-pulse" />
           <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] font-bold text-emerald-700">
@@ -614,18 +615,19 @@ function ComparativeCards() {
         {/* Stat chip emergente — "+R$18k/mês" com bounce-in */}
         <div
           data-active={active}
-          className="pt-stat-pop mt-5 pt-4 border-t border-dashed border-emerald-600/30 flex items-center justify-between"
+          className="pt-stat-pop mt-5 pt-4 border-t border-dashed border-emerald-600/30 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2"
           style={{ opacity: 0 }}
         >
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 text-white px-2.5 py-1 text-[11px] md:text-[12px] font-bold tracking-tight shadow-[0_8px_18px_-6px_rgba(16,185,129,0.5)]">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 text-white px-2.5 py-1 text-[11px] md:text-[12px] font-bold tracking-tight shadow-[0_8px_18px_-6px_rgba(16,185,129,0.5)] whitespace-nowrap">
             <TrendingUp className="h-3 w-3" strokeWidth={3} />
             +R$ 18k/mês passivos
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-700/85 font-bold">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-700/85 font-bold whitespace-nowrap">
             Patrimônio próprio
           </span>
         </div>
-      </article>
+        </article>
+      </div>
     </div>
   );
 }
@@ -777,15 +779,15 @@ export default function PrimoTioSection() {
 
         <Reveal from="up" delay={100}>
           <div className="max-w-[640px] mx-auto rounded-[14px] border-[1.5px] border-[#031a28]/20 bg-white/60 backdrop-blur-sm overflow-hidden shadow-[0_18px_44px_-22px_rgba(3,26,40,0.30)]">
-            <div className="px-5 md:px-6 py-3 border-b border-[#031a28]/12 bg-[#031a28]/[0.04] flex items-center justify-between">
-              <span className="flex items-center gap-2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] font-bold text-[#031a28]/80">
+            <div className="px-5 md:px-6 py-3 border-b border-[#031a28]/12 bg-[#031a28]/[0.04] flex items-center justify-between gap-3">
+              <span className="flex items-center gap-2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] font-bold text-[#031a28]/80 whitespace-nowrap">
                 <span
                   aria-hidden
                   className="block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.65)] animate-pulse"
                 />
                 Extrato · Dia 5
               </span>
-              <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-[#031a28]/55">
+              <span className="hidden sm:inline font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-[#031a28]/55 whitespace-nowrap">
                 sem trabalho · sem assessor
               </span>
             </div>
@@ -865,10 +867,10 @@ export default function PrimoTioSection() {
       </div>
 
       {/* MOVIMENTO E — CTA dark */}
-      <div className="relative mx-auto w-full max-w-[1080px] px-5 md:px-8 pb-20 md:pb-24">
+      <div className="relative mx-auto w-full max-w-[1080px] px-0 sm:px-5 md:px-8 pb-20 md:pb-24">
         <Reveal from="up">
           <div
-            className="max-w-[820px] mx-auto rounded-2xl px-8 md:px-12 py-12 md:py-16 text-center shadow-[0_24px_60px_-24px_rgba(3,26,40,0.55)]"
+            className="w-full sm:max-w-[820px] sm:mx-auto rounded-none sm:rounded-2xl px-5 sm:px-8 md:px-12 py-12 md:py-16 text-center sm:shadow-[0_24px_60px_-24px_rgba(3,26,40,0.55)]"
             style={{
               background: "linear-gradient(180deg, #042234 0%, #021b28 100%)",
             }}
@@ -888,7 +890,7 @@ export default function PrimoTioSection() {
               ?
             </p>
 
-            <div className="mt-9 md:mt-10 inline-block relative">
+            <div className="mt-9 md:mt-10 mx-auto max-w-[440px] relative">
               <div
                 aria-hidden
                 className="pointer-events-none absolute -inset-3 rounded-full blur-2xl opacity-70"
@@ -902,6 +904,7 @@ export default function PrimoTioSection() {
                   label="Quero sair do caminho do primo — R$97"
                   variant="gold"
                   size="lg"
+                  fullWidth
                 />
               </div>
             </div>

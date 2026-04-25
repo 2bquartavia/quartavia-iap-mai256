@@ -69,7 +69,7 @@ export default function EngenhariaPrincipiosSection() {
         <div className="mt-9 md:mt-12 mx-auto grid grid-cols-1 md:grid-cols-2 border-t border-b border-white/20 text-left">
           <article className="px-5 md:px-7 py-7 md:py-9 md:border-r border-white/20">
             <span
-              className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.24em] font-bold"
+              className="font-mono text-[12px] md:text-[12px] uppercase tracking-[0.24em] font-bold"
               style={{ color: "#FFC14D" }}
             >
               01 · Alavancagem
@@ -92,7 +92,7 @@ export default function EngenhariaPrincipiosSection() {
 
           <article className="px-5 md:px-7 py-7 md:py-9 border-t md:border-t-0 border-white/20">
             <span
-              className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.24em] font-bold"
+              className="font-mono text-[12px] md:text-[12px] uppercase tracking-[0.24em] font-bold"
               style={{ color: "#FFC14D" }}
             >
               02 · Arbitragem
@@ -129,11 +129,53 @@ export default function EngenhariaPrincipiosSection() {
           </p>
         </div>
 
-        {/* Icon grid — 3D card flip wave (cada ícone vira revelando a face dourada) */}
+        {/* Icon set — desktop: 3D card flip wave (md+); mobile: marquee lateral infinito */}
+        <div ref={iconsRef}>
+
+        {/* MOBILE — marquee "two worlds": mono à esquerda, vivo à direita, separados por linha */}
         <div
-          ref={iconsRef}
           data-active={iconsInView ? "true" : "false"}
-          className="ep-icons-grid mt-12 md:mt-16 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3 md:gap-4 justify-items-center"
+          className="md:hidden mt-12 ep-icons-marquee"
+          aria-hidden
+        >
+          {/* Camada base — mono (visível só no lado esquerdo via mask) */}
+          <div className="ep-marquee-base">
+            <div className="ep-icons-track py-2">
+              {[...ICONS, ...ICONS].map(({ Icon, label }, i) => (
+                <div
+                  key={`mono-${i}`}
+                  title={label}
+                  className="ep-marquee-item"
+                >
+                  <Icon size={26} strokeWidth={1.7} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Camada overlay — vivo/colorido (visível só no lado direito via mask) */}
+          <div className="ep-marquee-overlay">
+            <div className="ep-icons-track py-2">
+              {[...ICONS, ...ICONS].map(({ Icon, label }, i) => (
+                <div
+                  key={`color-${i}`}
+                  title={label}
+                  className="ep-marquee-item"
+                >
+                  <Icon size={26} strokeWidth={1.7} color="#FFC14D" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Linha divisória central — fronteira entre os dois mundos */}
+          <div className="ep-marquee-divider" aria-hidden />
+        </div>
+
+        {/* DESKTOP — grid 7 cols com 3D flip wave */}
+        <div
+          data-active={iconsInView ? "true" : "false"}
+          className="ep-icons-grid hidden md:grid mt-16 grid-cols-7 gap-4 justify-items-center"
         >
           {ICONS.map(({ Icon, label }, i) => (
             <div
@@ -159,6 +201,8 @@ export default function EngenhariaPrincipiosSection() {
             </div>
           ))}
         </div>
+
+        </div>{/* fecha wrapper iconsRef */}
       </div>
     </section>
   );

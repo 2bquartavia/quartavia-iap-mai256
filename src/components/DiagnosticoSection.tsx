@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Star, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import renatoOberg from "@/assets/renato-oberg.png";
 import profissionalDiagnostico from "@/assets/profissional-diagnostico.png";
@@ -237,7 +237,7 @@ function RealityRow({
   return (
     <li
       ref={ref}
-      className="flex items-center justify-center gap-3 md:gap-3.5 text-[#031a28]/85 text-[15px] md:text-[16.5px] leading-[1.55]"
+      className="relative px-5 md:px-6 py-4 md:py-5 text-center text-[#031a28] text-[clamp(1rem,2vw,1.25rem)] leading-[1.45] font-medium"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView
@@ -247,15 +247,7 @@ function RealityRow({
         willChange: inView ? "auto" : "opacity, transform",
       }}
     >
-      <span
-        aria-hidden
-        className="flex items-center justify-center w-[18px] h-[18px] shrink-0 rounded-full bg-[#031a28]/[0.06] ring-1 ring-[#031a28]/15"
-      >
-        <span className="text-[10px] font-bold text-[#031a28]/65 leading-none">
-          ?
-        </span>
-      </span>
-      <span>{children}</span>
+      {children}
     </li>
   );
 }
@@ -379,8 +371,8 @@ export default function DiagnosticoSection() {
           </figure>
         </Reveal>
 
-        {/* PERGUNTA — momento cinematográfico */}
-        <div className="mt-16 md:mt-24 max-w-[860px] mx-auto text-center">
+        {/* PERGUNTA — momento cinematográfico, full-width do container */}
+        <div className="mt-16 md:mt-24 text-center">
           <Reveal from="up">
             <div className="inline-flex items-center gap-2.5 mb-5 md:mb-7">
               <span aria-hidden className="block h-px w-7 bg-[#031a28]/40" />
@@ -391,29 +383,26 @@ export default function DiagnosticoSection() {
             </div>
           </Reveal>
 
-          <h2 className="text-[#031a28] font-semibold leading-[1.06] tracking-[-0.025em] text-[clamp(1.875rem,4.6vw,3.4rem)]">
+          <h2 className="text-[#031a28] font-semibold leading-[1.04] tracking-[-0.028em] text-[clamp(2.2rem,6.4vw,4.4rem)]">
             <span className="block">
-              <LineReveal>Se você parar de</LineReveal>
-            </span>
-            <span className="block">
-              <LineReveal delay={120}>
-                trabalhar por{" "}
+              <LineReveal>
+                Se você parar de trabalhar por{" "}
                 <MarkHighlight delay={520}>6 meses</MarkHighlight>
               </LineReveal>
             </span>
-            <span className="block">
-              <LineReveal delay={240}>
-                <span className="text-[#031a28]/65 font-medium italic">
+            <span className="block mt-2 md:mt-3">
+              <LineReveal delay={180}>
+                <span className="text-[#031a28]/60 font-medium italic text-[clamp(1.4rem,3.6vw,2.4rem)]">
                   — não por escolha, por necessidade —
                 </span>
               </LineReveal>
             </span>
-            <span className="block">
+            <span className="block mt-2 md:mt-3">
               <LineReveal delay={360}>o que acontece?</LineReveal>
             </span>
           </h2>
 
-          <ul className="mt-9 md:mt-12 space-y-3 md:space-y-3.5 max-w-[640px] mx-auto">
+          <ul className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 max-w-[860px] mx-auto border-y border-[#031a28]/15 md:border md:border-[#031a28]/15 md:rounded-[14px] divide-y md:divide-y-0 divide-[#031a28]/12 md:[&>li:nth-child(odd)]:border-r md:[&>li:nth-child(odd)]:border-[#031a28]/12 md:[&>li:nth-child(-n+2)]:border-b md:[&>li:nth-child(-n+2)]:border-[#031a28]/12">
             {REALITY_CHECKS.map((q, i) => (
               <RealityRow key={i} delay={i * 90}>
                 {q}
@@ -421,8 +410,13 @@ export default function DiagnosticoSection() {
             ))}
           </ul>
 
+        </div>
+
+        {/* DIAGNÓSTICO — conclusão + eliminações em um bloco coeso */}
+        <div className="mt-12 md:mt-16 max-w-[820px] mx-auto">
+          {/* Conclusão centralizada */}
           <Reveal from="up">
-            <p className="mt-10 md:mt-12 text-[#031a28]/85 text-[17px] md:text-[19px] leading-[1.55] max-w-[680px] mx-auto">
+            <p className="text-center text-[#031a28] text-[clamp(1.15rem,2.4vw,1.55rem)] leading-[1.45] font-medium tracking-[-0.012em]">
               Se a resposta é{" "}
               <em className="not-italic text-red-700 font-semibold">
                 "aperta"
@@ -432,37 +426,59 @@ export default function DiagnosticoSection() {
                 "não sei"
               </em>
               , você tem um problema. Mas{" "}
-              <span className="text-[#031a28] font-semibold">
+              <span className="text-[#031a28] font-bold">
                 não é o problema que você pensa.
               </span>
             </p>
           </Reveal>
-        </div>
 
-        {/* ELIMINAÇÃO — strikethrough inline */}
-        <div className="mt-14 md:mt-20 max-w-[700px] mx-auto text-center">
-          <Reveal from="up">
-            <p className="text-[#031a28] text-[clamp(1.05rem,2vw,1.4rem)] leading-[1.55] mb-5 md:mb-6">
-              <StrikeOut>
-                <span className="font-semibold">Não é falta de renda.</span>
-              </StrikeOut>{" "}
-              <span className="text-[#031a28]/80">
-                Você ganha bem. Provavelmente melhor que 95% do país.
-              </span>
-            </p>
-          </Reveal>
-          <Reveal from="up">
-            <p className="text-[#031a28] text-[clamp(1.05rem,2vw,1.4rem)] leading-[1.55]">
-              <StrikeOut delay={120}>
-                <span className="font-semibold">
-                  Não é falta de conhecimento.
+          {/* Conector hairline central */}
+          <div
+            aria-hidden
+            className="mt-8 md:mt-10 mx-auto flex items-center justify-center gap-2"
+          >
+            <span className="block h-px w-10 bg-[#031a28]/20" />
+            <span className="block w-1 h-1 rounded-full bg-red-700/45" />
+            <span className="block h-px w-10 bg-[#031a28]/20" />
+          </div>
+
+          {/* Eliminações como items left-aligned com X em vermelho */}
+          <ul className="mt-8 md:mt-10 max-w-[680px] mx-auto space-y-5 md:space-y-6">
+            <Reveal from="up">
+              <li className="flex items-start gap-3.5 md:gap-4">
+                <span className="mt-[5px] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-700/12 text-red-700 ring-1 ring-red-700/30">
+                  <X className="h-3 w-3" strokeWidth={3.5} />
                 </span>
-              </StrikeOut>{" "}
-              <span className="text-[#031a28]/80">
-                Você já leu sobre investimentos, já montou carteira, já conversou com assessor.
-              </span>
-            </p>
-          </Reveal>
+                <p className="text-[#031a28] text-[clamp(1rem,1.9vw,1.25rem)] leading-[1.55]">
+                  <StrikeOut>
+                    <span className="font-semibold">
+                      Não é falta de renda.
+                    </span>
+                  </StrikeOut>{" "}
+                  <span className="text-[#031a28]/80">
+                    Você ganha bem. Provavelmente melhor que 95% do país.
+                  </span>
+                </p>
+              </li>
+            </Reveal>
+            <Reveal from="up" delay={80}>
+              <li className="flex items-start gap-3.5 md:gap-4">
+                <span className="mt-[5px] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-700/12 text-red-700 ring-1 ring-red-700/30">
+                  <X className="h-3 w-3" strokeWidth={3.5} />
+                </span>
+                <p className="text-[#031a28] text-[clamp(1rem,1.9vw,1.25rem)] leading-[1.55]">
+                  <StrikeOut delay={120}>
+                    <span className="font-semibold">
+                      Não é falta de conhecimento.
+                    </span>
+                  </StrikeOut>{" "}
+                  <span className="text-[#031a28]/80">
+                    Você já leu sobre investimentos, já montou carteira, já conversou com assessor.
+                  </span>
+                </p>
+              </li>
+            </Reveal>
+          </ul>
         </div>
 
         {/* SECTION BREAK — régua hairline separando "problema" de "diagnóstico" */}

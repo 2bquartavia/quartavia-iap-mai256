@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Clock, ShieldCheck } from "lucide-react";
+import { Clock, User, ShieldCheck } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
 
@@ -188,31 +188,91 @@ export default function CincoNoitesSection() {
         </div>
       </div>
 
-      <div className="wrap immersion__close">
-        {/* Linha única — texto editorial sem labels redundantes */}
-        <p className="text-[#031a28] text-[clamp(1.05rem,2vw,1.4rem)] leading-[1.5] font-medium max-w-[760px] text-balance">
-          Cada noite ao vivo.{" "}
-          <span className="inline-flex items-center gap-1.5 align-middle font-mono text-[0.85em] uppercase tracking-[0.18em] font-bold text-[#031a28]/80">
-            <Clock className="h-[14px] w-[14px]" strokeWidth={2.4} />
-            20h
-          </span>
-          . Com{" "}
-          <span className="font-semibold">Adrian</span>. Você entende, pergunta, implementa e nós.
-        </p>
-
-        <PillButton
-          label="Entrar nas 5 noites — R$97"
-          variant="gold"
-          size="lg"
+      <div className="wrap immersion__close relative overflow-hidden">
+        {/* Background — engineering grid blueprint */}
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(3,26,40,1) 1px, transparent 1px), linear-gradient(90deg, rgba(3,26,40,1) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
         />
 
+        {/* Header strip — kicker + meta evento */}
+        <div className="relative w-full max-w-[680px] mx-auto flex items-center justify-between gap-3 pb-3 border-b border-[#031a28]/15 px-2">
+          <span className="inline-flex items-center gap-2 font-mono text-[9.5px] md:text-[10.5px] uppercase tracking-[0.28em] font-bold text-[#031a28]/65">
+            <span
+              aria-hidden
+              className="block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)] animate-pulse"
+            />
+            Imersão ao vivo
+          </span>
+          <span className="font-mono text-[9.5px] md:text-[10.5px] uppercase tracking-[0.22em] font-bold text-[#031a28]/55">
+            Maio · 2026
+          </span>
+        </div>
+
+        {/* Calendar — 5 colunas separadas só por hairline vertical, sem fundo */}
+        <div className="relative w-full max-w-[640px] mx-auto px-2">
+          <ol className="relative grid grid-cols-5">
+            {[
+              { dia: 25, dow: "SEG" },
+              { dia: 26, dow: "TER" },
+              { dia: 27, dow: "QUA" },
+              { dia: 28, dow: "QUI" },
+              { dia: 29, dow: "SEX" },
+            ].map((d, i) => (
+              <li
+                key={d.dia}
+                className={`cn-day-cell relative flex flex-col items-center justify-center gap-1 py-3 sm:py-4 ${
+                  i > 0 ? "border-l border-[#031a28]/15" : ""
+                } ${i === 0 ? "cn-day-cell-active" : ""}`}
+              >
+                <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold text-[#031a28]/55">
+                  {d.dow}
+                </span>
+                <span
+                  className="font-bold tabular-nums text-[#031a28] text-[clamp(1.5rem,3.6vw,2rem)] leading-none tracking-tight"
+                  style={{
+                    fontFamily:
+                      '"Source Serif 4", "Source Serif Pro", Georgia, serif',
+                  }}
+                >
+                  {d.dia}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Headline — texto verbatim do usuário, sem cortes */}
+        <p className="relative text-[#031a28] text-[clamp(1.05rem,2vw,1.35rem)] leading-[1.5] font-medium max-w-[640px] text-balance text-center">
+          Cada noite ao vivo. <span className="font-semibold">20h.</span>{" "}
+          <span className="font-semibold">Com Adrian.</span>{" "}
+          <span className="font-bold">Você entende, pergunta, implementa e nós</span>
+        </p>
+
+        {/* CTA — pill intrínseca com glow pulsante */}
+        <div className="relative inline-block mx-auto">
+          <span aria-hidden className="cn-cta-glow" />
+          <div className="relative">
+            <PillButton
+              label="Entrar nas 5 noites — R$97"
+              variant="gold"
+              size="lg"
+            />
+          </div>
+        </div>
+
         {/* Garantia com ícone shield */}
-        <p className="inline-flex items-center gap-2 text-[#031a28]/70 text-[13px] md:text-[14px] font-medium">
+        <p className="relative inline-flex items-center gap-2 text-[#031a28]/70 text-[12.5px] md:text-[14px] font-medium px-5 text-center">
           <ShieldCheck
-            className="h-[18px] w-[18px] text-emerald-600"
+            className="h-[18px] w-[18px] text-emerald-600 shrink-0"
             strokeWidth={2.3}
           />
-          Garantia de 30 dias + Garantia da Quarta-feira · Risco zero.
+          <span>Garantia de 30 dias + Garantia da Quarta-feira · Risco zero.</span>
         </p>
       </div>
     </section>

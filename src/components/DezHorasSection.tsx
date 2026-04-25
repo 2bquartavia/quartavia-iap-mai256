@@ -96,13 +96,13 @@ export default function DezHorasSection() {
       className="relative w-full"
       style={{
         background: "#031a28",
-        // Altura justa pro empilhamento — sem warmup excessivo
-        minHeight: `${40 + ITEMS.length * 38}vh`,
+        // Cada card tem dwell time pra leitura — slot mais largo
+        minHeight: `${30 + ITEMS.length * 38}vh`,
       }}
     >
       {/* Sticky stage */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="mx-auto h-full w-full max-w-[1280px] px-5 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+        <div className="mx-auto h-full w-full max-w-[1280px] px-5 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-1 sm:gap-3 md:gap-12 items-start md:items-center pt-4 sm:pt-6 md:pt-0 pb-4 md:pb-0">
           {/* Coluna esquerda — título fixo */}
           <div className="md:col-span-5 text-white">
             <span className="inline-flex items-center gap-2 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65">
@@ -110,7 +110,7 @@ export default function DezHorasSection() {
               O que você recebe
             </span>
             <h2
-              className="mt-4 md:mt-5 font-semibold leading-[1.08] tracking-[-0.02em] text-[clamp(1.65rem,3.4vw,2.6rem)]"
+              className="mt-3 md:mt-5 font-semibold leading-[1.08] tracking-[-0.022em] w-full text-[clamp(1.5rem,5vw,2.6rem)] [text-wrap:wrap]"
               style={{
                 fontFamily:
                   '"Source Serif 4", "Source Serif Pro", Georgia, serif',
@@ -127,25 +127,91 @@ export default function DezHorasSection() {
           </div>
 
           {/* Coluna direita — pilha de cards */}
-          <div className="md:col-span-7 relative h-[78vh] md:h-[82vh]">
+          <div className="md:col-span-7 relative h-[68vh] md:h-[82vh]">
+            {/* Ghost — uma única silhueta atrás do card ativo, peek-out
+                pra sinalizar "tem mais coisa aqui". */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{ zIndex: 1 }}
+            >
+              <div
+                className="absolute left-1/2 top-[42%] md:top-1/2"
+                style={{
+                  transform: `translate(calc(-50% + 6px), calc(-50% + 10px)) rotate(2.2deg)`,
+                  width: "min(560px, 92%)",
+                  opacity: Math.max(0.32 * (1 - progress * 0.4), 0),
+                }}
+              >
+                <div
+                  className="rounded-[22px] aspect-[4/5] sm:aspect-[5/4] max-h-[58vh] sm:max-h-[60vh]"
+                  style={{
+                    border: "1.5px dashed rgba(246, 241, 232, 0.6)",
+                    background:
+                      "linear-gradient(155deg, rgba(246,241,232,0.08) 0%, rgba(246,241,232,0.025) 100%)",
+                    boxShadow:
+                      "0 20px 50px -25px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Indicador "card N de 6" + barra de progresso — bottom-right.
+                Comunica progresso e sinaliza que há mais conteúdo a revelar. */}
+            <div
+              aria-hidden
+              className="absolute bottom-2 right-2 md:bottom-4 md:right-4 flex items-center gap-3 md:gap-4"
+              style={{ zIndex: 2 }}
+            >
+              <div className="flex items-baseline gap-1.5 font-mono">
+                <span
+                  className="tabular-nums font-bold text-white text-[18px] md:text-[22px] leading-none"
+                  style={{
+                    fontFamily:
+                      '"Source Serif 4", "Source Serif Pro", Georgia, serif',
+                  }}
+                >
+                  {String(
+                    Math.min(
+                      ITEMS.length,
+                      Math.max(1, Math.ceil(progress * ITEMS.length * 0.999) || 1)
+                    )
+                  ).padStart(2, "0")}
+                </span>
+                <span className="text-white/40 text-[12px] md:text-[13px] tabular-nums leading-none">
+                  / {String(ITEMS.length).padStart(2, "0")}
+                </span>
+              </div>
+              <div className="h-[3px] w-[88px] md:w-[120px] rounded-full bg-white/15 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-[width] duration-200 ease-out"
+                  style={{
+                    width: `${Math.min(100, Math.max(4, progress * 100))}%`,
+                    background:
+                      "linear-gradient(90deg, #FFC14D 0%, #f6f1e8 100%)",
+                  }}
+                />
+              </div>
+            </div>
+
             {ITEMS.map((it, i) => {
-              // Cada card aparece de baixo e empilha
-              const start = i * perCard * 0.85; // começa antes para suavizar
+              // Cada card ocupa um slot exclusivo (sem overlap entre starts)
+              const start = i * perCard;
+              // Animação ocupa 35% do slot — sobram 65% pro card descansar legível
+              const animDur = perCard * 0.35;
               const local = Math.min(
-                Math.max((progress - start) / (perCard * 0.9), 0),
+                Math.max((progress - start) / animDur, 0),
                 1
               );
-              // Quando o próximo card avança, o atual recua um pouco e escurece
+              // Próximo card só começa a entrar quando o atual já passou tempo de leitura
+              const nextStart = (i + 1) * perCard;
               const next = Math.min(
-                Math.max(
-                  (progress - (i + 1) * perCard * 0.85) / (perCard * 0.9),
-                  0
-                ),
+                Math.max((progress - nextStart) / animDur, 0),
                 1
               );
 
-              // Subida mais sutil — 50vh em vez de 90vh (não "joga" a carta)
-              const translateY = (1 - local) * 50;
+              // Subida sutil — viewport menor no mobile, então distância também
+              const translateY = (1 - local) * 35;
               const scale = 1 - next * 0.04;
               const dim = next * 0.28;
               const z = 10 + i;
@@ -157,7 +223,7 @@ export default function DezHorasSection() {
               return (
                 <article
                   key={i}
-                  className="absolute left-1/2 top-1/2 will-change-transform"
+                  className="absolute left-1/2 top-[42%] md:top-1/2 will-change-transform"
                   style={{
                     transform: `translate(-50%, calc(-50% + ${translateY}vh)) scale(${scale}) rotate(${tilt}deg)`,
                     zIndex: z,
@@ -170,14 +236,12 @@ export default function DezHorasSection() {
                   }}
                 >
                   <div
-                    className="relative rounded-[22px] overflow-hidden"
+                    className="relative rounded-[22px] overflow-hidden aspect-[4/5] sm:aspect-[5/4] max-h-[64vh] sm:max-h-[60vh]"
                     style={{
                       background:
                         "linear-gradient(155deg, #f6f1e8 0%, #e9e1d2 45%, #d9cfbb 100%)",
                       boxShadow:
                         "0 30px 60px -20px rgba(0,0,0,0.55), 0 8px 24px -8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
-                      aspectRatio: "5 / 4",
-                      maxHeight: "60vh",
                     }}
                   >
                     {/* reflexo */}
@@ -191,7 +255,7 @@ export default function DezHorasSection() {
                       }}
                     />
 
-                    <div className="relative h-full w-full p-5 md:p-7 flex flex-col text-[#031a28]">
+                    <div className="relative h-full w-full p-4 md:p-7 flex flex-col text-[#031a28]">
                       {/* badge canto */}
                       <div className="flex items-center justify-between">
                         <div
@@ -226,7 +290,7 @@ export default function DezHorasSection() {
                       </div>
 
                       <h3
-                        className="mt-4 md:mt-5 font-semibold leading-[1.1] tracking-[-0.018em] text-[clamp(1.4rem,2.6vw,2rem)]"
+                        className="mt-3 md:mt-5 font-semibold leading-[1.12] tracking-[-0.018em] text-[clamp(1.15rem,4.4vw,2rem)]"
                         style={{
                           fontFamily:
                             '"Source Serif 4", "Source Serif Pro", Georgia, serif',
@@ -235,12 +299,12 @@ export default function DezHorasSection() {
                         {it.title}
                       </h3>
 
-                      <p className="mt-3 md:mt-3.5 text-[#031a28]/80 text-[13.5px] md:text-[14.5px] leading-[1.55]">
+                      <p className="mt-2.5 md:mt-3.5 text-[#031a28]/80 text-[12.5px] md:text-[14.5px] leading-[1.5] md:leading-[1.55]">
                         {it.body}
                       </p>
 
                       {it.extra && (
-                        <p className="mt-2.5 text-[#031a28]/70 text-[12.5px] md:text-[13.5px] leading-[1.5] italic">
+                        <p className="mt-2 text-[#031a28]/70 text-[11.5px] md:text-[13.5px] leading-[1.45] md:leading-[1.5] italic">
                           {it.extra}
                         </p>
                       )}
@@ -265,13 +329,13 @@ export default function DezHorasSection() {
                       )}
 
                       {it.arrow && (
-                        <div className="mt-auto pt-4">
+                        <div className="mt-auto pt-3 md:pt-4">
                           <div
                             aria-hidden
-                            className="h-px w-full mb-3"
+                            className="h-px w-full mb-2.5 md:mb-3"
                             style={{ background: "#031a28", opacity: 0.18 }}
                           />
-                          <p className="text-[#031a28] text-[12.5px] md:text-[13.5px] leading-[1.5] font-medium">
+                          <p className="text-[#031a28] text-[11.5px] md:text-[13.5px] leading-[1.45] md:leading-[1.5] font-medium">
                             <span className="mr-2">→</span>
                             {it.arrow}
                           </p>

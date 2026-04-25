@@ -172,12 +172,14 @@ export default function PrimosViraramTiosSection() {
       className="relative w-full overflow-hidden"
       style={{ background: "#FAEDDD" }}
     >
-      <div className="relative mx-auto w-full max-w-[1280px] px-5 md:px-8 pt-20 md:pt-28 pb-16 md:pb-24">
-        <header className="text-center max-w-[760px] mx-auto mb-12 md:mb-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]">
-            <Sparkles className="h-3 w-3" /> Provas reais
+      <div className="relative mx-auto w-full max-w-[1280px] px-5 md:px-8 pt-20 md:pt-20 pb-6 md:pb-8">
+        <header className="text-center max-w-[760px] mx-auto mb-6 md:mb-8">
+          <span className="inline-flex items-center gap-2 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#031a28]/65">
+            <span aria-hidden className="block h-px w-7 bg-[#031a28]/40" />
+            <Sparkles className="h-3 w-3" /> Provas reais · 1.917 famílias
+            <span aria-hidden className="block h-px w-7 bg-[#031a28]/40" />
           </span>
-          <h2 className="mt-6 text-[#031a28] font-semibold leading-[1.15] tracking-[-0.02em] text-[clamp(1.8rem,3.8vw,2.9rem)]">
+          <h2 className="mt-4 md:mt-5 text-[#031a28] font-semibold leading-[1.12] tracking-[-0.02em] text-[clamp(1.7rem,3.6vw,2.7rem)]">
             Primos que viraram tios.
           </h2>
         </header>
@@ -215,9 +217,9 @@ export default function PrimosViraramTiosSection() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1280px] px-5 md:px-8 pb-20 md:pb-28">
+      <div className="mx-auto w-full max-w-[1280px] px-5 md:px-8 pb-20 md:pb-20">
         <div
-          className="max-w-[820px] mx-auto rounded-2xl px-8 md:px-12 py-12 md:py-14 text-center shadow-2xl mt-12 md:mt-16"
+          className="max-w-[820px] mx-auto rounded-2xl px-8 md:px-12 py-12 md:py-14 text-center shadow-2xl mt-8 md:mt-10"
           style={{
             background: "linear-gradient(180deg, #042234 0%, #021b28 100%)",
           }}

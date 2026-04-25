@@ -10,7 +10,7 @@ const SIM = [
 ];
 
 const NAO = [
-  "Você está procurando riqueza rápida ou \"hack\" financeiro.",
+  'Você está procurando riqueza rápida ou "hack" financeiro.',
   "Você não tem disposição pra mudar a forma como pensa sobre dinheiro.",
   "Você acredita que o mercado financeiro é o único caminho e não está aberto a questionar.",
   "Você já tem um projeto patrimonial claro e estruturado — e está satisfeito com ele.",
@@ -19,94 +19,96 @@ const NAO = [
 
 export default function ParaQuemSection() {
   return (
-    <section className="relative w-full overflow-hidden" style={{ background: "#FAEDDD" }}>
-      {/* Decorative subtle orbs */}
+    <section
+      className="relative w-full overflow-x-clip"
+      style={{ background: "#FAEDDD" }}
+    >
+      {/* Glow ambiente sutil */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(3,26,40,0.10), transparent 70%)" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-32 -right-24 h-[420px] w-[420px] rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(3,26,40,0.08), transparent 70%)" }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-[300px] opacity-40"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(3,26,40,0.10), transparent 60%)",
+        }}
       />
 
-      <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-10 py-20 md:py-28">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-          <span className="inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]">
-            Pra quem é (e pra quem não é)
-          </span>
-          <h2 className="mt-5 font-semibold text-[#031a28] leading-[1.1] tracking-[-0.02em] text-[clamp(1.6rem,3.4vw,2.6rem)]">
-            Antes de continuar, leia com honestidade.
-          </h2>
-          <p className="mt-4 text-[#031a28]/70 text-[15px] md:text-[17px] leading-[1.55]">
-            Essa imersão não é pra todo mundo. E está tudo bem. Veja se você se reconhece.
-          </p>
-        </div>
+      <div className="relative mx-auto w-full max-w-[1100px] px-5 md:px-10 py-20 md:py-28">
+        {/* Layout editorial — 2 colunas separadas só por divisor pontilhado vertical */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-y-0 md:gap-x-10 lg:gap-x-14 max-w-[960px] mx-auto">
+          {/* Divisor vertical pontilhado central — apenas md+ */}
+          <div
+            aria-hidden
+            className="hidden md:block absolute left-1/2 top-2 bottom-2 -translate-x-1/2 w-px"
+            style={{
+              backgroundImage:
+                "linear-gradient(to bottom, rgba(3,26,40,0.4) 0 6px, transparent 6px 12px)",
+              backgroundSize: "1px 12px",
+              backgroundRepeat: "repeat-y",
+            }}
+          />
 
-        {/* Two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
-          {/* SIM */}
-          <article
-            className="relative rounded-2xl bg-white/70 backdrop-blur-sm border border-[#031a28]/10 p-7 md:p-9 shadow-[0_10px_40px_-15px_rgba(3,26,40,0.15)] transition-transform hover:-translate-y-1"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <span
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full"
-                style={{ background: "linear-gradient(135deg, #1a8754, #14633e)" }}
-              >
-                <Check className="h-5 w-5 text-white" strokeWidth={3} />
+          {/* COLUNA SIM */}
+          <div className="md:pr-2 lg:pr-4">
+            <div className="flex items-center gap-3 mb-5 md:mb-6 pb-4 border-b-2 border-emerald-600/40">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/15 ring-1 ring-emerald-600/40">
+                <Check
+                  className="h-[18px] w-[18px] text-emerald-700"
+                  strokeWidth={3}
+                />
               </span>
-              <h3 className="font-semibold text-[#031a28] text-[18px] md:text-[20px] leading-tight">
-                Essa imersão <span className="text-[#1a8754]">É</span> pra você se:
+              <h3 className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.24em] font-bold text-emerald-700">
+                É pra você se
               </h3>
             </div>
-            <ul className="space-y-4">
+            <ul className="divide-y divide-emerald-700/15">
               {SIM.map((t, i) => (
                 <li
                   key={i}
-                  className="flex gap-3 text-[#031a28]/85 text-[14px] md:text-[15px] leading-[1.55]"
+                  className="flex items-start gap-3 py-3.5 md:py-4 text-[#031a28] text-[14.5px] md:text-[15.5px] leading-[1.55] font-medium"
                 >
-                  <Check className="mt-1 h-4 w-4 shrink-0 text-[#1a8754]" strokeWidth={3} />
+                  <Check
+                    className="mt-1 h-4 w-4 shrink-0 text-emerald-600"
+                    strokeWidth={3}
+                  />
                   <span>{t}</span>
                 </li>
               ))}
             </ul>
-          </article>
+          </div>
 
-          {/* NÃO */}
-          <article
-            className="relative rounded-2xl bg-white/40 backdrop-blur-sm border border-[#031a28]/10 p-7 md:p-9 shadow-[0_10px_40px_-15px_rgba(3,26,40,0.15)] transition-transform hover:-translate-y-1"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <span
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full"
-                style={{ background: "linear-gradient(135deg, #b3261e, #7f1d1d)" }}
-              >
-                <X className="h-5 w-5 text-white" strokeWidth={3} />
+          {/* COLUNA NÃO */}
+          <div className="md:pl-2 lg:pl-4">
+            <div className="flex items-center gap-3 mb-5 md:mb-6 pb-4 border-b-2 border-[#b9352a]/40">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#b9352a]/12 ring-1 ring-[#b9352a]/40">
+                <X
+                  className="h-[18px] w-[18px] text-[#b9352a]"
+                  strokeWidth={3}
+                />
               </span>
-              <h3 className="font-semibold text-[#031a28] text-[18px] md:text-[20px] leading-tight">
-                Essa imersão <span className="text-[#b3261e]">NÃO</span> é pra você se:
+              <h3 className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.24em] font-bold text-[#b9352a]">
+                Não é pra você se
               </h3>
             </div>
-            <ul className="space-y-4">
+            <ul className="divide-y divide-[#b9352a]/15">
               {NAO.map((t, i) => (
                 <li
                   key={i}
-                  className="flex gap-3 text-[#031a28]/75 text-[14px] md:text-[15px] leading-[1.55]"
+                  className="flex items-start gap-3 py-3.5 md:py-4 text-[#031a28]/65 text-[14.5px] md:text-[15.5px] leading-[1.55]"
                 >
-                  <X className="mt-1 h-4 w-4 shrink-0 text-[#b3261e]" strokeWidth={3} />
+                  <X
+                    className="mt-1 h-4 w-4 shrink-0 text-[#b9352a]"
+                    strokeWidth={3}
+                  />
                   <span>{t}</span>
                 </li>
               ))}
             </ul>
-          </article>
+          </div>
         </div>
 
         {/* CTA */}
-        <div className="mt-12 md:mt-16 flex flex-col items-center text-center">
+        <div className="mt-14 md:mt-16 flex flex-col items-center text-center">
           <div className="relative inline-block">
             <div
               aria-hidden
@@ -117,11 +119,15 @@ export default function ParaQuemSection() {
               }}
             />
             <div className="relative">
-              <PillButton label="Essa imersão é pra mim" variant="dark" size="lg" />
+              <PillButton
+                label="Essa imersão é pra mim"
+                variant="dark"
+                size="lg"
+              />
             </div>
           </div>
           <p className="mt-3 text-[#031a28]/60 text-[12px] md:text-[13px]">
-            Garantia de 30 dias. Risco zero. Apenas 50 Diagnósticos Individuais.
+            Garantia de 30 dias · Risco zero · Apenas 50 Diagnósticos Individuais
           </p>
         </div>
       </div>

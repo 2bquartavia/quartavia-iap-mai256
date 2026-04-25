@@ -39,28 +39,16 @@ export default function GarantiasSection() {
       <div className="relative mx-auto w-full max-w-[1180px] px-5 md:px-10 py-20 md:py-28">
         {/* Cabeçalho */}
         <div className="text-center max-w-[780px] mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#e6c674]/30 bg-[#e6c674]/[0.06] px-4 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-[#e6c674]">
-            <span
-              className="h-1.5 w-1.5 rounded-full bg-[#e6c674]"
-              style={{ animation: "garantia-pulse 2s ease-in-out infinite" }}
-            />
-            Blindagem dupla
-          </span>
           <h2
-            className="mt-5 font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,4.6vw,3.6rem)]"
+            className="font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(2rem,4.6vw,3.6rem)]"
             style={{
               fontFamily:
                 '"Source Serif 4", "Source Serif Pro", Georgia, serif',
             }}
           >
-            Você arrisca <em className="not-italic text-[#e6c674]">zero</em>.
-            <br className="hidden md:block" /> Eu arrisco{" "}
-            <em className="not-italic text-[#e6c674]">tudo</em>.
+            Duas garantias.{" "}
+            <em className="not-italic text-[#e6c674]">Zero risco.</em>
           </h2>
-          <p className="mt-5 text-white/65 text-[15px] md:text-[17px] leading-[1.6] max-w-[640px] mx-auto">
-            Duas camadas de proteção sobrepostas. Se em qualquer momento você
-            achar que não vale, o dinheiro volta. Inteiro.
-          </p>
         </div>
 
         {/* Cartões de garantia */}
@@ -375,23 +363,6 @@ export default function GarantiasSection() {
               ))}
             </ul>
           </article>
-        </div>
-
-        {/* Faixa de reforço */}
-        <div
-          className="relative mt-12 md:mt-16 mx-auto max-w-[820px] rounded-2xl px-6 py-5 text-center"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(230,198,116,0.08), rgba(255,255,255,0.05), rgba(230,198,116,0.08))",
-            border: "1px solid rgba(230,198,116,0.2)",
-          }}
-        >
-          <p className="text-white/85 text-[14px] md:text-[16px]">
-            <span className="font-semibold text-[#e6c674]">
-              Eu absorvo o risco.
-            </span>{" "}
-            Você só precisa aparecer e aplicar.
-          </p>
         </div>
 
         {/* CTA central */}

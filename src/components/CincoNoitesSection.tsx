@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Clock, ShieldCheck } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
 
@@ -139,7 +140,7 @@ export default function CincoNoitesSection() {
       <div
         data-immersion-track
         className="immersion__scroll"
-        style={{ height: `${noites.length * 100}vh` }}
+        style={{ height: `${noites.length * 70}vh` }}
       >
         <div
           data-immersion-sticky
@@ -188,16 +189,30 @@ export default function CincoNoitesSection() {
       </div>
 
       <div className="wrap immersion__close">
-        <p className="immersion__close-text">
-          Cada noite ao vivo. 20h. Com Adrian. Você entende, pergunta, implementa e nós
+        {/* Linha única — texto editorial sem labels redundantes */}
+        <p className="text-[#031a28] text-[clamp(1.05rem,2vw,1.4rem)] leading-[1.5] font-medium max-w-[760px] text-balance">
+          Cada noite ao vivo.{" "}
+          <span className="inline-flex items-center gap-1.5 align-middle font-mono text-[0.85em] uppercase tracking-[0.18em] font-bold text-[#031a28]/80">
+            <Clock className="h-[14px] w-[14px]" strokeWidth={2.4} />
+            20h
+          </span>
+          . Com{" "}
+          <span className="font-semibold">Adrian</span>. Você entende, pergunta, implementa e nós.
         </p>
+
         <PillButton
           label="Entrar nas 5 noites — R$97"
           variant="gold"
           size="lg"
         />
-        <p className="immersion__close-text" style={{ marginTop: "1rem" }}>
-          Garantia de 30 dias + Garantia da Quarta-feira. Risco zero.
+
+        {/* Garantia com ícone shield */}
+        <p className="inline-flex items-center gap-2 text-[#031a28]/70 text-[13px] md:text-[14px] font-medium">
+          <ShieldCheck
+            className="h-[18px] w-[18px] text-emerald-600"
+            strokeWidth={2.3}
+          />
+          Garantia de 30 dias + Garantia da Quarta-feira · Risco zero.
         </p>
       </div>
     </section>

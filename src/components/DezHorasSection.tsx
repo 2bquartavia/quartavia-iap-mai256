@@ -33,8 +33,8 @@ const ITEMS: Item[] = [
   {
     eyebrow: "04 — Diagnóstico",
     title: "Diagnóstico Patrimonial Individual",
-    body: "O Raio-X dos seus 3 motores e as melhores estratégias aplicáveis. Entregue antes mesmo do evento começar. Apenas 50 Diagnósticos serão realizados.",
-    extra: "Esse diagnóstico já foi vendido 1.913 vezes por R$997,00.",
+    body: "O Raio-X dos seus 3 motores e as melhores estratégias aplicáveis. Entregue antes mesmo do evento começar. Apenas 50 Diagnósticos Individuais serão realizados.",
+    extra: "(Esse diagnóstico já foi vendido 1.913 vezes por R$997,00.",
     arrow:
       "Serviço que normalmente custa R$ 997. Incluso para participantes qualificados.",
     showVagas: true,
@@ -42,7 +42,7 @@ const ITEMS: Item[] = [
   {
     eyebrow: "Bônus",
     title: "Biblioteca Confidencial do Quarto Caminho",
-    body: "3 estudos de caso reais, documentados, de pessoas que aplicaram o método. Com números, timeline e decisões. Não é teoria. É o que aconteceu.",
+    body: "3 estudos de caso reais, documentados, de pessoas que aplicaram o método. Com números, timeline e decisões. Não é teoria. E o que aconteceu.",
     arrow: "",
   },
   {
@@ -53,12 +53,16 @@ const ITEMS: Item[] = [
   },
 ];
 
+// Inclinações alternadas — papéis soltos sobre uma mesa
+const TILTS = [-2.4, 2.1, -1.8, 2.6, -2.0, 1.7];
+
 export default function DezHorasSection() {
   const rootRef = useRef<HTMLElement | null>(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => {
+    let raf = 0;
+    const compute = () => {
       const el = rootRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
@@ -67,11 +71,17 @@ export default function DezHorasSection() {
       const total = rect.height - vh;
       const scrolled = Math.min(Math.max(-rect.top, 0), total);
       setProgress(total > 0 ? scrolled / total : 0);
+      raf = 0;
     };
-    onScroll();
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(compute);
+    };
+    compute();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -86,8 +96,8 @@ export default function DezHorasSection() {
       className="relative w-full"
       style={{
         background: "#031a28",
-        // Altura grande para permitir o efeito de empilhamento ao rolar
-        minHeight: `${100 + ITEMS.length * 70}vh`,
+        // Altura justa pro empilhamento — sem warmup excessivo
+        minHeight: `${40 + ITEMS.length * 38}vh`,
       }}
     >
       {/* Sticky stage */}
@@ -95,41 +105,25 @@ export default function DezHorasSection() {
         <div className="mx-auto h-full w-full max-w-[1280px] px-5 md:px-10 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
           {/* Coluna esquerda — título fixo */}
           <div className="md:col-span-5 text-white">
-            <span className="inline-flex items-center text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-white/55">
+            <span className="inline-flex items-center gap-2 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65">
+              <span aria-hidden className="block h-px w-7 bg-white/35" />
               O que você recebe
             </span>
             <h2
-              className="mt-4 font-semibold text-white leading-[1.05] tracking-[-0.02em] text-[clamp(1.9rem,4vw,3.2rem)]"
-              style={{ fontFamily: '"Source Serif 4", "Source Serif Pro", Georgia, serif' }}
+              className="mt-4 md:mt-5 font-semibold leading-[1.08] tracking-[-0.02em] text-[clamp(1.65rem,3.4vw,2.6rem)]"
+              style={{
+                fontFamily:
+                  '"Source Serif 4", "Source Serif Pro", Georgia, serif',
+                backgroundImage:
+                  "linear-gradient(135deg, #FFC14D 0%, #f6f1e8 45%, #ffffff 75%, #d9cfbb 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+              }}
             >
               10 horas ao vivo que vão te colocar à frente de 99% dos profissionais de alta renda.
             </h2>
-            <div
-              aria-hidden
-              className="mt-6 h-px w-24"
-              style={{ background: "#ffffff", opacity: 0.4 }}
-            />
-
-            {/* Bloco de investimento */}
-            <div className="mt-8">
-              <p className="text-white/60 text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.22em]">
-                Investimento para as 5 noites
-              </p>
-              <p
-                className="mt-3 font-semibold text-white leading-none tracking-[-0.03em] text-[clamp(2.6rem,6vw,4.4rem)]"
-                style={{
-                  fontFamily:
-                    '"Source Serif 4", "Source Serif Pro", Georgia, serif',
-                }}
-              >
-                R$ 97
-              </p>
-              <p className="mt-4 text-white/70 text-[14px] md:text-[15px] leading-[1.55] max-w-[460px]">
-                Custa menos do que o jantar de sexta-feira que você vai esquecer
-                até segunda. Com uma diferença: esse jantar não vai mudar a
-                engenharia da sua vida.
-              </p>
-            </div>
           </div>
 
           {/* Coluna direita — pilha de cards */}
@@ -150,21 +144,27 @@ export default function DezHorasSection() {
                 1
               );
 
-              const translateY = (1 - local) * 90; // % de baixo pra cima
-              const scale = 1 - next * 0.06;
-              const dim = next * 0.35;
+              // Subida mais sutil — 50vh em vez de 90vh (não "joga" a carta)
+              const translateY = (1 - local) * 50;
+              const scale = 1 - next * 0.04;
+              const dim = next * 0.28;
               const z = 10 + i;
+              // Inclinação alternada — papel solto sobre a mesa
+              const baseTilt = TILTS[i % TILTS.length] ?? 0;
+              // Tilt diminui sutilmente conforme novos cards empilham por cima
+              const tilt = baseTilt * (1 - next * 0.4);
 
               return (
                 <article
                   key={i}
                   className="absolute left-1/2 top-1/2 will-change-transform"
                   style={{
-                    transform: `translate(-50%, calc(-50% + ${translateY}vh)) scale(${scale})`,
+                    transform: `translate(-50%, calc(-50% + ${translateY}vh)) scale(${scale}) rotate(${tilt}deg)`,
                     zIndex: z,
                     width: "min(560px, 92%)",
+                    // Sem transition em transform — animação 1:1 com scroll, sem catch-up
                     transition:
-                      "transform 120ms linear, filter 120ms linear, opacity 120ms linear",
+                      "filter 200ms ease-out, opacity 200ms ease-out",
                     opacity: local > 0 ? 1 : 0,
                     filter: `brightness(${1 - dim})`,
                   }}
@@ -176,8 +176,8 @@ export default function DezHorasSection() {
                         "linear-gradient(155deg, #f6f1e8 0%, #e9e1d2 45%, #d9cfbb 100%)",
                       boxShadow:
                         "0 30px 60px -20px rgba(0,0,0,0.55), 0 8px 24px -8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
-                      aspectRatio: "4 / 5",
-                      maxHeight: "70vh",
+                      aspectRatio: "5 / 4",
+                      maxHeight: "60vh",
                     }}
                   >
                     {/* reflexo */}
@@ -191,17 +191,17 @@ export default function DezHorasSection() {
                       }}
                     />
 
-                    <div className="relative h-full w-full p-7 md:p-9 flex flex-col text-[#031a28]">
+                    <div className="relative h-full w-full p-5 md:p-7 flex flex-col text-[#031a28]">
                       {/* badge canto */}
                       <div className="flex items-center justify-between">
                         <div
-                          className="h-9 w-9 rounded-full flex items-center justify-center"
+                          className="h-8 w-8 rounded-full flex items-center justify-center"
                           style={{ background: "#031a28", color: "#f6f1e8" }}
                           aria-hidden
                         >
                           <svg
-                            width="14"
-                            height="14"
+                            width="13"
+                            height="13"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -214,13 +214,19 @@ export default function DezHorasSection() {
                             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
                           </svg>
                         </div>
-                        <span className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.22em] text-[#031a28]/55">
-                          {it.eyebrow}
-                        </span>
+                        {it.eyebrow.toLowerCase().startsWith("bônus") ? (
+                          <span className="inline-flex items-center px-2 py-1 rounded-md bg-[#b9352a]/12 ring-1 ring-[#b9352a]/45 font-mono text-[10.5px] md:text-[11.5px] font-bold uppercase tracking-[0.22em] text-[#b9352a] shadow-[0_2px_8px_-2px_rgba(185,53,42,0.35)]">
+                            {it.eyebrow}
+                          </span>
+                        ) : (
+                          <span className="font-mono text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.22em] text-[#031a28]/55">
+                            {it.eyebrow}
+                          </span>
+                        )}
                       </div>
 
                       <h3
-                        className="mt-6 font-semibold leading-[1.02] tracking-[-0.02em] text-[clamp(1.8rem,3.4vw,2.8rem)]"
+                        className="mt-4 md:mt-5 font-semibold leading-[1.1] tracking-[-0.018em] text-[clamp(1.4rem,2.6vw,2rem)]"
                         style={{
                           fontFamily:
                             '"Source Serif 4", "Source Serif Pro", Georgia, serif',
@@ -229,27 +235,27 @@ export default function DezHorasSection() {
                         {it.title}
                       </h3>
 
-                      <p className="mt-4 text-[#031a28]/80 text-[14px] md:text-[15px] leading-[1.55]">
+                      <p className="mt-3 md:mt-3.5 text-[#031a28]/80 text-[13.5px] md:text-[14.5px] leading-[1.55]">
                         {it.body}
                       </p>
 
                       {it.extra && (
-                        <p className="mt-3 text-[#031a28]/70 text-[13px] md:text-[14px] leading-[1.5] italic">
+                        <p className="mt-2.5 text-[#031a28]/70 text-[12.5px] md:text-[13.5px] leading-[1.5] italic">
                           {it.extra}
                         </p>
                       )}
 
                       {it.showVagas && (
-                        <div className="mt-4">
-                          <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.18em] text-[#031a28]/70">
+                        <div className="mt-3.5">
+                          <div className="flex items-center justify-between text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#031a28]/70">
                             <span>Vagas restantes</span>
                             <span>13 / 50</span>
                           </div>
-                          <div className="mt-2 h-2 w-full rounded-full bg-[#031a28]/15 overflow-hidden">
+                          <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#031a28]/15 overflow-hidden">
                             <div
                               className="h-full rounded-full"
                               style={{
-                                width: "26%",
+                                width: "74%",
                                 background:
                                   "linear-gradient(90deg, #c9a24a, #e6c674)",
                               }}
@@ -259,13 +265,13 @@ export default function DezHorasSection() {
                       )}
 
                       {it.arrow && (
-                        <div className="mt-auto pt-5">
+                        <div className="mt-auto pt-4">
                           <div
                             aria-hidden
-                            className="h-px w-full mb-4"
+                            className="h-px w-full mb-3"
                             style={{ background: "#031a28", opacity: 0.18 }}
                           />
-                          <p className="text-[#031a28] text-[13px] md:text-[14px] leading-[1.5] font-medium">
+                          <p className="text-[#031a28] text-[12.5px] md:text-[13.5px] leading-[1.5] font-medium">
                             <span className="mr-2">→</span>
                             {it.arrow}
                           </p>

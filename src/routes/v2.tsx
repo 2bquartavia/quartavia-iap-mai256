@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Users, Briefcase, TrendingUp } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import CTAFinalSection from "@/components/CTAFinalSection";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
@@ -67,8 +68,8 @@ function IndexV2() {
         className="relative w-full overflow-hidden"
         style={{ background: "#FAEDDD" }}
       >
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-20">
-          {/* Topbar — logo | data | ao vivo */}
+        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 pt-20 md:pt-10 pb-20 md:pb-20">
+          {/* Topbar — logo | metadata editorial */}
           <div className="flex items-center justify-between gap-4 mb-10 md:mb-14">
             <img
               src={logoQuartavia}
@@ -77,32 +78,50 @@ function IndexV2() {
               style={{ filter: "brightness(0) saturate(100%) invert(8%) sepia(40%) saturate(2000%) hue-rotate(170deg) brightness(95%) contrast(95%)" }}
               decoding="async"
             />
-            <span className="hidden md:inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]">
-              25 a 29 de maio
-            </span>
-            <span className="hidden md:inline-flex items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28] shrink-0">
-              Ao vivo com Adrian Carvalho
-            </span>
+
+            {/* Metadata editorial à direita — sem chips */}
+            <div className="flex flex-col items-end gap-1 text-right text-[#031a28]">
+              <span className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.18em] leading-none">
+                25 a 29 de maio
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.18em] leading-none">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-red-500" />
+                </span>
+                <span className="md:hidden">Ao vivo com Adrian</span>
+                <span className="hidden md:inline">Ao vivo com Adrian Carvalho</span>
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Coluna esquerda — texto */}
             <div className="text-[#031a28]">
-              {/* Pílulas restantes (mobile mostra todas; desktop só as que não estão no topo) */}
-              <div className="flex flex-wrap gap-2 mb-7">
-                {[
-                  { t: "Imersão Alavanca Patrimonial", mobileOnly: false },
-                  { t: "25 a 29 de maio", mobileOnly: true },
-                  { t: "Ao vivo com Adrian Carvalho", mobileOnly: true },
-                  { t: "Apenas 50 Diagnósticos Individuais", mobileOnly: false },
-                ].map(({ t, mobileOnly }) => (
-                  <span
-                    key={t}
-                    className={`${mobileOnly ? "inline-flex md:hidden" : "inline-flex"} items-center rounded-full border border-[#031a28]/20 bg-[#031a28]/[0.04] px-3.5 py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-[0.12em] text-[#031a28]`}
-                  >
-                    {t}
+              {/* Metadata em 2 colunas — separadas, com divisor hairline */}
+              <div className="mb-6 md:mb-7 inline-flex items-stretch gap-4 md:gap-6 max-w-full">
+                {/* Coluna 1 — Formato */}
+                <div className="flex flex-col justify-center min-w-0">
+                  <span className="text-[9px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-[#031a28]/50 leading-none mb-1.5 md:mb-2">
+                    Formato
                   </span>
-                ))}
+                  <span className="text-[10.5px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-[#031a28] leading-[1.35]">
+                    Imersão Alavanca Patrimonial
+                  </span>
+                </div>
+
+                {/* Hairline vertical divider */}
+                <span aria-hidden className="block w-px self-stretch bg-[#031a28]/20" />
+
+                {/* Coluna 2 — Vagas (escassez) */}
+                <div className="flex flex-col justify-center min-w-0">
+                  <span className="text-[9px] md:text-[10px] font-semibold uppercase tracking-[0.22em] text-[#031a28]/50 leading-none mb-1.5 md:mb-2">
+                    Vagas
+                  </span>
+                  <span className="text-[10.5px] md:text-[12px] font-semibold uppercase tracking-[0.14em] text-[#031a28] leading-[1.35]">
+                    Apenas <span className="font-bold tracking-tight">50</span> Diagnósticos Individuais
+                  </span>
+                </div>
               </div>
 
               <h1 className="font-semibold text-[#031a28] leading-[1.1] tracking-[-0.02em] text-[clamp(1.5rem,3.2vw,2.5rem)]">
@@ -140,45 +159,111 @@ function IndexV2() {
               </div>
             </div>
 
-            {/* Coluna direita — slideshow no retângulo, rosto centralizado em cima */}
-            <div className="relative w-full aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
-              {heroSlides.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt="Adrian Carvalho"
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-                  style={{ objectPosition: "50% 90%", opacity: slide === i ? 1 : 0 }}
-                  decoding="async"
-                  fetchPriority={i === 0 ? "high" : "low"}
-                />
-              ))}
+            {/* Coluna direita — slideshow + boxes flutuantes que extrapolam a imagem */}
+            <div className="relative w-full aspect-[3/4] md:aspect-[4/5]">
+              {/* Container das imagens (clipa o conteúdo) */}
+              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
+                {heroSlides.map((src, i) => {
+                  const panTransforms = [
+                    "scale(1.08) translate(-1.2%, -1.2%)",
+                    "scale(1.08) translate(1.2%, -1%)",
+                    "scale(1.08) translate(-1%, 1.2%)",
+                    "scale(1.08) translate(1.2%, 1%)",
+                  ];
+                  const isActive = slide === i;
+                  return (
+                    <img
+                      key={src}
+                      src={src}
+                      alt="Adrian Carvalho"
+                      className="absolute inset-0 w-full h-full object-cover will-change-transform"
+                      style={{
+                        objectPosition: "50% 90%",
+                        opacity: isActive ? 1 : 0,
+                        transform: isActive
+                          ? panTransforms[i % panTransforms.length]
+                          : "scale(1) translate(0, 0)",
+                        transition:
+                          "opacity 800ms ease-in-out, transform 1900ms cubic-bezier(0.22, 0.61, 0.36, 1)",
+                      }}
+                      decoding="async"
+                      fetchPriority={i === 0 ? "high" : "low"}
+                    />
+                  );
+                })}
 
-              {/* Stats sobrepostos no topo — rosto fica embaixo */}
-              <div className="absolute inset-x-0 top-0 flex flex-col items-end gap-2 md:gap-2.5 p-3 md:p-4 pointer-events-none bg-gradient-to-b from-black/60 via-black/25 to-transparent pb-10 md:pb-14">
-                {[
-                  { v: "1.917", l: "FAMÍLIAS ATENDIDAS", icon: "👥" },
-                  { v: "R$3 BI", l: "SOB ACONSELHAMENTO", icon: "💼" },
-                  { v: "100+", l: "ATIVOS PESSOAIS DO ADRIAN", icon: "📈" },
-                ].map(({ v, l, icon }) => (
-                  <div
-                    key={l}
-                    className="w-[260px] md:w-[300px] rounded-lg border border-white/25 bg-black/55 backdrop-blur-md px-3 py-2 md:px-3.5 md:py-2.5 shadow-lg"
-                  >
-                    <div className="flex items-baseline gap-2 text-white justify-start text-left">
-                      <span className="text-[14px] md:text-[16px] leading-none">
-                        {icon}
-                      </span>
-                      <span className="font-semibold tracking-tight text-[15px] md:text-[17px] leading-none uppercase">
-                        {v}
-                      </span>
-                      <span className="text-white/85 text-[11px] md:text-[12px] leading-tight uppercase tracking-wide">
-                        {l}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                {/* Vinheta sutil para dar profundidade */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(3,26,40,0.42) 100%)",
+                  }}
+                />
+
+                {/* Indicador de slides — barras que avançam */}
+                <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                  {heroSlides.map((_, i) => (
+                    <span
+                      key={i}
+                      className="block h-[3px] rounded-full bg-white transition-all duration-500 ease-out"
+                      style={{
+                        width: slide === i ? 22 : 8,
+                        opacity: slide === i ? 1 : 0.45,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
+
+              {/* Stats — boxes flutuando assimetricamente, passando para fora da imagem */}
+              {[
+                {
+                  v: "1.917",
+                  l: "Famílias atendidas",
+                  Icon: Users,
+                  pos: "top-6 -left-4 md:top-10 md:-left-6",
+                  rot: "-rotate-[3deg]",
+                },
+                {
+                  v: "R$3 BI",
+                  l: "Sob aconselhamento",
+                  Icon: Briefcase,
+                  pos: "top-[38%] -right-4 md:-right-6",
+                  rot: "rotate-[2.5deg]",
+                },
+                {
+                  v: "100+",
+                  l: "Ativos pessoais do Adrian",
+                  Icon: TrendingUp,
+                  pos: "bottom-10 -left-3 md:bottom-14 md:-left-5",
+                  rot: "-rotate-[1.5deg]",
+                },
+              ].map(({ v, l, Icon, pos, rot }) => (
+                <div
+                  key={l}
+                  className={`absolute ${pos} ${rot} w-[148px] md:w-[172px] rounded-2xl border border-white/30 bg-black/65 backdrop-blur-xl p-4 md:p-[18px] shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)] text-white pointer-events-none`}
+                >
+                  <div className="flex items-center justify-between mb-3 md:mb-4">
+                    <span className="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg bg-white/10 ring-1 ring-white/20">
+                      <Icon
+                        className="w-[18px] h-[18px] md:w-5 md:h-5 text-white"
+                        strokeWidth={1.5}
+                      />
+                    </span>
+                    <span className="block w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-semibold tracking-tight text-[20px] md:text-[22px] leading-none">
+                      {v}
+                    </span>
+                    <span className="text-white/80 text-[11px] md:text-[12px] leading-[1.35] tracking-wide">
+                      {l}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -222,7 +307,7 @@ function IndexV2() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <div className="wrap pt-6 text-center text-xs text-white/40">
+        <div className="wrap text-center text-[11px] md:text-xs text-white/40">
           <span>© 2026 QuartaVia. Todos os direitos reservados.</span>
         </div>
       </footer>

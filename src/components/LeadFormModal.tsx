@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { createPortal } from "react-dom";
 
 interface LeadFormModalProps {
   open: boolean;
@@ -301,12 +300,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   };
 
   if (!open) return null;
-  if (typeof document === "undefined") return null;
 
-  // Renderizado via Portal direto no document.body — fica COMPLETAMENTE fora
-  // da árvore React do #root (e da página). Reconciliação do modal não toca
-  // mais o resto da página, e vice-versa.
-  return createPortal(
+  return (
     <div
       role="presentation"
       onClick={() => onOpenChange(false)}
@@ -317,7 +312,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
         display: "grid",
         placeItems: "center",
         padding: "1rem",
-        background: "#031a28",
+        background: "rgba(0,0,0,0.78)",
       }}
     >
       <div
@@ -514,8 +509,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           </form>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
 

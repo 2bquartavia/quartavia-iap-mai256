@@ -2279,6 +2279,21 @@ main blockquote, main p, main li {
   transition: none !important;
 }
 
+/* PAUSA GLOBAL — quando o modal de lead está aberto, todas as animações CSS
+   da página são suspensas. O modal em si fica fora do escopo (#root [role="dialog"])
+   e mantém suas animações ativas. Isso libera GPU/CPU para input do form. */
+body.lead-modal-open *,
+body.lead-modal-open *::before,
+body.lead-modal-open *::after {
+  animation-play-state: paused !important;
+}
+body.lead-modal-open [role="dialog"],
+body.lead-modal-open [role="dialog"] *,
+body.lead-modal-open [role="dialog"] *::before,
+body.lead-modal-open [role="dialog"] *::after {
+  animation-play-state: running !important;
+}
+
 .testimonial-card {
   margin: 0;
   flex: 0 0 auto;

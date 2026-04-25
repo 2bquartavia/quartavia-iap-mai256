@@ -27,7 +27,7 @@ const heroBg = heroSlides[0];
 export const Route = createFileRoute("/iap-lp02-h01")({
   head: () => ({
     meta: [
-      { title: "QuartaVia — Imersão Alavanca Patrimonial (v2)" },
+      { title: "QuartaVia : Alavanca Patrimonial : lp02-h01" },
       {
         name: "description",
         content:
@@ -43,17 +43,45 @@ export const Route = createFileRoute("/iap-lp02-h01")({
   component: IndexV2,
 });
 
-function IndexV2() {
+// Slideshow isolado — mantém o setInterval de 1.5s contido neste componente,
+// evitando que o re-render do slide propague pra todas as sections do IndexV2.
+const PAN_TRANSFORMS = [
+  "scale(1.08) translate(-1.2%, -1.2%)",
+  "scale(1.08) translate(1.2%, -1%)",
+  "scale(1.08) translate(-1%, 1.2%)",
+  "scale(1.08) translate(1.2%, 1%)",
+];
+
+function HeroSlideshow() {
   const [slide, setSlide] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setSlide((s) => (s + 1) % heroSlides.length);
-    }, 1500);
-    return () => clearInterval(id);
+    let id: number | null = null;
+    const start = () => {
+      if (id != null) return;
+      id = window.setInterval(() => {
+        setSlide((s) => (s + 1) % heroSlides.length);
+      }, 1500);
+    };
+    const stop = () => {
+      if (id != null) {
+        window.clearInterval(id);
+        id = null;
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, []);
 
-  // Preload all slides
+  // Preload das demais slides (a primeira já é preloaded via head links)
   useEffect(() => {
     heroSlides.forEach((src) => {
       const img = new Image();
@@ -61,6 +89,59 @@ function IndexV2() {
     });
   }, []);
 
+  return (
+    <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
+      {heroSlides.map((src, i) => {
+        const isActive = slide === i;
+        return (
+          <img
+            key={src}
+            src={src}
+            alt="Adrian Carvalho"
+            className="absolute inset-0 w-full h-full object-cover will-change-transform"
+            style={{
+              objectPosition: "50% 90%",
+              opacity: isActive ? 1 : 0,
+              transform: isActive
+                ? PAN_TRANSFORMS[i % PAN_TRANSFORMS.length]
+                : "scale(1) translate(0, 0)",
+              transition:
+                "opacity 800ms ease-in-out, transform 1900ms cubic-bezier(0.22, 0.61, 0.36, 1)",
+            }}
+            decoding="async"
+            fetchPriority={i === 0 ? "high" : "low"}
+          />
+        );
+      })}
+
+      {/* Vinheta sutil para dar profundidade */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(3,26,40,0.42) 100%)",
+        }}
+      />
+
+      {/* Indicador de slides */}
+      <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        {heroSlides.map((_, i) => (
+          <span
+            key={i}
+            className="block h-[3px] rounded-full bg-white transition-all duration-500 ease-out"
+            style={{
+              width: slide === i ? 22 : 8,
+              opacity: slide === i ? 1 : 0.45,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function IndexV2() {
   return (
     <main>
       {/* HERO — fundo laranja, texto à esquerda, foto à direita */}
@@ -161,61 +242,8 @@ function IndexV2() {
 
             {/* Coluna direita — slideshow + boxes flutuantes que extrapolam a imagem */}
             <div className="relative w-full aspect-[3/4] md:aspect-[4/5]">
-              {/* Container das imagens (clipa o conteúdo) */}
-              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[#031a28]/15 bg-[#031a28]/10">
-                {heroSlides.map((src, i) => {
-                  const panTransforms = [
-                    "scale(1.08) translate(-1.2%, -1.2%)",
-                    "scale(1.08) translate(1.2%, -1%)",
-                    "scale(1.08) translate(-1%, 1.2%)",
-                    "scale(1.08) translate(1.2%, 1%)",
-                  ];
-                  const isActive = slide === i;
-                  return (
-                    <img
-                      key={src}
-                      src={src}
-                      alt="Adrian Carvalho"
-                      className="absolute inset-0 w-full h-full object-cover will-change-transform"
-                      style={{
-                        objectPosition: "50% 90%",
-                        opacity: isActive ? 1 : 0,
-                        transform: isActive
-                          ? panTransforms[i % panTransforms.length]
-                          : "scale(1) translate(0, 0)",
-                        transition:
-                          "opacity 800ms ease-in-out, transform 1900ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-                      }}
-                      decoding="async"
-                      fetchPriority={i === 0 ? "high" : "low"}
-                    />
-                  );
-                })}
-
-                {/* Vinheta sutil para dar profundidade */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(3,26,40,0.42) 100%)",
-                  }}
-                />
-
-                {/* Indicador de slides — barras que avançam */}
-                <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {heroSlides.map((_, i) => (
-                    <span
-                      key={i}
-                      className="block h-[3px] rounded-full bg-white transition-all duration-500 ease-out"
-                      style={{
-                        width: slide === i ? 22 : 8,
-                        opacity: slide === i ? 1 : 0.45,
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
+              {/* Slideshow isolado — re-renderiza só ele a cada 1.5s */}
+              <HeroSlideshow />
 
               {/* Stats — boxes flutuando assimetricamente, passando para fora da imagem */}
               {[

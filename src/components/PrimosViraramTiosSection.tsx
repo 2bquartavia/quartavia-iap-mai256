@@ -77,6 +77,13 @@ export default function PrimosViraramTiosSection() {
     let startY = 0;
 
     const tick = (t: number) => {
+      // Pausa quando aba está oculta — evita pile-up de timestamps
+      // ao retomar e descarta trabalho desnecessário em background.
+      if (document.hidden) {
+        lastTimeRef.current = 0;
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
       if (document.body.classList.contains("lead-modal-open")) {
         lastTimeRef.current = t;
         rafRef.current = requestAnimationFrame(tick);

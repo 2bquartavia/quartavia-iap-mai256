@@ -10,74 +10,75 @@ import {
 import { LeadModalProvider } from "@/components/LeadModalContext";
 import appCss from "../styles.css?url";
 
-const GTM_ID = "GTM-N483RZTK";
-// Tracking é carregado só depois da hidratação/idle para não disputar CPU com o formulário.
+// GTM/Utmify TEMPORARIAMENTE DESLIGADOS — investigando travamentos ao voltar de aba.
+// O bloco de persistência das UTMs continua ativo (independente do GTM/Utmify).
+// const GTM_ID = "GTM-N483RZTK";
 const trackingBootScript = `(function(){
   try {
-    try {
-      var params = new URLSearchParams(window.location.search || '');
-      var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-      var hasAnyUtm = false;
-      for (var i = 0; i < UTM_KEYS.length; i++) {
-        if (params.get(UTM_KEYS[i])) { hasAnyUtm = true; break; }
-      }
-      // Se a URL atual trouxe QUALQUER UTM, ela é autoritativa: sobrescreve tudo e
-      // limpa as chaves UTM ausentes para evitar mistura com visitas antigas.
-      if (hasAnyUtm) {
-        UTM_KEYS.forEach(function(key){
-          var value = params.get(key);
-          if (value) {
-            var safeValue = String(value).slice(0, 255);
-            try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
-            try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
-            try { sessionStorage.setItem(key, safeValue); } catch(e){}
-            try { localStorage.setItem(key, safeValue); } catch(e){}
-          } else {
-            try { sessionStorage.removeItem('lead_param_' + key); } catch(e){}
-            try { localStorage.removeItem('lead_param_' + key); } catch(e){}
-            try { sessionStorage.removeItem(key); } catch(e){}
-            try { localStorage.removeItem(key); } catch(e){}
-          }
-        });
-      }
-      // Persiste demais params (não-UTM) sem limpar antigos.
-      params.forEach(function(value, key){
-        if (!value || !key) return;
-        if (key.indexOf('utm_') === 0) return;
-        var safeValue = String(value).slice(0, 255);
-        try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
-        try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+    var params = new URLSearchParams(window.location.search || '');
+    var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+    var hasAnyUtm = false;
+    for (var i = 0; i < UTM_KEYS.length; i++) {
+      if (params.get(UTM_KEYS[i])) { hasAnyUtm = true; break; }
+    }
+    // Se a URL atual trouxe QUALQUER UTM, ela é autoritativa: sobrescreve tudo e
+    // limpa as chaves UTM ausentes para evitar mistura com visitas antigas.
+    if (hasAnyUtm) {
+      UTM_KEYS.forEach(function(key){
+        var value = params.get(key);
+        if (value) {
+          var safeValue = String(value).slice(0, 255);
+          try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+          try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+          try { sessionStorage.setItem(key, safeValue); } catch(e){}
+          try { localStorage.setItem(key, safeValue); } catch(e){}
+        } else {
+          try { sessionStorage.removeItem('lead_param_' + key); } catch(e){}
+          try { localStorage.removeItem('lead_param_' + key); } catch(e){}
+          try { sessionStorage.removeItem(key); } catch(e){}
+          try { localStorage.removeItem(key); } catch(e){}
+        }
       });
-    } catch(e) {}
-    function loadTracking(){
-      window.dataLayer = window.dataLayer || [];
-      if (!window.__gtmLoaded) {
-        window.__gtmLoaded = true;
-        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        var gj = document.createElement('script');
-        gj.async = true;
-        gj.src = 'https://www.googletagmanager.com/gtm.js?id=${GTM_ID}';
-        (document.head || document.documentElement).appendChild(gj);
-      }
-      if (document.getElementById('utmify-script')) return;
-      var s = document.createElement('script');
-      s.id = 'utmify-script';
-      s.src = 'https://cdn.utmify.com.br/scripts/utms/latest.js';
-      s.async = true; s.defer = true;
-      s.setAttribute('data-utmify-prevent-subids','');
-      s.setAttribute('data-utmify-ignore-retry','');
-      s.setAttribute('data-utmify-ignore-iframe','');
-      s.setAttribute('data-utmify-ignore-forms','');
-      s.setAttribute('data-utmify-ignore-classes','lead-form');
-      (document.head || document.documentElement).appendChild(s);
     }
-    function schedule(){
-      if ('requestIdleCallback' in window) window.requestIdleCallback(loadTracking, { timeout: 3500 });
-      else setTimeout(loadTracking, 2500);
-    }
-    if (document.readyState === 'complete') schedule();
-    else window.addEventListener('load', schedule, { once: true });
+    // Persiste demais params (não-UTM) sem limpar antigos.
+    params.forEach(function(value, key){
+      if (!value || !key) return;
+      if (key.indexOf('utm_') === 0) return;
+      var safeValue = String(value).slice(0, 255);
+      try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+      try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+    });
   } catch(e) {}
+  /* GTM + Utmify desativados (investigação de performance)
+  function loadTracking(){
+    window.dataLayer = window.dataLayer || [];
+    if (!window.__gtmLoaded) {
+      window.__gtmLoaded = true;
+      window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+      var gj = document.createElement('script');
+      gj.async = true;
+      gj.src = 'https://www.googletagmanager.com/gtm.js?id=' + 'GTM-N483RZTK';
+      (document.head || document.documentElement).appendChild(gj);
+    }
+    if (document.getElementById('utmify-script')) return;
+    var s = document.createElement('script');
+    s.id = 'utmify-script';
+    s.src = 'https://cdn.utmify.com.br/scripts/utms/latest.js';
+    s.async = true; s.defer = true;
+    s.setAttribute('data-utmify-prevent-subids','');
+    s.setAttribute('data-utmify-ignore-retry','');
+    s.setAttribute('data-utmify-ignore-iframe','');
+    s.setAttribute('data-utmify-ignore-forms','');
+    s.setAttribute('data-utmify-ignore-classes','lead-form');
+    (document.head || document.documentElement).appendChild(s);
+  }
+  function schedule(){
+    if ('requestIdleCallback' in window) window.requestIdleCallback(loadTracking, { timeout: 3500 });
+    else setTimeout(loadTracking, 2500);
+  }
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule, { once: true });
+  */
 })();`;
 
 function NotFoundComponent() {
@@ -125,10 +126,11 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://www.googletagmanager.com" },
-      { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
-      { rel: "preconnect", href: "https://cdn.utmify.com.br" },
-      { rel: "dns-prefetch", href: "https://cdn.utmify.com.br" },
+      // GTM/Utmify temporariamente desativados — preconnect/dns-prefetch também:
+      // { rel: "preconnect", href: "https://www.googletagmanager.com" },
+      // { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
+      // { rel: "preconnect", href: "https://cdn.utmify.com.br" },
+      // { rel: "dns-prefetch", href: "https://cdn.utmify.com.br" },
     ],
   }),
   shellComponent: RootShell,

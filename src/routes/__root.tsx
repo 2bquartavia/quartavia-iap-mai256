@@ -154,8 +154,12 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // <HeadContent /> precisa rodar aqui (não só no shellComponent) pra que o
+  // build SPA da Vercel aplique title/meta/links definidos no head() de cada
+  // rota. React 19 hoista automaticamente esses elementos para document.head.
   return (
     <LeadModalProvider>
+      <HeadContent />
       <Outlet />
     </LeadModalProvider>
   );

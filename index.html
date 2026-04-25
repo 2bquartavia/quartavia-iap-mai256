@@ -3,14 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>QuartaVia : Alavanca Patrimonial : lp02-h01</title>
+    <title>QuartaVia — Imersão Alavanca Patrimonial</title>
     <meta name="description" content="QuartaVia — Imersão Alavanca Patrimonial.">
 
-    <!-- GTM/Utmify desativados temporariamente (investigando travamento ao voltar de aba) -->
-    <!-- <link rel="preconnect" href="https://www.googletagmanager.com" /> -->
-    <!-- <link rel="dns-prefetch" href="https://www.googletagmanager.com" /> -->
-    <!-- <link rel="preconnect" href="https://cdn.utmify.com.br" /> -->
-    <!-- <link rel="dns-prefetch" href="https://cdn.utmify.com.br" /> -->
+    <!-- Persistência de UTMs em runtime. Roda antes do React boot pra garantir que
+         a atribuição da landing seja capturada mesmo se o usuário não abrir o modal.
+         Em SSR (Lovable) este bloco também é injetado pelo shellComponent — o script
+         é idempotente (só lê URL e escreve em storage), então rodar 2× é seguro. -->
+    <script>
+      (function(){
+        try {
+          var params = new URLSearchParams(window.location.search || '');
+          var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+          var hasAnyUtm = false;
+          for (var i = 0; i < UTM_KEYS.length; i++) {
+            if (params.get(UTM_KEYS[i])) { hasAnyUtm = true; break; }
+          }
+          if (hasAnyUtm) {
+            UTM_KEYS.forEach(function(key){
+              var value = params.get(key);
+              if (value) {
+                var safeValue = String(value).slice(0, 255);
+                try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+                try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+                try { sessionStorage.setItem(key, safeValue); } catch(e){}
+                try { localStorage.setItem(key, safeValue); } catch(e){}
+              } else {
+                try { sessionStorage.removeItem('lead_param_' + key); } catch(e){}
+                try { localStorage.removeItem('lead_param_' + key); } catch(e){}
+                try { sessionStorage.removeItem(key); } catch(e){}
+                try { localStorage.removeItem(key); } catch(e){}
+              }
+            });
+          }
+          params.forEach(function(value, key){
+            if (!value || !key) return;
+            if (key.indexOf('utm_') === 0) return;
+            var safeValue = String(value).slice(0, 255);
+            try { sessionStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+            try { localStorage.setItem('lead_param_' + key, safeValue); } catch(e){}
+          });
+        } catch(e) {}
+      })();
+    </script>
 
     <meta property="og:title" content="QuartaVia — Imersão Alavanca Patrimonial">
   <meta name="twitter:title" content="QuartaVia — Imersão Alavanca Patrimonial">

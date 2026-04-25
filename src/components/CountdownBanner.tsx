@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useIsLeadModalOpen } from "@/components/LeadModalContext";
+
 // Domingo, 26/04/2026 às 09:00 (horário de Brasília, UTC-3)
 const TARGET = new Date("2026-04-26T09:00:00-03:00").getTime();
 
@@ -17,13 +19,19 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export default function CountdownBanner() {
   const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [mounted, setMounted] = useState(false);
+  const modalOpen = useIsLeadModalOpen();
 
   useEffect(() => {
     setMounted(true);
     setT(getRemaining());
+  }, []);
+
+  useEffect(() => {
+    if (modalOpen) return;
+    setT(getRemaining());
     const id = setInterval(() => setT(getRemaining()), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [modalOpen]);
 
   const items: { label: string; value: string }[] = [
     { label: "dias", value: pad(t.d) },

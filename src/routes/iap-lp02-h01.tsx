@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Users, Briefcase, TrendingUp } from "lucide-react";
+import { useIsLeadModalOpen } from "@/components/LeadModalContext";
 import LpPicture from "@/components/LpPicture";
 import PillButton from "@/components/PillButton";
 import CTAFinalSection from "@/components/CTAFinalSection";
@@ -51,13 +52,15 @@ const PAN_TRANSFORMS = [
 
 function HeroSlideshow() {
   const [slide, setSlide] = useState(0);
+  const modalOpen = useIsLeadModalOpen();
 
   useEffect(() => {
+    if (modalOpen) return;
     let id: number | null = null;
     const start = () => {
       if (id != null) return;
       id = window.setInterval(() => {
-        setSlide((s) => (s + 1) % heroSlides.length);
+        setSlide((s) => (s + 1) % HERO_STEMS.length);
       }, 1500);
     };
     const stop = () => {
@@ -76,7 +79,7 @@ function HeroSlideshow() {
       stop();
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, []);
+  }, [modalOpen]);
 
   // Preload das demais slides (a primeira já é preloaded via head links)
   useEffect(() => {
@@ -127,7 +130,7 @@ function HeroSlideshow() {
 
       {/* Indicador de slides */}
       <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-        {heroSlides.map((_, i) => (
+        {HERO_STEMS.map((_, i) => (
           <span
             key={i}
             className="block h-[3px] rounded-full bg-white transition-all duration-500 ease-out"

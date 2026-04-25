@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useIsLeadModalOpen } from "@/components/LeadModalContext";
+
 interface VerticalTickerProps {
   items: string[];
   intervalMs?: number;
@@ -12,14 +14,15 @@ export default function VerticalTicker({
   className = "",
 }: VerticalTickerProps) {
   const [index, setIndex] = useState(0);
+  const modalOpen = useIsLeadModalOpen();
 
   useEffect(() => {
-    if (items.length <= 1) return;
+    if (items.length <= 1 || modalOpen) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % items.length);
     }, intervalMs);
     return () => window.clearInterval(id);
-  }, [items.length, intervalMs]);
+  }, [items.length, intervalMs, modalOpen]);
 
   return (
     <div className={`vticker ${className}`} aria-live="polite">

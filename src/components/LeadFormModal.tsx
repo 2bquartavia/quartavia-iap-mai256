@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+} from "react";
 import { createPortal } from "react-dom";
 
 import { invokeAcSubscribe } from "@/lib/acSubscribe";
@@ -50,9 +57,9 @@ const COUNTRIES: CountryEntry[] = [
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /**
- * Versão mínima: sem bloquear scroll em body/html, sem class em #root, sem efeito de layout
- * síncrono. Só portal + overlay com wheel/touch não-passive para reduzir scroll de fundo.
- * Pausa de carrossel via `isLeadModalOpenNow()` no store, não via CSS.
+ * Com o fundo ainda scrollável, o Chrome tenta scroll-into-view / scroll anchoring na
+ * página inteira ao focar inputs no portal — dispara tempestade de eventos scroll + rAF
+ * nas seções e congela a aba. Travamos body + marcamos #root como inert.
  */
 export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   const nomeRef = useRef<HTMLInputElement>(null);
@@ -64,6 +71,61 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
   const [error, setError] = useState<string | null>(null);
 
   const country = COUNTRIES.find((c) => c.code === countryCode) ?? COUNTRIES[0];
+
+  useLayoutEffect(() => {
+    if (typeof document === "undefined") return;
+    const html = document.documentElement;
+    const body = document.body;
+    const root = document.getElementById("root");
+    const y = window.scrollY;
+
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyPosition = body.style.position;
+    const prevBodyTop = body.style.top;
+    const prevBodyLeft = body.style.left;
+    const prevBodyRight = body.style.right;
+    const prevBodyWidth = body.style.width;
+    const prevBodyOverflow = body.style.overflow;
+
+    html.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${y}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    // Atributo no <html> habilita as regras CSS de `animation-play-state: paused`
+    // no fundo (ver styles.css "Pausa global de animações"), e também serve como
+    // fonte de verdade pra qualquer fallback puramente CSS.
+    html.dataset.leadModalOpen = "1";
+
+    let prevRootInert: boolean | undefined;
+    let prevRootAriaHidden: string | null = null;
+    if (root) {
+      prevRootInert = root.inert;
+      prevRootAriaHidden = root.getAttribute("aria-hidden");
+      root.inert = true;
+      root.setAttribute("aria-hidden", "true");
+    }
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.position = prevBodyPosition;
+      body.style.top = prevBodyTop;
+      body.style.left = prevBodyLeft;
+      body.style.right = prevBodyRight;
+      body.style.width = prevBodyWidth;
+      body.style.overflow = prevBodyOverflow;
+      delete html.dataset.leadModalOpen;
+      if (root) {
+        root.inert = prevRootInert ?? false;
+        if (prevRootAriaHidden === null) root.removeAttribute("aria-hidden");
+        else root.setAttribute("aria-hidden", prevRootAriaHidden);
+      }
+      window.scrollTo(0, y);
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

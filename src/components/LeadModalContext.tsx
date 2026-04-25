@@ -4,11 +4,7 @@ import LeadFormModal from "@/components/LeadFormModal";
 import { leadModalStore } from "@/components/leadModalStore";
 
 function LeadModalHost() {
-  const isOpen = useSyncExternalStore(
-    leadModalStore.subscribe,
-    leadModalStore.getSnapshot,
-    leadModalStore.getServerSnapshot,
-  );
+  const isOpen = useIsLeadModalOpen();
   const onClose = useCallback(() => leadModalStore.close(), []);
 
   if (!isOpen) return null;
@@ -29,4 +25,18 @@ export function useLeadModal() {
     open: leadModalStore.open,
     close: leadModalStore.close,
   };
+}
+
+/**
+ * Lê o estado da modal sem precisar do React Context. Componentes com
+ * setInterval / setTimeout pausáveis (ex.: CountdownBanner, HeroSlideshow,
+ * VerticalTicker) usam isso pra suspender trabalho enquanto a modal estiver
+ * aberta — caso contrário esses re-renders continuam rodando atrás da modal.
+ */
+export function useIsLeadModalOpen(): boolean {
+  return useSyncExternalStore(
+    leadModalStore.subscribe,
+    leadModalStore.getSnapshot,
+    leadModalStore.getServerSnapshot,
+  );
 }

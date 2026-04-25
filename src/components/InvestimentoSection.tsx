@@ -192,38 +192,15 @@ export default function InvestimentoSection() {
             </ul>
           </div>
 
-          {/* TICKET — direita · glass card moderno */}
+          {/* TICKET — direita · card moderno (sem backdrop-filter — pesado em mobile) */}
           <aside className="md:col-span-5">
             <div className="relative h-full">
-              {/* Gradient blobs por trás — refração para o glass */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-6 -z-0"
-              >
-                <div
-                  className="absolute -top-6 -left-6 w-44 h-44 rounded-full opacity-60 blur-3xl"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(255,193,77,0.55) 0%, transparent 70%)",
-                  }}
-                />
-                <div
-                  className="absolute -bottom-10 -right-6 w-52 h-52 rounded-full opacity-55 blur-3xl"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(185,53,42,0.35) 0%, transparent 70%)",
-                  }}
-                />
-              </div>
-
-              {/* Glass card */}
+              {/* Card sólido — gradient sutil dá profundidade sem custo de GPU */}
               <div
                 className="relative h-full rounded-3xl overflow-hidden flex flex-col"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.72) 100%)",
-                  backdropFilter: "blur(24px) saturate(150%)",
-                  WebkitBackdropFilter: "blur(24px) saturate(150%)",
+                    "linear-gradient(180deg, #ffffff 0%, #fdf9f3 100%)",
                   boxShadow:
                     "0 30px 80px -30px rgba(3,26,40,0.32), 0 10px 30px -10px rgba(3,26,40,0.16), inset 0 1px 0 rgba(255,255,255,0.9)",
                 }}

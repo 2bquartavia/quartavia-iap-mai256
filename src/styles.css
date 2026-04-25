@@ -2279,19 +2279,25 @@ main blockquote, main p, main li {
   transition: none !important;
 }
 
-/* PAUSA GLOBAL — quando o modal de lead está aberto, todas as animações CSS
-   da página são suspensas. O modal em si fica fora do escopo (#root [role="dialog"])
-   e mantém suas animações ativas. Isso libera GPU/CPU para input do form. */
-body.lead-modal-open *,
-body.lead-modal-open *::before,
-body.lead-modal-open *::after {
+/* Pausa cirúrgica de animações pesadas quando o modal de lead está aberto.
+   Evita selector universal que torra style recalc; lista só as classes
+   conhecidamente animadas/que custam GPU. */
+.lead-modal-open .ep-icon,
+.lead-modal-open .ep-icon-card,
+.lead-modal-open .pill-btn--gold,
+.lead-modal-open .pill-btn--gold::before,
+.lead-modal-open .pill-btn--gold::after,
+.lead-modal-open .garantia-halo,
+.lead-modal-open .garantia-glow,
+.lead-modal-open .ep-marquee-base .ep-icons-track,
+.lead-modal-open .ep-marquee-overlay .ep-icons-track,
+.lead-modal-open .cn-cta-glow,
+.lead-modal-open .cn-day-cell,
+.lead-modal-open .immersion__orbs .orb,
+.lead-modal-open .lesson-card,
+.lead-modal-open .testimonial-card,
+.lead-modal-open .depo-card {
   animation-play-state: paused !important;
-}
-body.lead-modal-open [role="dialog"],
-body.lead-modal-open [role="dialog"] *,
-body.lead-modal-open [role="dialog"] *::before,
-body.lead-modal-open [role="dialog"] *::after {
-  animation-play-state: running !important;
 }
 
 .testimonial-card {

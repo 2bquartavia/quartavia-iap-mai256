@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 import { Clock, User, ShieldCheck } from "lucide-react";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
@@ -106,6 +107,7 @@ export default function CincoNoitesSection() {
     };
 
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       if (raf) return;
       raf = window.requestAnimationFrame(update);
     };

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 
 type Item = {
   eyebrow: string;
@@ -74,6 +75,7 @@ export default function DezHorasSection() {
       raf = 0;
     };
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       if (raf) return;
       raf = requestAnimationFrame(compute);
     };

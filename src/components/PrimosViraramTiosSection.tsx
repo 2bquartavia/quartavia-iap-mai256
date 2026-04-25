@@ -81,6 +81,7 @@ export default function PrimosViraramTiosSection() {
     // Chamar `track.scrollWidth` toda frame força sync layout.
     let cycleWidth = track.scrollWidth / 3;
     const recalcCycle = () => {
+      if (isLeadModalOpenNow()) return;
       cycleWidth = track.scrollWidth / 3;
     };
     window.addEventListener("resize", recalcCycle);

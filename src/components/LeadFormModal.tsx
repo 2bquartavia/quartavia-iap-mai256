@@ -177,6 +177,8 @@ export default function LeadFormModal({ onClose }: LeadFormModalProps) {
             data-utmify-ignore="true"
             onSubmit={onSubmit}
             style={formStyle}
+            onInput={(e) => e.stopPropagation()}
+            onChange={(e) => e.stopPropagation()}
           >
             <input
               ref={nomeRef}

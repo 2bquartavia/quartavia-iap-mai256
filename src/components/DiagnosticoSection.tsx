@@ -1,3 +1,4 @@
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 import { Star, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import renatoOberg from "@/assets/renato-oberg.png";
@@ -308,6 +309,7 @@ export default function DiagnosticoSection() {
   // Scan line desce a imagem conforme você rola — toque "diagnóstico"
   useEffect(() => {
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       const el = wrapperRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();

@@ -12,6 +12,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 import bancoMasterNews from "@/assets/banco-master-news.png";
 import LpPicture from "@/components/LpPicture";
@@ -240,6 +241,7 @@ function ScenarioStage() {
       raf = 0;
     };
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       if (raf) return;
       raf = requestAnimationFrame(apply);
     };

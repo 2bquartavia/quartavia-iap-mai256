@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { isLeadModalOpenNow } from "@/components/leadModalStore";
 import PillButton from "@/components/PillButton";
 import heroBg from "@/assets/hero-bg.webp";
 
@@ -105,6 +106,7 @@ export default function ImmersionSection() {
     };
 
     const onScroll = () => {
+      if (isLeadModalOpenNow()) return;
       if (raf) return;
       raf = window.requestAnimationFrame(update);
     };
